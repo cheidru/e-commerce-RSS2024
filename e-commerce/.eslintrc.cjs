@@ -10,6 +10,7 @@ module.exports = {
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
+        "prettier"
     ],
     "overrides": [
     ],
@@ -25,10 +26,11 @@ module.exports = {
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "prettier"
     ],
     "rules": {
-        /*'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],*/
+        // "react-refresh/only-export-components": ['warn', { allowConstantExport: true }],
         'react/react-in-jsx-scope': 0,
     }
 }
