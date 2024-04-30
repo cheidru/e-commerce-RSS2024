@@ -17,7 +17,6 @@
 - **Testing:** Jest or Vitest
 - **Code Quality:** ESLint, Prettier, Hasky
 - **Project Management:** Trello
-- **Deployment:** AWS, Docker
 
 ## Features
 
@@ -31,7 +30,6 @@
 - Go to downloaded folder: `$ cd e-commerce.git`.
 - Install dependencies: `$ npm install`.
 - Start server: `$ npm start`.
-- Now you can send requests to the address: `http://localhost:3000/`.
 
 ## Project Team
 
