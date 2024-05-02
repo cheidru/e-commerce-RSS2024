@@ -1,0 +1,4 @@
+cd e-commerce
+npm run test:run
+npx lint-staged --concurrent false --config .lintstaged/pre-commit
+#exit 1
