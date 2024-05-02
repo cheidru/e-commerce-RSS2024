@@ -32,36 +32,59 @@
 - Start project: `npm run dev`.
 
 ## Scripts descriptions
+
 - Runs the project in development mode:
-    `npm run dev`
+  `npm run dev`
 
 - Project build:
-    `npm run build`
+  `npm run build`
 
 - Checks code style with linter:
-    `npm run lint`
+  `npm run lint`
 
 - Fixes code style errors where possible:
-    `npm run lint:fix`
+  `npm run lint:fix`
 
 - Shows the build version of the project:
-    `npm run preview`
+  `npm run preview`
 
 - Formats the project according to the prettier:
-    `npm run format`
+  `npm run format`
 
 - Checks code style and formats, fix code style and format errors:
-    `npm run lint:staged`
+  `npm run lint:staged`
 
 - Required for the initial installation of the Husky:
-    `npm run prepare`
+  `npm run prepare`
 
 - Runs all tests:
-    `npm run test`
+  `npm run test`
+
+## Project structure
+
+react-app/
+│
+├── node_modules/
+├── public/
+│ └── favicon.ico
+│
+├── src/
+│ ├── assets/
+│ ├── components/
+│ ├── utils/
+│ ├── pages/
+│ ├── App.test.js
+│ ├── index.js
+│ ├── index.css
+│ ├── ......
+│ └── ......
+│
+├── .gitignore
+├── package.json
+└── package-lock.json
 
 ## Project Team
 
 - Anzhalika Turlak - Frontend Developer
 - Sergey Pustovoy - Frontend Developer
 - Igor Checheurov - Frontend Developer
-
