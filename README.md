@@ -62,25 +62,25 @@
 
 ## Project structure
 
-react-app/
+e-commerce/  
 │
-├── node_modules/
-├── public/
-│ └── favicon.ico
+├── node_modules/  
+├── public/  
+│ └── favicon.ico  
 │
-├── src/
-│ ├── assets/
-│ ├── components/
-│ ├── utils/
-│ ├── pages/
-│ ├── App.test.js
-│ ├── index.js
-│ ├── index.css
-│ ├── ......
-│ └── ......
+├── src/  
+│ ├── assets/  
+│ ├── components/  
+│ ├── utils/  
+│ ├── pages/  
+│ ├── App.test.js  
+│ ├── index.js  
+│ ├── index.css  
+│ ├── ......  
+│ └── ......  
 │
-├── .gitignore
-├── package.json
+├── .gitignore  
+├── package.json  
 └── package-lock.json
 
 ## Project Team
