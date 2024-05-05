@@ -10,6 +10,5 @@ describe('render', () => {
   it('renders the main page', () => {
     render(<App />);
     expect(screen.getByText('ASInc store')).toBeInTheDocument();
-    expect(true).toBeTruthy();
   });
 });
