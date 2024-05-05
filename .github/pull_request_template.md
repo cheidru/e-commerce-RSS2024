@@ -1,12 +1,16 @@
 ## What type of PR is this? (check all applicable)
 
-- [ ] Refactor - [ ] Feature - [ ] Bug Fix - [ ] Optimization - [ ] Documentation Update
+- [ ] Refactor
+- [ ] Feature
+- [ ] Bug Fix
+- [ ] Optimization
+- [ ] Documentation Update
 
 ## Documentation
 
-Task links: [example](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/eCommerce-Application/Sprints/Sprint1/RSS-ECOMM-1_01.md),[example_1](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/eCommerce-Application/Sprints/Sprint1/RSS-ECOMM-1_02.md)
+Task links: [example](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/eCommerce-Application/Sprints/Sprint1/RSS-ECOMM-1_01.md), [example_1](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/eCommerce-Application/Sprints/Sprint1/RSS-ECOMM-1_02.md)
 
-Trello links: [example](https://trello.com/c/8sPjt2dR/1-rss-ecomm-101-set-up-github-repository),[example_1](https://trello.com/c/IKbuWjFQ/2-rss-ecomm-102-set-up-folder-structure)
+Trello links: [example](https://trello.com/c/8sPjt2dR/1-rss-ecomm-101-set-up-github-repository), [example_1](https://trello.com/c/IKbuWjFQ/2-rss-ecomm-102-set-up-folder-structure)
 
 ## [optinnal]Description
 
