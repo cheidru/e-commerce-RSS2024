@@ -60,29 +60,6 @@
 - Runs all tests:
   `npm run test`
 
-## Project structure
-
-e-commerce/  
-│
-├── node_modules/  
-├── public/  
-│ └── favicon.ico  
-│
-├── src/  
-│ ├── assets/  
-│ ├── components/  
-│ ├── utils/  
-│ ├── pages/  
-│ ├── App.test.js  
-│ ├── index.js  
-│ ├── index.css  
-│ ├── ......  
-│ └── ......  
-│
-├── .gitignore  
-├── package.json  
-└── package-lock.json
-
 ## Project Team
 
 - Anzhalika Turlak - Frontend Developer
