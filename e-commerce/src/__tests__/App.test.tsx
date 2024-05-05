@@ -9,6 +9,6 @@ test('demo', () => {
 describe('render', () => {
   it('renders the main page', () => {
     render(<App />);
-    expect(screen.getByText('ASInc store')).toBeInTheDocument();
+    screen.getByText('ASInc store');
   });
 });
