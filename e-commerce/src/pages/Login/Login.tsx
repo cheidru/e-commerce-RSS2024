@@ -1,12 +1,13 @@
+import './login.css';
+
 function Login() {
   return (
-    <>
-      <h1>Async Store</h1>
-      <form>
-        <input type="text" placeholder="Mail" />
-        <input type="password" placeholder="Password" />
-      </form>
-    </>
+    <form className="login">
+      <h2>Login</h2>
+      <input type="text" placeholder="Mail" />
+      <input type="password" placeholder="Password" />
+      <button type="button">Log In</button>
+    </form>
   );
 }
 
