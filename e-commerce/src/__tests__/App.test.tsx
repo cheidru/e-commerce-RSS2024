@@ -1,6 +1,6 @@
 import { describe, it, expect, test } from 'vitest';
-import { render } from '@testing-library/react';
-import App from '../App';
+import { render, screen } from '@testing-library/react';
+import App from '../App/App';
 
 test('demo', () => {
   expect(true).toBe(true);
@@ -9,6 +9,6 @@ test('demo', () => {
 describe('render', () => {
   it('renders the main page', () => {
     render(<App />);
-    expect(true).toBeTruthy();
+    screen.getByText('ASInc store');
   });
 });
