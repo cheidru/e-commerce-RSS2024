@@ -1,7 +1,7 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import './layout.css';
 
-const setActive = ({ isActive }: { isActive: boolean }): string =>
+const setActive = ({ isActive }: { isActive: boolean }) =>
   isActive ? 'active-link' : '';
 
 function Layout() {

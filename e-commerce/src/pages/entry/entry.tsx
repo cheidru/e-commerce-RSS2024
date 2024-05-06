@@ -1,6 +1,6 @@
-import './login.css';
+import './entry.css';
 
-function Login() {
+function Entry() {
   return (
     <form className="login">
       <h2>Login</h2>
@@ -11,4 +11,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Entry;
