@@ -1,6 +1,6 @@
 import Layout from '../layout/layout';
 
-import './header.css';
+import './header.scss';
 
 function Header() {
   return (

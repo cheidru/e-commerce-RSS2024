@@ -1,4 +1,4 @@
-import './catalog.css';
+import './catalog.scss';
 
 function Catalog() {
   return <h2 className="catalog">Catalog</h2>;

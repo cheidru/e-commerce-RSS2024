@@ -1,4 +1,4 @@
-import './product.css';
+import './product.scss';
 
 function Product() {
   return <h2 className="product">Product</h2>;
