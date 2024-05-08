@@ -10,7 +10,10 @@ function Login() {
         <button type="button">Log In</button>
       </form>
       <div>
-        <Link to="/registration">REGISTRATION PAGE</Link>
+        <Link to="/registration">
+          REGISTRATION PAGE !!!!! I`&apos;`M HERE !!!! I`&apos;`M HERE!!!!!!!!!!
+          I`&apos;`M HERE
+        </Link>
       </div>
     </>
   );
