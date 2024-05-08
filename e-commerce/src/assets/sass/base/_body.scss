@@ -1,0 +1,74 @@
+html {
+  font-size: 10px;
+  scroll-behavior: smooth;
+  background-color: $White;
+}
+
+body {
+  @extend %font-base;
+  @include font($size: 1.6rem, $height: 2.6rem, $weight: 400);
+  min-height: 100vh;
+  color: $Grey;
+  background-color: $White;
+  box-sizing: border-box;
+}
+
+h1 {
+  @include font($size: 4.4rem, $height: 6.2rem, $weight: 600, $style: normal);
+  color: $Black;
+}
+
+h2 {
+  @include font($size: 4.4rem, $height: 6.2rem, $weight: 600, $style: normal);
+  color: $Black;
+}
+
+h3 {
+  @include font($size: 3.2rem, $height: 3.8rem, $weight: 600, $style: normal);
+  color: $Black;
+}
+
+h4 {
+  @include font($size: 2.8rem, $height: 4.2rem, $weight: 600, $style: normal);
+  color: $Black;
+}
+
+h5 {
+  @include font($size: 2.4rem, $height: 3rem, $weight: 600, $style: normal);
+  color: $Black;
+}
+
+h5 {
+  @include font($size: 2.2rem, $height: 3.4rem, $weight: 500, $style: normal);
+  color: $Black;
+}
+
+.container {
+  max-width: $width-desctop;
+  padding: 0 100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  @media (max-width: 770px) {
+    max-width: $width-tablet;
+  }
+  @media (max-width: 400px) {
+    max-width: $width-mobile;
+  }
+}
+
+@media (max-width: 700px) {
+  //   body {
+  //   @include font($size: 1.6rem, $height: 150%, $weight: 400);
+  //   }
+  //   h1{
+  //     @include font($size: 4.2rem, $height: 115%, $weight: 600, $style: normal);
+  //     color: $beige-light;
+  //   }
+  //   h2{
+  //     @include font($size: 3.2rem, $height:125%, $weight: 600, $style: normal);
+  //   }
+  // .container{
+  //   padding: 0 16px;
+  // }
+}

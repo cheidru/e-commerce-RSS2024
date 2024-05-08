@@ -1,4 +1,4 @@
-import './entry.css';
+import './login.scss';
 
 function Entry() {
   return (

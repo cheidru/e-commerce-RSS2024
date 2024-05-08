@@ -1,4 +1,4 @@
-import './registration.css';
+import './registration.scss';
 
 function Registration() {
   return (

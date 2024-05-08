@@ -1,4 +1,4 @@
-import './basket.css';
+import './basket.scss';
 
 function Basket() {
   return <h2 className="basket">Basket</h2>;
