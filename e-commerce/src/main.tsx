@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import App from './App/App';
 import './assets/sass/style.scss';
@@ -8,6 +9,8 @@ const root = ReactDOM.createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter basename="/e-commerce">
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 );

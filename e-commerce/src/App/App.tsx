@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 /* Components */
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
@@ -9,23 +9,25 @@ import './app.scss';
 
 function App() {
   return (
-    <Router>
+    <>
       <Header />
       <main className="main container">
         <Routes>
-          <Route path="/e-commerce" element={<Pages.Home />} />
-          <Route path="/login" element={<Pages.Login />} />
-          <Route path="/registration" element={<Pages.Registration />} />
-          <Route path="/about" element={<Pages.About />} />
-          <Route path="/catalog" element={<Pages.Catalog />} />
-          <Route path="/product" element={<Pages.Product />} />
-          <Route path="/profile" element={<Pages.Profile />} />
-          <Route path="/basket" element={<Pages.Basket />} />
-          <Route path="/error" element={<Pages.Unknown />} />
+          <Route path="/">
+            <Route index element={<Pages.Home />} />
+            <Route path="/login" element={<Pages.Login />} />
+            <Route path="/registration" element={<Pages.Registration />} />
+            <Route path="/about" element={<Pages.About />} />
+            <Route path="/catalog" element={<Pages.Catalog />} />
+            <Route path="/product" element={<Pages.Product />} />
+            <Route path="/profile" element={<Pages.Profile />} />
+            <Route path="/basket" element={<Pages.Basket />} />
+            <Route path="/*" element={<Pages.Unknown />} />
+          </Route>
         </Routes>
       </main>
       <Footer />
-    </Router>
+    </>
   );
 }
 

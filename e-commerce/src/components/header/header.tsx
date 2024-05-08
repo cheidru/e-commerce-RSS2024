@@ -19,7 +19,7 @@ function Header() {
       </div>
       <div className="header__bottom wrapper">
         <div className="header__bottom-item">
-          <Link to="/e-commerce">
+          <Link to="/">
             <img className="header__bottom-logo" src={Logo} alt="logo" />
           </Link>
           <Navigation />

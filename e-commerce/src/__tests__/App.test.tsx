@@ -1,5 +1,6 @@
 import { describe, it, expect, test } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import App from '../App/App';
 
 test('demo', () => {
@@ -7,8 +8,25 @@ test('demo', () => {
 });
 
 describe('render', () => {
-  it('renders the main page', () => {
-    render(<App />);
-    screen.getByText('Обратный звонок');
+  it('renders the main page Header', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByText('Обратный звонок')).toBeInTheDocument();
+  });
+});
+
+describe('App component', () => {
+  it('renders the main page and includes the Footer contact title', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Наши контакты')).toBeInTheDocument();
   });
 });

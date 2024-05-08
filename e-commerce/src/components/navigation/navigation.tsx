@@ -5,7 +5,7 @@ function Navigation() {
     <nav className="navigation">
       <ul className="navigation__list">
         <li className="navigation__list-item">
-          <NavLink to="/e-commerce">Главная</NavLink>
+          <NavLink to="/">Главная</NavLink>
         </li>
         <li className="navigation__list-item">
           <NavLink to="/catalog">Каталог</NavLink>
