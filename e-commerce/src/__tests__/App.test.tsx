@@ -1,6 +1,6 @@
 import { describe, it, expect, test } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import App from '../App/App';
 
 test('demo', () => {
@@ -8,12 +8,25 @@ test('demo', () => {
 });
 
 describe('render', () => {
-  it('renders the main page', () => {
+  it('renders the main page Header', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter initialEntries={['/']}>
         <App />
-      </BrowserRouter>
+      </MemoryRouter>
     );
-    screen.getByText('ASInc store');
+
+    expect(screen.queryByText('Обратный звонок')).toBeInTheDocument();
+  });
+});
+
+describe('App component', () => {
+  it('renders the main page and includes the Footer contact title', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Наши контакты')).toBeInTheDocument();
   });
 });

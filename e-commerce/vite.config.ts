@@ -5,7 +5,10 @@ import sass from 'vite-plugin-sass-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), sass()],
+  plugins: [
+    react(), 
+    sass(), 
+  ],
   base: '/e-commerce/',
   test: {
     globals: true,
