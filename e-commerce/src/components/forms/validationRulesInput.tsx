@@ -1,5 +1,26 @@
 import * as yup from 'yup';
 
+// LOGIN FORM VALID
+export const ValidationSchemaInputLogin = yup
+  .object({
+    email: yup
+      .string()
+      .email('Email must be properly formatted (e.g., example@email.com)')
+      .trim('Email must not contain leading or trailing whitespace')
+      .required('Email is required'),
+    password: yup
+      .string()
+      .min(8, 'Password must be at least 8 characters long')
+      .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .matches(/\d/, 'Password must contain at least one digit')
+      .trim('Password must not contain leading or trailing whitespace')
+      .required('Password is required'),
+  })
+  .required();
+
+// REGISTER FORM VALID
+
 // Age - Issue RSS-ECOMM-2_09: - Date of birth
 const minimumAge = 13;
 const today = new Date();
@@ -9,7 +30,7 @@ const minimumDateOfBirth = new Date(
   today.getDate()
 );
 
-export const ValidationSchemaInput = yup
+export const ValidationSchemaInputRegister = yup
   .object({
     email: yup
       .string() // RSS-ECOMM-2_01
@@ -61,9 +82,9 @@ export const ValidationSchemaInput = yup
           )
           .required('Postal code is required'),
         country: yup
-          .string() // RSS-ECOMM-2_09: из предопределенного списка или поля автозаполнения.
+          .string() // RSS-ECOMM-2_09: из предопределенного списка или поля автозаполнения. e-commerce - setting project - area
           .oneOf(
-            ['USA', 'Canada', 'Mexico'],
+            ['USA', 'Canada', 'Mexico'], // e-commerce - setting project - area
             'Must be a valid country from the predefined list'
           )
           .required('Country is required'),
@@ -72,4 +93,7 @@ export const ValidationSchemaInput = yup
   })
   .required();
 
-export type FormData = yup.InferType<typeof ValidationSchemaInput>;
+export type FormDataRegister = yup.InferType<
+  typeof ValidationSchemaInputRegister
+>;
+export type FormDataLogin = yup.InferType<typeof ValidationSchemaInputLogin>;

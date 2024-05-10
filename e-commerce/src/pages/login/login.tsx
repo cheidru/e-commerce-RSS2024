@@ -3,7 +3,7 @@ import LoginForm from '../../components/forms/login/login';
 
 function Login() {
   return (
-    <>
+    <section className="login-page">
       <LoginForm />
       <div>
         <Link to="/registration">
@@ -11,7 +11,7 @@ function Login() {
           I`&apos;`M HERE
         </Link>
       </div>
-    </>
+    </section>
   );
 }
 

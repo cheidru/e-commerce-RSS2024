@@ -1,32 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ValidationSchemaInput, FormData } from '../validationRulesInput';
+import {
+  ValidationSchemaInputLogin,
+  FormDataLogin,
+} from '../validationRulesInput';
 
 function LoginForm(): React.ReactElement {
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(ValidationSchemaInput),
+    formState: { errors, isValid, isDirty },
+    trigger,
+  } = useForm<FormDataLogin>({
+    resolver: yupResolver(ValidationSchemaInputLogin),
+    mode: 'onTouched',
   });
 
-  const onSubmit = (data: FormData) =>
-    // console.log(data);
-    data;
+  // dis btn submit
+  useEffect(() => {
+    setIsSubmitDisabled(!(isValid && isDirty));
+  }, [isValid, isDirty]);
+
+  const onSubmit = (data: FormDataLogin) => {
+    const dataUser = data;
+    // console.log(dataUser);
+    return dataUser;
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label htmlFor="email">
           Email:
           <input
-            type="email"
             id="email"
+            type="email"
+            className="form__login-login input-text"
             /* eslint-disable react/jsx-props-no-spreading */
-            {...register('email', { required: true })}
+            {...register('email', { onBlur: () => trigger('email') })}
           />
         </label>
         {errors.email && <div>{errors.email.message}</div>}
@@ -36,10 +53,11 @@ function LoginForm(): React.ReactElement {
         <label htmlFor="password">
           Password:
           <input
-            type={showPassword ? 'text' : 'password'}
             id="password"
+            type={showPassword ? 'text' : 'password'}
+            className="form__login-password input-text"
             /* eslint-disable react/jsx-props-no-spreading */
-            {...register('password', { required: true })}
+            {...register('password', { onBlur: () => trigger('password') })}
           />
         </label>
         {errors.password && <div>{errors.password.message}</div>}
@@ -52,7 +70,9 @@ function LoginForm(): React.ReactElement {
       </div>
 
       <div>
-        <button type="submit">Login</button>
+        <button type="submit" className="btn" disabled={isSubmitDisabled}>
+          Login
+        </button>
       </div>
     </form>
   );
