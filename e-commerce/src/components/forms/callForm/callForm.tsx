@@ -22,7 +22,7 @@ function CallForm() {
             name="email"
             id="#"
           />
-          <button className="form__call-btn" type="submit">
+          <button className="form__call-btn btn-submit" type="submit">
             Отправить
           </button>
         </form>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Link } from 'react-router-dom';
 import {
   ValidationSchemaInputLogin,
   FormDataLogin,
@@ -34,8 +35,9 @@ function LoginForm(): React.ReactElement {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
+    <form className="form__login form" onSubmit={handleSubmit(onSubmit)}>
+      <legend>Login</legend>
+      <div className="input-wrapper">
         <label htmlFor="email">
           Email:
           <input
@@ -46,10 +48,11 @@ function LoginForm(): React.ReactElement {
             {...register('email', { onBlur: () => trigger('email') })}
           />
         </label>
-        {errors.email && <div>{errors.email.message}</div>}
+        {errors.email && (
+          <div className="input-error">{errors.email.message}</div>
+        )}
       </div>
-
-      <div>
+      <div className="input-wrapper">
         <label htmlFor="password">
           Password:
           <input
@@ -60,19 +63,34 @@ function LoginForm(): React.ReactElement {
             {...register('password', { onBlur: () => trigger('password') })}
           />
         </label>
-        {errors.password && <div>{errors.password.message}</div>}
-      </div>
-
-      <div>
-        <button type="button" onClick={() => setShowPassword(!showPassword)}>
-          {showPassword ? 'Hide' : 'Show'} Password
+        {errors.password && (
+          <div className="input-error">{errors.password.message}</div>
+        )}
+        <button
+          type="button"
+          className="btn-show"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          {showPassword ? 'Hide' : 'Show'}
         </button>
       </div>
-
-      <div>
-        <button type="submit" className="btn" disabled={isSubmitDisabled}>
+      <div className="input-wrapper">
+        <button
+          type="submit"
+          className="btn-submit"
+          disabled={isSubmitDisabled}
+        >
           Login
         </button>
+      </div>
+      <div className="input-wrapper link-box">
+        <span className="link-text">
+          If you don&apos;t have an account,
+          <br /> you can register here
+        </span>
+        <Link to="/registration" className="btn-submit link">
+          Register
+        </Link>
       </div>
     </form>
   );
