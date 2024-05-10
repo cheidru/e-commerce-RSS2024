@@ -20,10 +20,12 @@
     "src/**/*.{js,ts,tsx}": "eslint --fix --max-warnings=0"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "npm": "^10.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.0"
+    "react-router-dom": "^6.23.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@reduxjs/toolkit": "^2.2.3",
