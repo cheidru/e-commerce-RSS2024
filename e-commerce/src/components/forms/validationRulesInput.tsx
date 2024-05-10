@@ -9,7 +9,7 @@ const minimumDateOfBirth = new Date(
   today.getDate()
 );
 
-const validationSchema = yup
+export const ValidationSchemaInput = yup
   .object({
     email: yup
       .string() // RSS-ECOMM-2_01
@@ -72,6 +72,4 @@ const validationSchema = yup
   })
   .required();
 
-type FormData = yup.InferType<typeof validationSchema>;
-
-export default FormData;
+export type FormData = yup.InferType<typeof ValidationSchemaInput>;
