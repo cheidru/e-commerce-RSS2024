@@ -2,15 +2,6 @@ import './modal.scss';
 import PowerLayer from './powerLayer';
 import close from '../../assets/img/icons/close.svg';
 
-// function CloseModal() {
-//   return (
-//     <>
-//       <Modal displayNoneFlex = {{display: 'none'}} />
-//       <PowerLayer displayNoneBlock = {{display: 'none'}} />
-//     </>
-//   )
-// }
-
 function Modal({
   displayNoneFlex,
   headerText = '',
@@ -21,8 +12,7 @@ function Modal({
   modalText: string;
 }) {
   function handleClick() {
-    // CloseModal();
-    <PowerLayer displayNoneBlock={{ display: 'none' }} />;
+    return <PowerLayer displayNoneBlock={{ display: 'none' }} />;
   }
   return (
     <>
