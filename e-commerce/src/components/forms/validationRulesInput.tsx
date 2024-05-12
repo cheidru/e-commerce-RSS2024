@@ -45,7 +45,12 @@ export const ValidationSchemaInputRegister = yup
         'Email must not contain spaces',
         (value) => !/\s/.test(value || '')
       )
-      .email('Email must be properly formatted (e.g., example@email.com)'),
+      .email('Email must be properly formatted (e.g., example@email.com)')
+      .test(
+        'formatted',
+        'Email must be properly formatted (e.g., example@email.com)',
+        (value) => /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i.test(value || '')
+      ),
     // .trim('Email must not contain leading or trailing whitespace') // если изменят требования на удаление пробелов - пусть побудет здесь
     password: yup
       .string() // RSS-ECOMM-2_01

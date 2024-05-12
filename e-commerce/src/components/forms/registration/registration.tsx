@@ -175,7 +175,7 @@ function RegistrationForm(): React.ReactElement {
             Email:
             <input
               id="email"
-              type="email"
+              type="text"
               className="form__registration-email input-text"
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('email', { onBlur: () => trigger('email') })}
