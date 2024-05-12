@@ -43,3 +43,12 @@
 .unknown-text {
   font-size: 1.5em;
 }
+
+.unknown-btn-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  align-items: center;
+  justify-content: space-between;
+}

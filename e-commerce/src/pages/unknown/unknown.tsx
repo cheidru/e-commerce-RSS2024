@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import bed from '../../assets/img/icons/bed.svg';
-import './unknown.scss';
 
 function Unknown() {
   const navigate = useNavigate();
@@ -12,9 +11,17 @@ function Unknown() {
       </div>
       <div className="unknown-wrapper">
         <p className="unknown-text">The page is not found</p>
-        <button type="button" onClick={() => navigate('/', { replace: true })}>
-          Go to Home
-        </button>
+        <div className="unknown-btn-wrapper">
+          <button
+            type="button"
+            onClick={() => navigate('/', { replace: true })}
+          >
+            Go to Home
+          </button>
+          <button type="button" onClick={() => navigate(-1)}>
+            Go Back
+          </button>
+        </div>
       </div>
     </div>
   );
