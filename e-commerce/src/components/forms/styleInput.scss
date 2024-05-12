@@ -70,6 +70,13 @@ label {
   background-color: #0056b3;
 }
 
+::placeholder {
+  color: $Stroke;
+}
+input:focus::placeholder {
+  color: transparent;
+}
+
 /* Errors */
 .input-error {
   color: #e74c3c;

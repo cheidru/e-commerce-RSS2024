@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import {
   ValidationSchemaInputLogin,
   FormDataLogin,
+  placeholder,
 } from '../validationRulesInput';
 
 function LoginForm(): React.ReactElement {
@@ -20,7 +21,7 @@ function LoginForm(): React.ReactElement {
     trigger,
   } = useForm<FormDataLogin>({
     resolver: yupResolver(ValidationSchemaInputLogin),
-    mode: 'onTouched',
+    mode: 'onBlur',
   });
 
   // dis btn submit
@@ -43,6 +44,7 @@ function LoginForm(): React.ReactElement {
           <input
             id="email"
             type="email"
+            placeholder={placeholder.email}
             className="form__login-login input-text"
             /* eslint-disable react/jsx-props-no-spreading */
             {...register('email', { onBlur: () => trigger('email') })}

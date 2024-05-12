@@ -5,8 +5,13 @@ export const ValidationSchemaInputLogin = yup
   .object({
     email: yup
       .string()
+      .test(
+        'no-spaces',
+        'Email must not contain spaces',
+        (value) => !/\s/.test(value || '')
+      )
       .email('Email must be properly formatted (e.g., example@email.com)')
-      .trim('Email must not contain leading or trailing whitespace')
+      // .trim('Email must not contain leading or trailing whitespace') // если изменят требования на удаление пробелов - пусть побудет здесь
       .required('Email is required'),
     password: yup
       .string()
@@ -34,8 +39,13 @@ export const ValidationSchemaInputRegister = yup
   .object({
     email: yup
       .string() // RSS-ECOMM-2_01
+      .test(
+        'no-spaces',
+        'Email must not contain spaces',
+        (value) => !/\s/.test(value || '')
+      )
       .email('Email must be properly formatted (e.g., example@email.com)')
-      .trim('Email must not contain leading or trailing whitespace')
+      // .trim('Email must not contain leading or trailing whitespace') // если изменят требования на удаление пробелов - пусть побудет здесь
       .required('Email is required'),
     password: yup
       .string() // RSS-ECOMM-2_01
@@ -92,6 +102,13 @@ export const ValidationSchemaInputRegister = yup
       .required('Address is required'),
   })
   .required();
+
+export const placeholder = {
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'example@email.com',
+  dateOfBirth: minimumDateOfBirth,
+};
 
 export type FormDataRegister = yup.InferType<
   typeof ValidationSchemaInputRegister

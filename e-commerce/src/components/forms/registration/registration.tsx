@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import {
   ValidationSchemaInputRegister,
   FormDataRegister,
+  placeholder,
 } from '../validationRulesInput';
 
 function RegistrationForm(): React.ReactElement {
@@ -44,6 +45,7 @@ function RegistrationForm(): React.ReactElement {
           <input
             id="firstName"
             type="text"
+            placeholder={placeholder.firstName}
             className="form__refistration-firstName input-text"
             /* eslint-disable react/jsx-props-no-spreading */
             {...register('firstName', { onBlur: () => trigger('firstName') })}
@@ -57,6 +59,7 @@ function RegistrationForm(): React.ReactElement {
           <input
             id="lastName"
             type="text"
+            placeholder={placeholder.lastName}
             className="form__refistration-lastName input-text"
             /* eslint-disable react/jsx-props-no-spreading */
             {...register('lastName', { onBlur: () => trigger('lastName') })}
