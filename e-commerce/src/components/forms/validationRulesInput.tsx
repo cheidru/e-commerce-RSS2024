@@ -71,8 +71,10 @@ export const ValidationSchemaInputRegister = yup
       ),
     dateOfBirth: yup
       .date() // RSS-ECOMM-2_09:
-      .max(minimumDateOfBirth, 'You must be at least 13 years old')
-      .required('Date of birth is required'),
+      .nullable()
+      .typeError('Date of birth is required')
+      .required('Date of birth is required')
+      .max(minimumDateOfBirth, 'You must be at least 13 years old'),
     address: yup
       .object({
         // RSS-ECOMM-2_09:
