@@ -94,8 +94,8 @@ function RegistrationForm(): React.ReactElement {
       </div>
 
       <div className="registration-adress">
-        <div>Shipping address</div>
-        <div className="input-wrapper">
+        <div className="registration-address-title">Shipping address</div>
+        <div className="input-wrapper-address">
           <label htmlFor="address.street">
             Street
             <input
@@ -113,7 +113,7 @@ function RegistrationForm(): React.ReactElement {
           )}
         </div>
 
-        <div className="input-wrapper">
+        <div className="input-wrapper-address">
           <label htmlFor="address.city">
             City
             <input
@@ -131,7 +131,7 @@ function RegistrationForm(): React.ReactElement {
           )}
         </div>
 
-        <div className="input-wrapper">
+        <div className="input-wrapper-address">
           <label htmlFor="address.postalCode">
             POST Code
             <input
@@ -150,18 +150,23 @@ function RegistrationForm(): React.ReactElement {
             </div>
           )}
         </div>
-        <div className="input-wrapper">
+        <div className="input-wrapper-address">
           <label htmlFor="address.country">
             Country
-            <input
+            <select
               id="address.country"
-              type="text"
               className="form__registration-adress input-text"
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('address.country', {
                 onBlur: () => trigger('address.country'),
               })}
-            />
+            >
+              <option value="">--- Choose ---</option>
+              <option value="Belarus">Belarus</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Russia">Russia</option>
+              <option value="Ukraine">Ukraine</option>
+            </select>
           </label>
           {errors.address?.country && (
             <div className="input-error">{errors.address.country.message}</div>

@@ -94,16 +94,13 @@ export const ValidationSchemaInputRegister = yup
         postalCode: yup
           .string() // RSS-ECOMM-2_09: ?????????????????????????????????? 12345 или A1B 2C3 для США и Канады
           .required('Postal code is required')
-          .matches(
-            /^\d{5}(-\d{4})?$/,
-            'Postal code must follow the format for the country'
-          ),
+          .matches(/^\d{5}(-\d{4})?$/, 'Postal code must fit format'),
         country: yup
           .string() // RSS-ECOMM-2_09: из предопределенного списка или поля автозаполнения. e-commerce - setting project - area
           .required('Country is required')
           .oneOf(
-            ['USA', 'Canada', 'Mexico'], // e-commerce - setting project - area
-            'Must be a valid country from the predefined list'
+            ['Belarus', 'Georgia', 'Russia', 'Ukraine'], // e-commerce - setting project - area
+            'Country is required'
           ),
       })
       .required('Address is required'),
