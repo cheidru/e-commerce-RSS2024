@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
 import {
-  ValidationSchemaInputLogin,
+  validationSchemaInputLogin,
   FormDataLogin,
   placeholder,
 } from '../validationRulesInput';
@@ -20,13 +20,13 @@ function LoginForm(): React.ReactElement {
     formState: { errors, isValid, isDirty },
     trigger,
   } = useForm<FormDataLogin>({
-    resolver: yupResolver(ValidationSchemaInputLogin),
-    mode: 'onBlur',
+    resolver: yupResolver(validationSchemaInputLogin),
+    mode: 'onChange',
   });
 
   // dis btn submit
   useEffect(() => {
-    setIsSubmitDisabled(!(isValid && isDirty));
+    setIsSubmitDisabled(!isValid && isDirty);
   }, [isValid, isDirty]);
 
   const onSubmit = (data: FormDataLogin) => {
@@ -44,10 +44,16 @@ function LoginForm(): React.ReactElement {
           <input
             id="email"
             type="email"
+            required
+            pattern="^\S*$"
             placeholder={placeholder.email}
             className="form__login-login input-text"
             /* eslint-disable react/jsx-props-no-spreading */
-            {...register('email', { onBlur: () => trigger('email') })}
+            {...register('email', {
+              onBlur: () => {
+                trigger('email');
+              },
+            })}
           />
         </label>
         {errors.email && (

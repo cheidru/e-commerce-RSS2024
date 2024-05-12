@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import Navigation from '../navigation/navigation';
 /* SVG */
+
+import { FaRegUser } from 'react-icons/fa6';
+import { GrFavorite } from 'react-icons/gr';
+import { LuShoppingCart } from 'react-icons/lu';
 import Logo from '../../assets/img/icons/Logo-header.svg';
-import Favorite from '../../assets/img/icons/frame.svg';
-import Basket from '../../assets/img/icons/backet.svg';
-import Profile from '../../assets/img/icons/profile.svg';
+import Navigation from '../navigation/navigation';
 
 function Header() {
   return (
@@ -29,17 +30,13 @@ function Header() {
             +7 (966) 55 88 499
           </a>
           <Link to="/">
-            <img
-              className="header__bottom-icon"
-              src={Favorite}
-              alt="favorite"
-            />
+            <GrFavorite className="icon-header" />
           </Link>
           <Link to="/basket">
-            <img className="header__bottom-icon" src={Basket} alt="basket" />
+            <LuShoppingCart className="icon-header" />
           </Link>
           <Link to="/login">
-            <img className="header__bottom-icon" src={Profile} alt="profile" />
+            <FaRegUser className="icon-header" />
           </Link>
         </div>
       </div>

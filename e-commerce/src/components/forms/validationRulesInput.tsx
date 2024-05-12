@@ -1,14 +1,13 @@
 import * as yup from 'yup';
 
 // LOGIN FORM VALID
-export const ValidationSchemaInputLogin = yup
+export const validationSchemaInputLogin = yup
   .object({
     email: yup
       .string()
-      .test(
-        'no-spaces',
-        'Email must not contain spaces',
-        (value) => !/\s/.test(value || '')
+      .strict(true)
+      .test('no-spaces', 'Email must not contain spaces', (value) =>
+        /^\S*$/g.test(value || '')
       )
       .email('Email must be properly formatted (e.g., example@email.com)')
       // .trim('Email must not contain leading or trailing whitespace') // если изменят требования на удаление пробелов - пусть побудет здесь
@@ -42,7 +41,7 @@ export const ValidationSchemaInputRegister = yup
       .test(
         'no-spaces',
         'Email must not contain spaces',
-        (value) => !/\s/.test(value || '')
+        (value) => !/^\S*$/.test(value || '')
       )
       .email('Email must be properly formatted (e.g., example@email.com)')
       // .trim('Email must not contain leading or trailing whitespace') // если изменят требования на удаление пробелов - пусть побудет здесь
@@ -113,4 +112,4 @@ export const placeholder = {
 export type FormDataRegister = yup.InferType<
   typeof ValidationSchemaInputRegister
 >;
-export type FormDataLogin = yup.InferType<typeof ValidationSchemaInputLogin>;
+export type FormDataLogin = yup.InferType<typeof validationSchemaInputLogin>;

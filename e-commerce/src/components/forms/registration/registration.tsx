@@ -31,7 +31,6 @@ function RegistrationForm(): React.ReactElement {
 
   const onSubmit = (data: FormDataRegister) => {
     const dataUser = data;
-    // console.log(dataUser);
     return dataUser;
   };
 
