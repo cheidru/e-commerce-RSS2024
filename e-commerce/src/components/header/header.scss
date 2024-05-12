@@ -1,9 +1,61 @@
-header {
+.header {
   width: 100%;
+  height: 126px;
   margin: 0 auto;
-  padding: 0;
-  text-align: center;
-  font-size: 2rem;
-  color: #222222;
-  background: #d1d1ec;
+  box-shadow: $B-shadow-header;
+
+  &__top {
+    position: relative;
+    line-height: 44px;
+    background-color: $Grey;
+  }
+
+  &__top-item {
+    font-weight: 500;
+    color: $White;
+    text-align: center;
+  }
+
+  &__top-item:last-child {
+    position: absolute;
+    top: 0;
+    right: 100px;
+    text-decoration: underline;
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    line-height: 82px;
+  }
+  &__bottom-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 100px;
+  }
+  &__bottom-item:last-child {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  &__bottom-tel {
+    @include font($size: 1.8rem, $height: 82px, $weight: 300, $style: normal);
+    color: $Grey;
+    padding-left: 25px;
+    position: relative;
+
+    &::before {
+      content: url('../../assets/img/icons/phone-call.svg');
+      position: absolute;
+      top: 3px;
+      left: 0;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  &__bottom-icon {
+    width: 32px;
+    height: 32px;
+    transform: translateY(75%);
+  }
 }
