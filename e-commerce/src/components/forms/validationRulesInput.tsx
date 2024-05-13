@@ -94,9 +94,63 @@ export const ValidationSchemaInputRegister = yup
             'City must contain at least one character and no special characters or numbers'
           ),
         postalCode: yup
-          .string() // RSS-ECOMM-2_09:
+          .string() // RSS-ECOMM-2_09: ?????????????????????????????????? 12345 или A1B 2C3 для США и Канады
           .required('Postal code is required')
-          .matches(/^\d{5}(-\d{4})?$/, 'Postal code must fit format'),
+          .test(
+            'postal-code-fit-format',
+            'Postal code must be 2#####',
+            (value, validationContext) => {
+              const {
+                parent: { country },
+              } = validationContext;
+
+              if (country === 'Belarus') {
+                return /^2[0-9]{5}$/.test(value || '');
+              }
+              return true;
+            }
+          )
+          .test(
+            'postal-code-fit-format',
+            'Postal code must be 4 digit',
+            (value, validationContext) => {
+              const {
+                parent: { country },
+              } = validationContext;
+
+              if (country === 'Georgia') {
+                return /^[0-9]{4}$/.test(value || '');
+              }
+              return true;
+            }
+          )
+          .test(
+            'postal-code-fit-format',
+            'Postal code must be 6 digit',
+            (value, validationContext) => {
+              const {
+                parent: { country },
+              } = validationContext;
+
+              if (country === 'Russia') {
+                return /^[0-9]{6}$/.test(value || '');
+              }
+              return true;
+            }
+          )
+          .test(
+            'postal-code-fit-format',
+            'Postal code must be 5 digit',
+            (value, validationContext) => {
+              const {
+                parent: { country },
+              } = validationContext;
+              if (country === 'Ukraine') {
+                return /^[0-9]{5}$/.test(value || '');
+              }
+              return false;
+            }
+          ),
         country: yup
           .string() // RSS-ECOMM-2_09: из предопределенного списка или поля автозаполнения. e-commerce - setting project - area
           .required('Country is required')
