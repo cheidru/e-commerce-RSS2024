@@ -153,7 +153,12 @@ function RegistrationForm(): React.ReactElement {
               {...register('address.country', {
                 onBlur: () => trigger('address.country'),
               })}
-              onChange={() => setValue('address.postalCode', '')}
+              onChange={() =>
+                setValue('address.postalCode', '', {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
             >
               <option value="">--- Choose ---</option>
               <option value="Belarus">Belarus</option>
