@@ -16,10 +16,7 @@
   display: flex;
   gap: 24px;
 }
-.form__call-name,
-.form__call-email {
-  @include inputTextEmain;
-}
+
 .form__call-btn {
   @include btnBlue();
 }
