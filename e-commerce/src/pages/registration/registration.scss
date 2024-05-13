@@ -1,8 +1,4 @@
-form,
 .registration {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 300px;
+  background-color: $Bg-section;
+  min-height: 50vh;
 }
