@@ -10,6 +10,43 @@
   margin-bottom: 20px;
   height: 130px;
   position: relative;
+  max-width: 16em;
+}
+.registration-address-title {
+  padding-top: 16px;
+}
+.input-wrapper-address {
+  margin-bottom: 40px;
+  height: 70px;
+  position: relative;
+  max-width: 16em;
+  line-height: 20px;
+}
+.input-wrapper-names {
+  max-width: 30em;
+}
+.input-wrapper-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 30px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  height: 130px;
+  position: relative;
+  // max-width: 40em;
+}
+.input-wrapper-btn {
+  margin: 0 auto;
+  margin-bottom: 20px;
+  max-width: 20em;
+  position: relative;
+}
+.input-wrapper-link {
+  margin: 0 auto;
+  margin-bottom: 20px;
+  max-width: 20em;
+  position: relative;
 }
 .two-col {
   display: flex;
