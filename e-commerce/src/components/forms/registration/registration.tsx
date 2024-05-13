@@ -17,6 +17,7 @@ function RegistrationForm(): React.ReactElement {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid, isDirty },
     trigger,
   } = useForm<FormDataRegister>({
@@ -159,6 +160,7 @@ function RegistrationForm(): React.ReactElement {
               {...register('address.country', {
                 onBlur: () => trigger('address.country'),
               })}
+              onChange={() => setValue('address.postalCode', '')}
             >
               <option value="">--- Choose ---</option>
               <option value="Belarus">Belarus</option>

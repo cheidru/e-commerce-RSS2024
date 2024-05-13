@@ -148,7 +148,7 @@ export const ValidationSchemaInputRegister = yup
               if (country === 'Ukraine') {
                 return /^[0-9]{5}$/.test(value || '');
               }
-              return false;
+              return true;
             }
           ),
         country: yup
