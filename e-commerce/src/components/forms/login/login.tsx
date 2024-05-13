@@ -49,7 +49,8 @@ function LoginForm(): React.ReactElement {
             placeholder={placeholder.email}
             className={`form__login-login input-text ${
               errors.email ? 'error-background-input' : ''
-            }`} /* eslint-disable react/jsx-props-no-spreading */
+            }`}
+            /* eslint-disable react/jsx-props-no-spreading */
             {...register('email', {
               onBlur: () => {
                 trigger('email');

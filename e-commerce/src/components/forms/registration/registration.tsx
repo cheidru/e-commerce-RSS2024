@@ -47,7 +47,9 @@ function RegistrationForm(): React.ReactElement {
               id="firstName"
               type="text"
               placeholder={placeholder.firstName}
-              className="form__registration-firstName input-text"
+              className={`form__registration-firstName input-text ${
+                errors.firstName ? 'error-background-input' : ''
+              }`}
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('firstName', { onBlur: () => trigger('firstName') })}
             />
@@ -64,7 +66,9 @@ function RegistrationForm(): React.ReactElement {
               id="lastName"
               type="text"
               placeholder={placeholder.lastName}
-              className="form__registration-lastName input-text"
+              className={`form__registration-lastName input-text ${
+                errors.lastName ? 'error-background-input' : ''
+              }`}
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('lastName', { onBlur: () => trigger('lastName') })}
             />
@@ -80,7 +84,9 @@ function RegistrationForm(): React.ReactElement {
             <input
               id="dateOfBirth"
               type="date"
-              className="form__registration-login input-text"
+              className={`form__registration-login input-text ${
+                errors.dateOfBirth ? 'error-background-input' : ''
+              }`}
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('dateOfBirth', {
                 onBlur: () => trigger('dateOfBirth'),
@@ -101,7 +107,9 @@ function RegistrationForm(): React.ReactElement {
             <input
               id="address.street"
               type="text"
-              className="form__registration-adress input-text"
+              className={`form__registration-adress input-text ${
+                errors.address?.street ? 'error-background-input' : ''
+              }`}
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('address.street', {
                 onBlur: () => trigger('address.street'),
@@ -119,7 +127,9 @@ function RegistrationForm(): React.ReactElement {
             <input
               id="address.city"
               type="text"
-              className="form__registration-adress input-text"
+              className={`form__registration-adress input-text ${
+                errors.address?.city ? 'error-background-input' : ''
+              }`}
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('address.city', {
                 onBlur: () => trigger('address.city'),
@@ -132,30 +142,13 @@ function RegistrationForm(): React.ReactElement {
         </div>
 
         <div className="input-wrapper-address">
-          <label htmlFor="address.postalCode">
-            POST Code
-            <input
-              id="address.postalCode"
-              type="text"
-              className="form__registration-adress input-text"
-              /* eslint-disable react/jsx-props-no-spreading */
-              {...register('address.postalCode', {
-                onBlur: () => trigger('address.postalCode'),
-              })}
-            />
-          </label>
-          {errors.address?.postalCode && (
-            <div className="input-error">
-              {errors.address.postalCode.message}
-            </div>
-          )}
-        </div>
-        <div className="input-wrapper-address">
           <label htmlFor="address.country">
             Country
             <select
               id="address.country"
-              className="form__registration-adress input-text"
+              className={`form__registration-adress input-text ${
+                errors.address?.country ? 'error-background-input' : ''
+              }`}
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('address.country', {
                 onBlur: () => trigger('address.country'),
@@ -173,6 +166,28 @@ function RegistrationForm(): React.ReactElement {
             <div className="input-error">{errors.address.country.message}</div>
           )}
         </div>
+
+        <div className="input-wrapper-address">
+          <label htmlFor="address.postalCode">
+            POST Code
+            <input
+              id="address.postalCode"
+              type="text"
+              className={`form__registration-adress input-text ${
+                errors.address?.postalCode ? 'error-background-input' : ''
+              }`}
+              /* eslint-disable react/jsx-props-no-spreading */
+              {...register('address.postalCode', {
+                onBlur: () => trigger('address.postalCode'),
+              })}
+            />
+          </label>
+          {errors.address?.postalCode && (
+            <div className="input-error">
+              {errors.address.postalCode.message}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="input-wrapper-line">
@@ -182,7 +197,9 @@ function RegistrationForm(): React.ReactElement {
             <input
               id="email"
               type="text"
-              className="form__registration-email input-text"
+              className={`form__registration-email input-text ${
+                errors.email ? 'error-background-input' : ''
+              }`}
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('email', { onBlur: () => trigger('email') })}
             />
@@ -198,7 +215,7 @@ function RegistrationForm(): React.ReactElement {
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              className="form__registration-password input-text"
+              className={`form__registration-password input-text ${errors.password ? 'error-background-input' : ''}`}
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('password', { onBlur: () => trigger('password') })}
             />
