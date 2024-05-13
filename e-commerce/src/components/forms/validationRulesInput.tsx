@@ -5,13 +5,18 @@ export const validationSchemaInputLogin = yup
   .object({
     email: yup
       .string()
-      .strict(true)
-      .test('no-spaces', 'Email must not contain spaces', (value) =>
-        /^\S*$/g.test(value || '')
+      .required('Email is required')
+      .test(
+        'no-spaces',
+        'Email must not contain spaces',
+        (value) => !/\s/.test(value || '')
       )
       .email('Email must be properly formatted (e.g., example@email.com)')
-      // .trim('Email must not contain leading or trailing whitespace') // если изменят требования на удаление пробелов - пусть побудет здесь
-      .required('Email is required'),
+      .test(
+        'formatted',
+        'Email must be properly formatted (e.g., example@email.com)',
+        (value) => /^[A-Z0-9._%+-]+@[A-Z0-9-]+\.[A-Z]{2,4}$/i.test(value || '')
+      ),
     password: yup
       .string()
       .min(8, 'Password must be at least 8 characters long')
@@ -25,7 +30,6 @@ export const validationSchemaInputLogin = yup
 
 // REGISTER FORM VALID
 
-// Age - Issue RSS-ECOMM-2_09: - Date of birth
 const minimumAge = 13;
 const today = new Date();
 const minimumDateOfBirth = new Date(
@@ -37,7 +41,7 @@ const minimumDateOfBirth = new Date(
 export const ValidationSchemaInputRegister = yup
   .object({
     email: yup
-      .string() // RSS-ECOMM-2_01
+      .string()
       .required('Email is required')
       .test(
         'no-spaces',
@@ -48,11 +52,10 @@ export const ValidationSchemaInputRegister = yup
       .test(
         'formatted',
         'Email must be properly formatted (e.g., example@email.com)',
-        (value) => /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i.test(value || '')
+        (value) => /^[A-Z0-9._%+-]+@[A-Z0-9-]+\.[A-Z]{2,4}$/i.test(value || '')
       ),
-    // .trim('Email must not contain leading or trailing whitespace') // если изменят требования на удаление пробелов - пусть побудет здесь
     password: yup
-      .string() // RSS-ECOMM-2_01
+      .string()
       .required('Password is required')
       .min(8, 'Password must be at least 8 characters long')
       .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
@@ -60,7 +63,7 @@ export const ValidationSchemaInputRegister = yup
       .matches(/\d/, 'Password must contain at least one digit')
       .trim('Password must not contain leading or trailing whitespace'),
     firstName: yup
-      .string() // RSS-ECOMM-2_09:
+      .string()
       .required('First name is required')
       .matches(
         /^[A-Za-z]+$/,
@@ -91,7 +94,7 @@ export const ValidationSchemaInputRegister = yup
             'City must contain at least one character and no special characters or numbers'
           ),
         postalCode: yup
-          .string() // RSS-ECOMM-2_09: ?????????????????????????????????? 12345 или A1B 2C3 для США и Канады
+          .string() // RSS-ECOMM-2_09:
           .required('Postal code is required')
           .matches(/^\d{5}(-\d{4})?$/, 'Postal code must fit format'),
         country: yup
