@@ -125,12 +125,15 @@ input:focus::placeholder {
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
 }
+.error-background-input {
+  background-color: rgba(255, 0, 0, 0.2);
+}
 
 /* Show password */
 .btn-show {
   position: absolute;
   right: 0px;
-  top: 28px;
+  top: 27px;
   background-color: $Blue;
   color: $White;
   border: 1px solid #ddd;
@@ -141,10 +144,6 @@ input:focus::placeholder {
   cursor: pointer;
   font-size: 14px;
   transition: color 0.3s;
-}
-
-.input-wrapper button:hover {
-  color: #0056b3;
 }
 
 /* Link */
