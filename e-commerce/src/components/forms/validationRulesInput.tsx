@@ -42,7 +42,7 @@ export const ValidationSchemaInputRegister = yup
       .test(
         'no-spaces',
         'Email must not contain spaces',
-        (value) => !/^\S*$/.test(value || '')
+        (value) => !/\s/.test(value || '')
       )
       .email('Email must be properly formatted (e.g., example@email.com)')
       .test(
