@@ -1,6 +1,7 @@
 /* Text */
-$Light-grey: #c4cdd5;
 $Stroke: #eaeaea;
+$Light-grey: #c4cdd5;
+$Grey-primary: #a4a4a4;
 $Grey: #454f5b;
 $White: #fff;
 $Light-blue: #add7ff;
@@ -15,9 +16,7 @@ $Grey-dark-pagination: #575757;
 $Grey-dark-pagination: #9d9d9d;
 
 /* Background */
-$Bg-base:
-  linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.02) 100%),
-  url(<path-to-image>) lightgray 148.252px 122.895px / 35.992% 67.662% no-repeat;
+$Bg-base: rgba(0, 0, 0, 0.02);
 $Bg-navigation: #fff;
 $Bg-section: #f2f8ff;
 $Bg-footer: #0d2436;

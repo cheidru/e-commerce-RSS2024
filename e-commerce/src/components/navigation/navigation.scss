@@ -1,0 +1,17 @@
+.navigation {
+  &__list {
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  &__list-item {
+    @include font($size: 2rem, $height: 2.4rem, $weight: 300, $style: normal);
+    color: $Black;
+    white-space: nowrap;
+    line-height: 82px;
+  }
+}
+.active {
+  font-weight: 400;
+  color: red;
+}
