@@ -13,12 +13,12 @@ function Unknown() {
         <p className="unknown-text">The page is not found</p>
         <div className="unknown-btn-wrapper">
           <button
-            type="button"
+            type="button" className="form__call-btn"
             onClick={() => navigate('/', { replace: true })}
           >
             Go to Home
           </button>
-          <button type="button" onClick={() => navigate(-1)}>
+          <button type="button" className="form__call-btn" onClick={() => navigate(-1)}>
             Go Back
           </button>
         </div>
