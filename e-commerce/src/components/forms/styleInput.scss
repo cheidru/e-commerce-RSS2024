@@ -6,6 +6,11 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background-color: #f9f9f9;
 }
+.fieldset {
+  padding: 10px;
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 5px;
+}
 .input-wrapper {
   margin-bottom: 20px;
   height: 130px;
@@ -84,6 +89,33 @@ label {
   outline: none;
   box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
 }
+::placeholder {
+  color: $Stroke;
+}
+input:focus::placeholder {
+  color: transparent;
+}
+/* Errors */
+.input-error {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 5px;
+  padding-left: 10px;
+  background: rgba(236, 217, 221, 0.5);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.error-background-input {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+/* Select */
+.input-select {
+}
+.input-select:disabled {
+  background: rgba(239, 239, 239, 0.3);
+}
 /* Button form */
 .btn-submit {
   display: block;
@@ -105,28 +137,6 @@ label {
 
 .btn-submit:hover:not(:disabled) {
   background-color: #0056b3;
-}
-
-::placeholder {
-  color: $Stroke;
-}
-input:focus::placeholder {
-  color: transparent;
-}
-
-/* Errors */
-.input-error {
-  color: #e74c3c;
-  font-size: 14px;
-  margin-top: 5px;
-  padding-left: 10px;
-  background: rgba(236, 217, 221, 0.5);
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
-}
-.error-background-input {
-  background-color: rgba(255, 0, 0, 0.2);
 }
 
 /* Show password */

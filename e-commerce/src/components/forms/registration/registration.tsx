@@ -9,8 +9,6 @@ import {
 } from '../validationRulesInput';
 
 function RegistrationForm(): React.ReactElement {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
@@ -18,6 +16,7 @@ function RegistrationForm(): React.ReactElement {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isValid, isDirty },
     trigger,
   } = useForm<FormDataRegister>({
@@ -29,6 +28,9 @@ function RegistrationForm(): React.ReactElement {
   useEffect(() => {
     setIsSubmitDisabled(!(isValid && isDirty));
   }, [isValid, isDirty]);
+
+  // address for invoice
+  const watchShowAddressInvoice = watch('addressForInvoice', true);
 
   const onSubmit = (data: FormDataRegister) => {
     const dataUser = data;
@@ -194,6 +196,225 @@ function RegistrationForm(): React.ReactElement {
           )}
         </div>
       </div>
+
+      <label htmlFor="addressForInvoice">
+        Is your shipping address the same as your billing address?
+        <input
+          type="checkbox"
+          id="addressForInvoice"
+          {...register('addressForInvoice')}
+        />
+      </label>
+      {!watchShowAddressInvoice && (
+        <fieldset className="fieldset">
+          Address for invoices
+          <div className="registration-adress">
+            <div className="input-wrapper-address">
+              <label htmlFor="address.street">
+                Street
+                <input
+                  id="address.street"
+                  type="text"
+                  className={`form__registration-adress input-text ${
+                    errors.address?.street ? 'error-background-input' : ''
+                  }`}
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  {...register('address.street', {
+                    onBlur: () => trigger('address.street'),
+                  })}
+                />
+              </label>
+              {errors.address?.street && (
+                <div className="input-error">
+                  {errors.address.street.message}
+                </div>
+              )}
+            </div>
+
+            <div className="input-wrapper-address">
+              <label htmlFor="address.city">
+                City
+                <input
+                  id="address.city"
+                  type="text"
+                  className={`form__registration-adress input-text ${
+                    errors.address?.city ? 'error-background-input' : ''
+                  }`}
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  {...register('address.city', {
+                    onBlur: () => trigger('address.city'),
+                  })}
+                />
+              </label>
+              {errors.address?.city && (
+                <div className="input-error">{errors.address.city.message}</div>
+              )}
+            </div>
+
+            <div className="input-wrapper-address">
+              <label htmlFor="address.country">
+                Country
+                <select
+                  id="address.country"
+                  className={`form__registration-adress input-text ${
+                    errors.address?.country ? 'error-background-input' : ''
+                  }`}
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  {...register('address.country', {
+                    onBlur: () => trigger('address.country'),
+                  })}
+                  onChange={() =>
+                    setValue('address.postalCode', '', {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    })
+                  }
+                >
+                  <option value="">--- Choose ---</option>
+                  <option value="Belarus">Belarus</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Russia">Russia</option>
+                  <option value="Ukraine">Ukraine</option>
+                </select>
+              </label>
+              {errors.address?.country && (
+                <div className="input-error">
+                  {errors.address.country.message}
+                </div>
+              )}
+            </div>
+
+            <div className="input-wrapper-address">
+              <label htmlFor="address.postalCode">
+                POST Code
+                <input
+                  id="address.postalCode"
+                  type="text"
+                  className={`form__registration-adress input-text ${
+                    errors.address?.postalCode ? 'error-background-input' : ''
+                  }`}
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  {...register('address.postalCode', {
+                    onBlur: () => trigger('address.postalCode'),
+                  })}
+                />
+              </label>
+              {errors.address?.postalCode && (
+                <div className="input-error">
+                  {errors.address.postalCode.message}
+                </div>
+              )}
+            </div>
+          </div>
+        </fieldset>
+      )}
+      {watchShowAddressInvoice && (
+        <fieldset className="fieldset">
+          Address for invoices
+          <div className="registration-adress">
+            <div className="input-wrapper-address">
+              <label htmlFor="address.street">
+                Street
+                <input
+                  id="address.street"
+                  type="text"
+                  disabled
+                  className={`form__registration-adress input-text ${
+                    errors.address?.street ? 'error-background-input' : ''
+                  }`}
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  {...register('address.street', {
+                    onBlur: () => trigger('address.street'),
+                  })}
+                />
+              </label>
+              {errors.address?.street && (
+                <div className="input-error">
+                  {errors.address.street.message}
+                </div>
+              )}
+            </div>
+
+            <div className="input-wrapper-address">
+              <label htmlFor="address.city">
+                City
+                <input
+                  id="address.city"
+                  type="text"
+                  disabled
+                  className={`form__registration-adress input-text ${
+                    errors.address?.city ? 'error-background-input' : ''
+                  }`}
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  {...register('address.city', {
+                    onBlur: () => trigger('address.city'),
+                  })}
+                />
+              </label>
+              {errors.address?.city && (
+                <div className="input-error">{errors.address.city.message}</div>
+              )}
+            </div>
+
+            <div className="input-wrapper-address">
+              <label htmlFor="address.country">
+                Country
+                <select
+                  id="address.country"
+                  disabled
+                  className={`form__registration-adress input-text input-select ${
+                    errors.address?.country ? 'error-background-input' : ''
+                  }`}
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  {...register('address.country', {
+                    onBlur: () => trigger('address.country'),
+                  })}
+                  onChange={() =>
+                    setValue('address.postalCode', '', {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    })
+                  }
+                >
+                  <option value="">--- Choose ---</option>
+                  <option value="Belarus">Belarus</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Russia">Russia</option>
+                  <option value="Ukraine">Ukraine</option>
+                </select>
+              </label>
+              {errors.address?.country && (
+                <div className="input-error">
+                  {errors.address.country.message}
+                </div>
+              )}
+            </div>
+
+            <div className="input-wrapper-address">
+              <label htmlFor="address.postalCode">
+                POST Code
+                <input
+                  id="address.postalCode"
+                  type="text"
+                  disabled
+                  className={`form__registration-adress input-text ${
+                    errors.address?.postalCode ? 'error-background-input' : ''
+                  }`}
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  {...register('address.postalCode', {
+                    onBlur: () => trigger('address.postalCode'),
+                  })}
+                />
+              </label>
+              {errors.address?.postalCode && (
+                <div className="input-error">
+                  {errors.address.postalCode.message}
+                </div>
+              )}
+            </div>
+          </div>
+        </fieldset>
+      )}
 
       <div className="input-wrapper-line">
         <div className="input-wrapper">

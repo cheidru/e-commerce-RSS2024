@@ -160,6 +160,7 @@ export const ValidationSchemaInputRegister = yup
           ),
       })
       .required('Address is required'),
+    addressForInvoice: yup.boolean(),
   })
   .required();
 
