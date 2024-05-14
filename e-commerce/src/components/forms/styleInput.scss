@@ -111,10 +111,12 @@ input:focus::placeholder {
 }
 
 /* Select */
-.input-select {
-}
 .input-select:disabled {
   background: rgba(239, 239, 239, 0.3);
+}
+/* Checkbox */
+.input-checkbox {
+  margin-right: 10px;
 }
 /* Button form */
 .btn-submit {

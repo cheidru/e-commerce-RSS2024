@@ -198,12 +198,13 @@ function RegistrationForm(): React.ReactElement {
       </div>
 
       <label htmlFor="addressForInvoice">
-        Is your shipping address the same as your billing address?
         <input
           type="checkbox"
           id="addressForInvoice"
+          className="input-checkbox"
           {...register('addressForInvoice')}
         />
+        Is your shipping address the same as your billing address?
       </label>
       {!watchShowAddressInvoice && (
         <fieldset className="fieldset">
