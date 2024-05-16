@@ -152,6 +152,7 @@ export const validationSchemaRegister = yup
     lastName: lastNameValidation,
     dateOfBirth: dateOfBirthValidation,
     address: addressValidation,
+    addressInvoice: addressValidation,
     addressForInvoice,
   })
   .required();
