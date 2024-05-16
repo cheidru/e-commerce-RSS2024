@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
 import {
-  validationSchemaInputLogin,
+  validationSchemaLogin,
   FormDataLogin,
   placeholder,
 } from '../validationRulesInput';
@@ -20,7 +20,7 @@ function LoginForm(): React.ReactElement {
     formState: { errors, isValid, isDirty },
     trigger,
   } = useForm<FormDataLogin>({
-    resolver: yupResolver(validationSchemaInputLogin),
+    resolver: yupResolver(validationSchemaLogin),
     mode: 'onBlur',
   });
 

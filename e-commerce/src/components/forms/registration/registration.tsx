@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
 import {
-  ValidationSchemaInputRegister,
+  validationSchemaRegister,
   FormDataRegister,
   placeholder,
 } from '../validationRulesInput';
@@ -20,7 +20,7 @@ function RegistrationForm(): React.ReactElement {
     formState: { errors, isValid, isDirty },
     trigger,
   } = useForm<FormDataRegister>({
-    resolver: yupResolver(ValidationSchemaInputRegister),
+    resolver: yupResolver(validationSchemaRegister),
     mode: 'onTouched',
   });
 
