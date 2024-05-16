@@ -15,7 +15,7 @@ describe('render', () => {
       </MemoryRouter>
     );
 
-    expect(screen.queryByText('Обратный звонок')).toBeInTheDocument();
+    expect(screen.queryByText('Back call')).toBeInTheDocument();
   });
 });
 
@@ -27,6 +27,6 @@ describe('App component', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Наши контакты')).toBeInTheDocument();
+    expect(screen.getByText('Our contacts')).toBeInTheDocument();
   });
 });

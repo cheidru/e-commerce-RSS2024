@@ -2,10 +2,10 @@ function CallForm() {
   return (
     <section className="call">
       <div className="wrapper call-box">
-        <h2 className="call-title">Мы Вам перезвоним</h2>
+        <h2 className="call-title">We will call you back</h2>
         <div className="call-text">
-          Если у вас возникли какие-то вопросы или проблемы, заполните <br />{' '}
-          форму и мы Вам перезвоним.
+          If you have any questions or concerns, please fill out <br /> form and
+          we will call you back.
         </div>
         <form className="form__call">
           <input
@@ -23,7 +23,7 @@ function CallForm() {
             id="#"
           />
           <button className="form__call-btn btn-submit" type="submit">
-            Отправить
+            Send
           </button>
         </form>
       </div>
