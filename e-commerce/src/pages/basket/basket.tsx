@@ -1,11 +1,11 @@
 import './basket.scss';
-import WetFloor from '../../components/stubs/wetfloor';
+import UnderConstruction2 from '../../components/stubs/underconstruction2';
 
 function Basket() {
   return (
     <>
       <h2 className="basket free-page">Basket</h2>
-      <WetFloor />
+      <UnderConstruction2 />
     </>
   );
 }

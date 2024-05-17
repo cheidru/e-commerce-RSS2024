@@ -14,12 +14,6 @@ function Navigation() {
           <NavLink to="/product">Product</NavLink>
         </li>
         <li className="navigation__list-item">
-          <NavLink to="/about">About Us</NavLink>
-        </li>
-        <li className="navigation__list-item">
-          <NavLink to="/profile">Profile</NavLink>
-        </li>
-        <li className="navigation__list-item">
           <NavLink to="/login">Login</NavLink>
         </li>
         <li className="navigation__list-item">
@@ -27,6 +21,12 @@ function Navigation() {
         </li>
         <li className="navigation__list-item">
           <NavLink to="/basket">Basket</NavLink>
+        </li>
+        <li className="navigation__list-item">
+          <NavLink to="/profile">Profile</NavLink>
+        </li>
+        <li className="navigation__list-item">
+          <NavLink to="/about">About Us</NavLink>
         </li>
       </ul>
     </nav>

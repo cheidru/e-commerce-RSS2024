@@ -1,11 +1,11 @@
 import './catalog.scss';
-import UnderConstruction from '../../components/stubs/underconstruction';
+import WetFloor from '../../components/stubs/wetfloor';
 
 function Catalog() {
   return (
     <>
       <h2 className="catalog free-page">Catalog</h2>
-      <UnderConstruction />
+      <WetFloor />
     </>
   );
 }

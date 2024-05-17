@@ -9,7 +9,7 @@ export default defineConfig({
     react(), 
     sass(), 
   ],
-  base: '/e-commerce/',
+  base: '/e-commerce',
   test: {
     globals: true,
     environment: 'jsdom',
