@@ -12,7 +12,7 @@ const emailValidation = yup
   .email('Email must be properly formatted (e.g., example@email.com)')
   .test(
     'formatted',
-    'Email must be properly formatted (e.g., example@email.com)',
+    'Email must be contain a domain name (e.g., example.com)',
     (value) => /^[A-Z0-9._%+-]+@[A-Z0-9-]+\.[A-Z]{2,4}$/i.test(value || '')
   );
 
@@ -22,7 +22,11 @@ const passwordValidation = yup
   .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
   .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
   .matches(/\d/, 'Password must contain at least one digit')
-  .trim('Password must not contain leading or trailing whitespace')
+  .test(
+    'no-spaces',
+    'Password must not contain leading or trailing whitespace',
+    (value) => !/^\s+|\s+$/.test(value || '')
+  )
   .required('Password is required');
 
 const firstNameValidation = yup
@@ -58,6 +62,7 @@ const dateOfBirthValidation = yup
   .max(minimumDateOfBirth, 'You must be at least 13 years old');
 
 const addressValidation = yup.object({
+  default: yup.boolean(),
   street: yup.string().required('Street is required'),
   city: yup
     .string()
@@ -77,6 +82,9 @@ const addressValidation = yup.object({
           parent: { country },
         } = validationContext;
 
+        if (country === '-') {
+          return true;
+        }
         if (country === 'Belarus') {
           return /^2[0-9]{5}$/.test(value || '');
         }

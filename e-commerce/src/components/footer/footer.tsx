@@ -16,8 +16,7 @@ function Footer() {
             <FaFacebookF className="footer-icon" />
           </div>
           <div className="footer__top-item footer__contact">
-            <div className="footer__contact-title">Our contacts</div>
-            <div className="footer__contact-text">Phones</div>
+            <div className="footer__contact-title">Our phones</div>
             <a className="footer__contact-tell" href="tel:+79885650038">
               +7 (988) 565 00 38
             </a>
@@ -26,7 +25,7 @@ function Footer() {
             </a>
           </div>
           <div className="footer__top-item">
-            <div className="footer__contact-text">Email</div>
+            <div className="footer__contact-title">Our email</div>
             <a
               className="footer__contact-email"
               href="mailto:vladpertcev@mail.ru"

@@ -11,6 +11,7 @@
   border: 1px solid rgb(221, 221, 221);
   border-radius: 5px;
   margin-bottom: 20px;
+  text-align: start;
 }
 .input-wrapper {
   margin-bottom: 20px;
@@ -175,6 +176,9 @@ input:focus::placeholder {
   width: 110px;
 }
 
+label {
+  text-align: start;
+}
 /* REGISTRATION */
 .form__registration {
   min-width: 80%;

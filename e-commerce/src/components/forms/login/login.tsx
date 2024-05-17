@@ -21,7 +21,7 @@ function LoginForm(): React.ReactElement {
     trigger,
   } = useForm<FormDataLogin>({
     resolver: yupResolver(validationSchemaLogin),
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   // dis btn submit
@@ -40,10 +40,10 @@ function LoginForm(): React.ReactElement {
       <legend>Login</legend>
       <div className="input-wrapper form__login-wrapper">
         <label htmlFor="email">
-          Email:
+          Email*
           <input
             id="email"
-            type="email"
+            type="text"
             required
             pattern="^\S*$"
             placeholder={placeholder.email}
@@ -52,7 +52,7 @@ function LoginForm(): React.ReactElement {
             }`}
             /* eslint-disable react/jsx-props-no-spreading */
             {...register('email', {
-              onBlur: () => {
+              onChange: () => {
                 trigger('email');
               },
             })}
@@ -64,13 +64,13 @@ function LoginForm(): React.ReactElement {
       </div>
       <div className="input-wrapper form__login-wrapper">
         <label htmlFor="password">
-          Password:
+          Password*
           <input
             id="password"
             type={showPassword ? 'text' : 'password'}
             className={`form__login-password input-text ${errors.password ? 'error-background-input' : ''}`}
             /* eslint-disable react/jsx-props-no-spreading */
-            {...register('password', { onBlur: () => trigger('password') })}
+            {...register('password', { onChange: () => trigger('password') })}
           />
         </label>
         {errors.password && (

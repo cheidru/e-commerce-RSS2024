@@ -21,7 +21,7 @@ function RegistrationForm(): React.ReactElement {
     trigger,
   } = useForm<FormDataRegister>({
     resolver: yupResolver(validationSchemaRegister),
-    mode: 'onTouched',
+    mode: 'onChange',
   });
 
   // dis btn submit
@@ -44,7 +44,7 @@ function RegistrationForm(): React.ReactElement {
       <div className="input-wrapper-line">
         <div className="input-wrapper-names">
           <label htmlFor="firstName">
-            first Name:
+            first Name*
             <input
               id="firstName"
               type="text"
@@ -53,7 +53,9 @@ function RegistrationForm(): React.ReactElement {
                 errors.firstName ? 'error-background-input' : ''
               }`}
               /* eslint-disable react/jsx-props-no-spreading */
-              {...register('firstName', { onBlur: () => trigger('firstName') })}
+              {...register('firstName', {
+                onChange: () => trigger('firstName'),
+              })}
             />
             {errors.firstName && (
               <div className="input-error">{errors.firstName.message}</div>
@@ -63,7 +65,7 @@ function RegistrationForm(): React.ReactElement {
 
         <div className="input-wrapper-names">
           <label htmlFor="lastName">
-            last Name:
+            last Name*
             <input
               id="lastName"
               type="text"
@@ -72,7 +74,7 @@ function RegistrationForm(): React.ReactElement {
                 errors.lastName ? 'error-background-input' : ''
               }`}
               /* eslint-disable react/jsx-props-no-spreading */
-              {...register('lastName', { onBlur: () => trigger('lastName') })}
+              {...register('lastName', { onChange: () => trigger('lastName') })}
             />
             {errors.lastName && (
               <div className="input-error">{errors.lastName.message}</div>
@@ -82,7 +84,7 @@ function RegistrationForm(): React.ReactElement {
 
         <div className="input-wrapper-names">
           <label htmlFor="dateOfBirth">
-            Date of Birth:
+            Date of Birth*
             <input
               id="dateOfBirth"
               type="date"
@@ -91,7 +93,7 @@ function RegistrationForm(): React.ReactElement {
               }`}
               /* eslint-disable react/jsx-props-no-spreading */
               {...register('dateOfBirth', {
-                onBlur: () => trigger('dateOfBirth'),
+                onChange: () => trigger('dateOfBirth'),
               })}
             />
             {errors.dateOfBirth && (
@@ -102,12 +104,21 @@ function RegistrationForm(): React.ReactElement {
       </div>
 
       <fieldset className="fieldset">
-        Address for shipping
+        Address for shipping*
+        <label htmlFor="addressDefault">
+          <input
+            type="checkbox"
+            id="addressDefault"
+            className="input-checkbox"
+            {...register('address.default')}
+          />
+          Use as default
+        </label>
         <div className="input-wrapper-line">
           <div className="registration-adress">
             <div className="input-wrapper-address">
               <label htmlFor="address.street">
-                Street
+                Street*
                 <input
                   id="address.street"
                   type="text"
@@ -116,7 +127,7 @@ function RegistrationForm(): React.ReactElement {
                   }`}
                   /* eslint-disable react/jsx-props-no-spreading */
                   {...register('address.street', {
-                    onBlur: () => trigger('address.street'),
+                    onChange: () => trigger('address.street'),
                   })}
                 />
               </label>
@@ -129,7 +140,7 @@ function RegistrationForm(): React.ReactElement {
 
             <div className="input-wrapper-address">
               <label htmlFor="address.city">
-                City
+                City*
                 <input
                   id="address.city"
                   type="text"
@@ -138,7 +149,7 @@ function RegistrationForm(): React.ReactElement {
                   }`}
                   /* eslint-disable react/jsx-props-no-spreading */
                   {...register('address.city', {
-                    onBlur: () => trigger('address.city'),
+                    onChange: () => trigger('address.city'),
                   })}
                 />
               </label>
@@ -149,7 +160,7 @@ function RegistrationForm(): React.ReactElement {
 
             <div className="input-wrapper-address">
               <label htmlFor="address.country">
-                Country
+                Country*
                 <select
                   id="address.country"
                   className={`form__registration-adress input-text ${
@@ -166,7 +177,7 @@ function RegistrationForm(): React.ReactElement {
                     })
                   }
                 >
-                  <option value="">--- Choose ---</option>
+                  <option value="-">--- Choose ---</option>
                   <option value="Belarus">Belarus</option>
                   <option value="Georgia">Georgia</option>
                   <option value="Russia">Russia</option>
@@ -182,7 +193,7 @@ function RegistrationForm(): React.ReactElement {
 
             <div className="input-wrapper-address">
               <label htmlFor="address.postalCode">
-                POST Code
+                POST Code*
                 <input
                   id="address.postalCode"
                   type="text"
@@ -191,7 +202,7 @@ function RegistrationForm(): React.ReactElement {
                   }`}
                   /* eslint-disable react/jsx-props-no-spreading */
                   {...register('address.postalCode', {
-                    onBlur: () => trigger('address.postalCode'),
+                    onChange: () => trigger('address.postalCode'),
                   })}
                 />
               </label>
@@ -220,13 +231,23 @@ function RegistrationForm(): React.ReactElement {
         />
         Is your shipping address the same as your billing address?
       </label>
+
       <fieldset className="fieldset" disabled={watchShowAddressInvoice}>
         Address for invoices
+        <label htmlFor="addressDefault">
+          <input
+            type="checkbox"
+            id="addressDefault"
+            className="input-checkbox"
+            {...register('address.default')}
+          />
+          Use as default
+        </label>
         <div className="input-wrapper-line">
           <div className="registration-adress">
             <div className="input-wrapper-address">
               <label htmlFor="addressInvoice.street">
-                Street
+                Street*
                 <input
                   id="addressInvoice.street"
                   type="text"
@@ -238,7 +259,7 @@ function RegistrationForm(): React.ReactElement {
                   style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
                   /* eslint-disable react/jsx-props-no-spreading */
                   {...register('addressInvoice.street', {
-                    onBlur: () => trigger('addressInvoice.street'),
+                    onChange: () => trigger('addressInvoice.street'),
                   })}
                 />
               </label>
@@ -251,7 +272,7 @@ function RegistrationForm(): React.ReactElement {
 
             <div className="input-wrapper-address">
               <label htmlFor="addressInvoice.city">
-                City
+                City*
                 <input
                   id="addressInvoice.city"
                   type="text"
@@ -263,7 +284,7 @@ function RegistrationForm(): React.ReactElement {
                   /* eslint-disable react/jsx-props-no-spreading */
                   style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
                   {...register('addressInvoice.city', {
-                    onBlur: () => trigger('addressInvoice.city'),
+                    onChange: () => trigger('addressInvoice.city'),
                   })}
                 />
               </label>
@@ -276,7 +297,7 @@ function RegistrationForm(): React.ReactElement {
 
             <div className="input-wrapper-address">
               <label htmlFor="addressInvoice.country">
-                Country
+                Country*
                 <select
                   id="addressInvoice.country"
                   className={`form__registration-adress input-text ${
@@ -296,7 +317,7 @@ function RegistrationForm(): React.ReactElement {
                     })
                   }
                 >
-                  <option value="">--- Choose ---</option>
+                  <option value="-">--- Choose ---</option>
                   <option value="Belarus">Belarus</option>
                   <option value="Georgia">Georgia</option>
                   <option value="Russia">Russia</option>
@@ -312,7 +333,7 @@ function RegistrationForm(): React.ReactElement {
 
             <div className="input-wrapper-address">
               <label htmlFor="addressInvoice.postalCode">
-                POST Code
+                POST Code*
                 <input
                   id="addressInvoice.postalCode"
                   type="text"
@@ -325,7 +346,7 @@ function RegistrationForm(): React.ReactElement {
                   style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
                   /* eslint-disable react/jsx-props-no-spreading */
                   {...register('addressInvoice.postalCode', {
-                    onBlur: () => trigger('addressInvoice.postalCode'),
+                    onChange: () => trigger('addressInvoice.postalCode'),
                   })}
                 />
               </label>
@@ -343,7 +364,7 @@ function RegistrationForm(): React.ReactElement {
       <div className="input-wrapper-line">
         <div className="input-wrapper">
           <label htmlFor="email">
-            Email:
+            Email*
             <input
               id="email"
               type="text"
@@ -351,7 +372,7 @@ function RegistrationForm(): React.ReactElement {
                 errors.email ? 'error-background-input' : ''
               }`}
               /* eslint-disable react/jsx-props-no-spreading */
-              {...register('email', { onBlur: () => trigger('email') })}
+              {...register('email', { onChange: () => trigger('email') })}
             />
             {errors.email && (
               <div className="input-error">{errors.email.message}</div>
@@ -361,13 +382,13 @@ function RegistrationForm(): React.ReactElement {
 
         <div className="input-wrapper">
           <label htmlFor="password">
-            Password:
+            Password*
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
               className={`form__registration-password input-text ${errors.password ? 'error-background-input' : ''}`}
               /* eslint-disable react/jsx-props-no-spreading */
-              {...register('password', { onBlur: () => trigger('password') })}
+              {...register('password', { onChange: () => trigger('password') })}
             />
           </label>
           {errors.password && (

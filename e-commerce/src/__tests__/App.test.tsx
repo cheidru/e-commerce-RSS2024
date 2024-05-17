@@ -27,6 +27,6 @@ describe('App component', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Our contacts')).toBeInTheDocument();
+    expect(screen.getByText('Our phones')).toBeInTheDocument();
   });
 });

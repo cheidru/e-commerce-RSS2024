@@ -29,7 +29,7 @@
   width: 24px;
   height: 24px;
   color: $White;
-  cursor: pointer;
+  //cursor: pointer;
 }
 
 .footer__contact {
@@ -50,6 +50,10 @@
     display: block;
     padding-bottom: 12px;
   }
+  &-email {
+    cursor: auto;
+  }
+
   &-adress,
   &-page {
     @include font($size: 1.6rem, $height: 2.6rem, $weight: 300, $style: normal);
