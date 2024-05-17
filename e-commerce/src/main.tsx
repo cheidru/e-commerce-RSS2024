@@ -9,7 +9,13 @@ const root = ReactDOM.createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename="/e-commerce">
+    <BrowserRouter
+      basename={
+        process.env.NODE_ENV === 'production'
+          ? '/e-commerce-deployment'
+          : '/e-commerce'
+      }
+    >
       <App />
     </BrowserRouter>
   </React.StrictMode>
