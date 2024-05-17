@@ -13,14 +13,16 @@ function CallForm() {
             placeholder="Ваше имя"
             type="text"
             name="name"
-            id="#"
+            id="#name"
+            autoComplete="off"
           />
           <input
             className="form__call-email input-email"
             placeholder="Ваш Email"
             type="email"
             name="email"
-            id="#"
+            id="#email"
+            autoComplete="off"
           />
           <button className="form__call-btn btn-submit" type="submit">
             Send

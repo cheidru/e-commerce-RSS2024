@@ -47,6 +47,7 @@ function LoginForm(): React.ReactElement {
             required
             pattern="^\S*$"
             placeholder={placeholder.email}
+            autoComplete="on"
             className={`form__login-login input-text ${
               errors.email ? 'error-background-input' : ''
             }`}

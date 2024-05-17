@@ -105,10 +105,10 @@ function RegistrationForm(): React.ReactElement {
 
       <fieldset className="fieldset">
         Address for shipping*
-        <label htmlFor="addressDefault">
+        <label htmlFor="address.addressDefault">
           <input
             type="checkbox"
-            id="addressDefault"
+            id="address.addressDefault"
             className="input-checkbox"
             {...register('address.default')}
           />
@@ -222,22 +222,16 @@ function RegistrationForm(): React.ReactElement {
           id="addressForInvoice"
           className="input-checkbox"
           {...register('addressForInvoice')}
-          // onChange={() => {
-          //   setValue('addressInvoice.street', '');
-          //   setValue('addressInvoice.city', '');
-          //   setValue('addressInvoice.country', '--- Choose ---');
-          //   setValue('addressInvoice.postalCode', '');
-          // }}
         />
         Is your shipping address the same as your billing address?
       </label>
 
       <fieldset className="fieldset" disabled={watchShowAddressInvoice}>
         Address for invoices
-        <label htmlFor="addressDefault">
+        <label htmlFor="addressInvoice.addressDefault">
           <input
             type="checkbox"
-            id="addressDefault"
+            id="addressInvoice.addressDefault"
             className="input-checkbox"
             {...register('address.default')}
           />
@@ -368,6 +362,7 @@ function RegistrationForm(): React.ReactElement {
             <input
               id="email"
               type="text"
+              autoComplete="on"
               className={`form__registration-email input-text ${
                 errors.email ? 'error-background-input' : ''
               }`}
