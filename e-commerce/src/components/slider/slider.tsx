@@ -10,23 +10,23 @@ function Slider() {
         <img className="slider__info-img" src={Img} alt="img" />
         <div className="slider__info-box">
           <h1 className="slider-title">
-            Golden Soft <br /> GS-200Z-5 для офиса
+            Golden Soft <br /> GS-200Z-5 for office
           </h1>
           <div className="slider__text">
             <div>
-              Замок дверной электронный Golden Soft GS-200Z-5 имеет роскошный
-              глянцевый блеск, четкие линии, красивые формы.
+              The electronic door lock Golden Soft GS-200Z-5 has a luxurious
+              glossy shine, clear lines, and beautiful shapes.
             </div>
-            <div>Подходит для установки на деревянную/межкомнатную дверь.</div>
+            <div>Suitable for installation on wooden/interior doors.</div>
           </div>
           <div className="slider__price">
-            <div className="slider__price-title">Цена</div>
+            <div className="slider__price-title">Price</div>
             <div className="slider__price-price">
-              <div>33 000₽</div>
-              <div>37 000₽</div>
+              <div>$33.00 </div>
+              <div>$38.00</div>
             </div>
             <button className="slider__price-btn" type="submit">
-              Добавить в корзину
+              Add to Basket
             </button>
           </div>
         </div>

@@ -15,6 +15,8 @@ function App() {
         <Routes>
           <Route path="/">
             <Route index element={<Pages.Home />} />
+            <Route path="/index" element={<Pages.Home />} />
+            <Route path="/index.html" element={<Pages.Home />} />
             <Route path="/login" element={<Pages.Login />} />
             <Route path="/registration" element={<Pages.Registration />} />
             <Route path="/about" element={<Pages.About />} />

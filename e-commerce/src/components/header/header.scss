@@ -59,3 +59,12 @@
     transform: translateY(75%);
   }
 }
+.icon-header {
+  color: $Grey;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.icon-header:hover {
+  color: $Blue;
+  transform: scale(1.2);
+}

@@ -6,6 +6,13 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background-color: #f9f9f9;
 }
+.fieldset {
+  padding: 10px;
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: start;
+}
 .input-wrapper {
   margin-bottom: 20px;
   height: 130px;
@@ -16,13 +23,14 @@
   padding-top: 16px;
 }
 .input-wrapper-address {
-  margin-bottom: 40px;
+  margin: 5px 10px 20px;
+  // margin-bottom: 20px;
   height: 70px;
   position: relative;
   max-width: 16em;
   line-height: 20px;
 }
-.input-wrapper-names {
+.delete-input-wrapper-names {
   max-width: 30em;
 }
 .input-wrapper-line {
@@ -31,8 +39,8 @@
   justify-content: space-around;
   gap: 30px;
   margin: 0 auto;
-  margin-bottom: 20px;
-  height: 130px;
+  margin-bottom: 10px;
+  // height: 130px;
   position: relative;
   // max-width: 40em;
 }
@@ -84,6 +92,35 @@ label {
   outline: none;
   box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
 }
+::placeholder {
+  color: $Stroke;
+}
+input:focus::placeholder {
+  color: transparent;
+}
+/* Errors */
+.input-error {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 5px;
+  padding-left: 10px;
+  background: rgba(236, 217, 221, 0.5);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.error-background-input {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+/* Select */
+.input-select:disabled {
+  background: rgba(239, 239, 239, 0.3);
+}
+/* Checkbox */
+.input-checkbox {
+  margin-right: 10px;
+}
 /* Button form */
 .btn-submit {
   display: block;
@@ -107,30 +144,11 @@ label {
   background-color: #0056b3;
 }
 
-::placeholder {
-  color: $Stroke;
-}
-input:focus::placeholder {
-  color: transparent;
-}
-
-/* Errors */
-.input-error {
-  color: #e74c3c;
-  font-size: 14px;
-  margin-top: 5px;
-  padding-left: 10px;
-  background: rgba(236, 217, 221, 0.5);
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
 /* Show password */
 .btn-show {
   position: absolute;
   right: 0px;
-  top: 28px;
+  top: 27px;
   background-color: $Blue;
   color: $White;
   border: 1px solid #ddd;
@@ -141,10 +159,6 @@ input:focus::placeholder {
   cursor: pointer;
   font-size: 14px;
   transition: color 0.3s;
-}
-
-.input-wrapper button:hover {
-  color: #0056b3;
 }
 
 /* Link */
@@ -162,6 +176,9 @@ input:focus::placeholder {
   width: 110px;
 }
 
+label {
+  text-align: start;
+}
 /* REGISTRATION */
 .form__registration {
   min-width: 80%;

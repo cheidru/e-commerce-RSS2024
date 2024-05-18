@@ -1,5 +1,7 @@
 .footer {
   background-color: $Bg-footer;
+  width: 100%;
+
   &__box {
     display: flex;
     flex-direction: column;
@@ -26,7 +28,8 @@
 .footer-icon:nth-child(4) {
   width: 24px;
   height: 24px;
-  cursor: pointer;
+  color: $White;
+  //cursor: pointer;
 }
 
 .footer__contact {
@@ -47,6 +50,10 @@
     display: block;
     padding-bottom: 12px;
   }
+  &-email {
+    cursor: auto;
+  }
+
   &-adress,
   &-page {
     @include font($size: 1.6rem, $height: 2.6rem, $weight: 300, $style: normal);

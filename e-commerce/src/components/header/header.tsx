@@ -1,20 +1,21 @@
 import { Link } from 'react-router-dom';
-import Navigation from '../navigation/navigation';
 /* SVG */
+
+// import { FaRegUser } from 'react-icons/fa6';
+// import { GrFavorite } from 'react-icons/gr';
+// import { LuShoppingCart } from 'react-icons/lu';
 import Logo from '../../assets/img/icons/Logo-header.svg';
-import Favorite from '../../assets/img/icons/frame.svg';
-import Basket from '../../assets/img/icons/backet.svg';
-import Profile from '../../assets/img/icons/profile.svg';
+import Navigation from '../navigation/navigation';
 
 function Header() {
   return (
     <header className="container header">
       <div className="header__top wrapper">
         <div className="header__top-item">
-          Скидка 10% по промокоду “ZAMOK” на все заказы до 10.09
+          10% discount with promo code “ZAMOK” on all orders until 10.09.2024
         </div>
         <a className="header__top-item" href="tel:+79665588499">
-          Обратный звонок
+          Back call
         </a>
       </div>
       <div className="header__bottom wrapper">
@@ -24,24 +25,20 @@ function Header() {
           </Link>
           <Navigation />
         </div>
-        <div className="header__bottom-item">
+        {/* <div className="header__bottom-item">
           <a className="header__bottom-tel" href="tel:+79665588499">
             +7 (966) 55 88 499
           </a>
           <Link to="/">
-            <img
-              className="header__bottom-icon"
-              src={Favorite}
-              alt="favorite"
-            />
+            <GrFavorite className="icon-header" />
           </Link>
           <Link to="/basket">
-            <img className="header__bottom-icon" src={Basket} alt="basket" />
+            <LuShoppingCart className="icon-header" />
           </Link>
           <Link to="/login">
-            <img className="header__bottom-icon" src={Profile} alt="profile" />
+            <FaRegUser className="icon-header" />
           </Link>
-        </div>
+        </div> */}
       </div>
     </header>
   );

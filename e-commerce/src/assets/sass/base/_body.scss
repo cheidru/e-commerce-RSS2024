@@ -10,11 +10,19 @@ body {
   min-height: 100vh;
   color: $Grey;
   background-color: $White;
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
 #root {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: center;
   min-height: 100vh;
+  justify-content: space-between;
+  margin: 0 auto;
 }
 
 h1 {
@@ -49,6 +57,7 @@ h5 {
 
 .container {
   max-width: $width-desctop;
+  width: 90vw;
   padding: 0;
   margin: 0 auto;
   box-sizing: border-box;
@@ -89,3 +98,9 @@ button:disabled {
   //   padding: 0 16px;
   // }
 }
+
+/* fix content */
+// .free-page {
+//   text-align: center;
+//   line-height: 60vh;
+// }
