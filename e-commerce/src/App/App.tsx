@@ -1,4 +1,5 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 /* Components */
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
@@ -8,6 +9,20 @@ import * as Pages from '../pages/pages';
 import './app.scss';
 
 function App() {
+  const navigate = useNavigate();
+  const startLocation = window.location.href;
+  let navigateTo = '';
+  if (startLocation.includes('#')) {
+    const startLocationParts = startLocation.split('#');
+    if (startLocationParts.length === 2) {
+      navigateTo = `/${startLocationParts[1]}`;
+    }
+  }
+  useEffect(() => {
+    if (navigateTo) {
+      navigate(`/${navigateTo}`);
+    }
+  });
   return (
     <>
       <Header />
