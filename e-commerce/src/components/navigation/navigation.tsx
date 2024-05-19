@@ -1,6 +1,9 @@
 import { NavLink } from 'react-router-dom';
+/* Redux */
+import { useAppSelector } from '../../redux/hooks';
 
 function Navigation() {
+  const isUserLogged = useAppSelector((state) => state.userSlice.isUserLogged);
   return (
     <nav className="navigation">
       <ul className="navigation__list">
@@ -23,7 +26,17 @@ function Navigation() {
           <NavLink to="/profile">Profile</NavLink>
         </li>
         <li className="navigation__list-item">
-          <NavLink to="/registration" className="red">
+          <NavLink
+            to="/registration"
+            className={({ isActive, isPending, isTransitioning }) =>
+              [
+                isActive ? 'nav-shadow-red' : '',
+                isPending ? 'nav-shadow-blue' : '',
+                isTransitioning ? 'nav-shadow-green' : '',
+                isUserLogged ? 'navigation__user-is-logged' : '',
+              ].join(' ')
+            }
+          >
             Registration
           </NavLink>
         </li>

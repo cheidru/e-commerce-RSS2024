@@ -10,11 +10,22 @@
     white-space: nowrap;
     line-height: 82px;
   }
+  &__user-is-logged {
+    pointer-events: none;
+    cursor: default;
+    color: grey;
+  }
 }
 .active {
   font-weight: 400;
   color: red;
 }
-.red {
-  text-shadow: 1px 1px BLACK;
+.nav-shadow-red {
+  text-shadow: 1px 1px red;
+}
+.nav-shadow-blue {
+  text-shadow: 1px 1px blue;
+}
+.nav-shadow-green {
+  text-shadow: 1px 1px green;
 }
