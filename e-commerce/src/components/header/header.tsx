@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom';
 // import { LuShoppingCart } from 'react-icons/lu';
 import Logo from '../../assets/img/icons/Logo-header.svg';
 import Navigation from '../navigation/navigation';
+import { useAppSelector } from '../../redux/hooks';
 
 function Header() {
+  const userLoggedEmail = useAppSelector((state) => state.userSlice.email);
   return (
     <header className="container header">
       <div className="header__top wrapper">
@@ -25,8 +27,16 @@ function Header() {
           </Link>
           <Navigation />
         </div>
-        {/* <div className="header__bottom-item">
-          <a className="header__bottom-tel" href="tel:+79665588499">
+        <div
+          className="header__bottom-item"
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            height: '20px',
+          }}
+        >
+          {/* <a className="header__bottom-tel" href="tel:+79665588499">
             +7 (966) 55 88 499
           </a>
           <Link to="/">
@@ -37,8 +47,9 @@ function Header() {
           </Link>
           <Link to="/login">
             <FaRegUser className="icon-header" />
-          </Link>
-        </div> */}
+          </Link> */}
+          {userLoggedEmail}
+        </div>
       </div>
     </header>
   );

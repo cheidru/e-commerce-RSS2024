@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../../redux/hooks';
+import { setEmail } from '../../../redux/store/userSlice';
 import {
   validationSchemaRegister,
   FormDataRegister,
@@ -14,6 +16,11 @@ function RegistrationForm(): React.ReactElement {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
+  const dispatch = useAppDispatch();
+  const setUserEmailToggler = (email: string) => {
+    dispatch(setEmail(email));
+  };
+
   const {
     register,
     handleSubmit,
@@ -23,20 +30,21 @@ function RegistrationForm(): React.ReactElement {
     trigger,
   } = useForm<FormDataRegister>({
     resolver: yupResolver(validationSchemaRegister),
-    mode: 'onChange',
+    mode: 'all',
     defaultValues: {
       firstName: 'Ivan',
       lastName: 'Ivanov',
       dateOfBirth: new Date(),
       address: {
-        default: false,
+        default: true,
         street: 'First',
         city: 'Batumi',
-        country: '',
+        country: 'Georgia',
         postalCode: '',
       },
       addressForInvoice: false,
       addressInvoice: {
+        default: false,
         street: '',
         city: '',
         country: '',
@@ -70,6 +78,7 @@ function RegistrationForm(): React.ReactElement {
       setValue('addressInvoice.country', watchShippingAddressCountry);
       setValue('addressInvoice.postalCode', watchShippingAddressPostalCode);
       setValue('addressInvoice.default', watchAddressDefault);
+      trigger('address');
     }
   }, [
     watchShowAddressInvoice,
@@ -79,6 +88,7 @@ function RegistrationForm(): React.ReactElement {
     watchShippingAddressPostalCode,
     watchAddressDefault,
     setValue,
+    trigger,
   ]);
 
   const onSubmit = async (data: FormDataRegister) => {
@@ -89,7 +99,7 @@ function RegistrationForm(): React.ReactElement {
       data.lastName
     );
 
-    if (answer.statusCode !== 200) {
+    if (answer.statusCode) {
       const { message } = answer;
       setValue('email', message);
       const errorsBlock = document.getElementById('errorsAnswer');
@@ -99,6 +109,8 @@ function RegistrationForm(): React.ReactElement {
           errorsBlock.innerText = '';
         }, 5000);
       }
+    } else {
+      setUserEmailToggler(answer.customer.email);
     }
     return data;
   };
@@ -294,10 +306,10 @@ function RegistrationForm(): React.ReactElement {
 
       <fieldset className="fieldset" disabled={watchShowAddressInvoice}>
         Address for invoices
-        <label htmlFor="addressInvoice.addressDefault">
+        <label htmlFor="addressInvoice.default">
           <input
             type="checkbox"
-            id="addressInvoice.addressDefault"
+            id="addressInvoice.default"
             className="input-checkbox"
             {...register('addressInvoice.default')}
           />

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 /* Redux */
 import { useAppSelector } from '../../redux/hooks';
 
@@ -28,27 +28,26 @@ function Navigation() {
         <li className="navigation__list-item">
           <NavLink
             to="/registration"
-            className={({ isActive, isPending, isTransitioning }) =>
-              [
-                isActive ? 'nav-shadow-red' : '',
-                isPending ? 'nav-shadow-blue' : '',
-                isTransitioning ? 'nav-shadow-green' : '',
-                isUserLogged ? 'navigation__user-is-logged' : '',
-              ].join(' ')
-            }
+            className={isUserLogged ? 'navigation__user-is-logged' : 'red'}
           >
             Registration
           </NavLink>
         </li>
         <li className="navigation__list-item">
-          <NavLink to="/login" className="red">
+          <NavLink
+            to="/login"
+            className={isUserLogged ? 'navigation__user-is-logged' : 'red'}
+          >
             Login
           </NavLink>
         </li>
         <li className="navigation__list-item">
-          <NavLink to="/" className="red">
+          <Link
+            to="/"
+            className={!isUserLogged ? 'navigation__user-is-logged' : 'red'}
+          >
             LogOut
-          </NavLink>
+          </Link>
         </li>
       </ul>
     </nav>

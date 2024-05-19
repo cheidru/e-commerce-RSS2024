@@ -1,3 +1,6 @@
+.red {
+  text-shadow: 1px 1px red;
+}
 .navigation {
   &__list {
     display: flex;
@@ -13,19 +16,11 @@
   &__user-is-logged {
     pointer-events: none;
     cursor: default;
-    color: grey;
+    color: #d9d9d9;
+    text-shadow: none;
   }
 }
 .active {
   font-weight: 400;
   color: red;
-}
-.nav-shadow-red {
-  text-shadow: 1px 1px red;
-}
-.nav-shadow-blue {
-  text-shadow: 1px 1px blue;
-}
-.nav-shadow-green {
-  text-shadow: 1px 1px green;
 }

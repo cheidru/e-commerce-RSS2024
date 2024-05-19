@@ -9,7 +9,7 @@ type UserState = {
 
 const initialState: UserState = {
   isUserLogged: false,
-  email: '',
+  email: 'empty',
   id: '',
 };
 
@@ -22,6 +22,7 @@ const userSlice = createSlice({
     },
     setEmail(state, action: PayloadAction<string>) {
       state.email = action.payload;
+      state.isUserLogged = !!action.payload;
     },
     setID(state, action: PayloadAction<string>) {
       state.id = action.payload;
