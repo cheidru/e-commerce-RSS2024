@@ -29,8 +29,31 @@ function RegistrationForm(): React.ReactElement {
     setIsSubmitDisabled(!(isValid && isDirty));
   }, [isValid, isDirty]);
 
-  // address for invoice
-  const watchShowAddressInvoice = watch('addressForInvoice', true);
+  // Watch the checkbox for addressForInvoice
+  const watchShowAddressInvoice = watch('addressForInvoice', false);
+
+  // Watch the shipping address fields
+  const watchShippingAddressStreet = watch('address.street', '');
+  const watchShippingAddressCity = watch('address.city', '');
+  const watchShippingAddressCountry = watch('address.country', '');
+  const watchShippingAddressPostalCode = watch('address.postalCode', '');
+
+  // Sync invoice address with shipping address when checkbox is checked
+  useEffect(() => {
+    if (watchShowAddressInvoice) {
+      setValue('addressInvoice.street', watchShippingAddressStreet);
+      setValue('addressInvoice.city', watchShippingAddressCity);
+      setValue('addressInvoice.country', watchShippingAddressCountry);
+      setValue('addressInvoice.postalCode', watchShippingAddressPostalCode);
+    }
+  }, [
+    watchShowAddressInvoice,
+    watchShippingAddressStreet,
+    watchShippingAddressCity,
+    watchShippingAddressCountry,
+    watchShippingAddressPostalCode,
+    setValue,
+  ]);
 
   const onSubmit = (data: FormDataRegister) => {
     const dataUser = data;
