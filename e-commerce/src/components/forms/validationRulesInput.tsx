@@ -143,52 +143,6 @@ const addressValidation = yup.object({
 
 const addressForInvoice = yup.boolean();
 
-const addressInvoiceValidation = yup.object({
-  default: yup.boolean(),
-  street: yup.string().required('Street is required'),
-  city: yup
-    .string()
-    .required('City is required')
-    .matches(
-      /^[A-Za-z]+$/,
-      'City must contain at least one character and no special characters or numbers'
-    ),
-  postalCode: yup
-    .string()
-    .required('Postal code is required')
-    .test(
-      'postal-code-fit-format',
-      'Postal code must be 6 digit',
-      (value, validationContext) => {
-        const {
-          parent: { country },
-        } = validationContext;
-
-        if (country === 'Russia') {
-          return /^[0-9]{6}$/.test(value || '');
-        }
-        return true;
-      }
-    )
-    .test(
-      'postal-code-fit-format',
-      'Postal code must be 5 digit',
-      (value, validationContext) => {
-        const {
-          parent: { country },
-        } = validationContext;
-        if (country === 'Ukraine') {
-          return /^[0-9]{5}$/.test(value || '');
-        }
-        return true;
-      }
-    ),
-  country: yup
-    .string()
-    .required('Country is required')
-    .oneOf(['Belarus', 'Georgia', 'Russia', 'Ukraine'], 'Country is required'),
-});
-
 // LOGIN FORM VALID
 export const validationSchemaLogin = yup
   .object({
@@ -207,7 +161,7 @@ export const validationSchemaRegister = yup
     dateOfBirth: dateOfBirthValidation,
     address: addressValidation,
     addressForInvoice,
-    addressInvoice: addressInvoiceValidation,
+    addressInvoice: addressValidation,
   })
   .required();
 

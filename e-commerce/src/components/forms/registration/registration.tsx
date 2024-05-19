@@ -22,6 +22,27 @@ function RegistrationForm(): React.ReactElement {
   } = useForm<FormDataRegister>({
     resolver: yupResolver(validationSchemaRegister),
     mode: 'onChange',
+    defaultValues: {
+      firstName: 'Ivan',
+      lastName: 'Ivanov',
+      dateOfBirth: new Date(),
+      address: {
+        default: false,
+        street: 'First',
+        city: 'Batumi',
+        country: '',
+        postalCode: '',
+      },
+      addressForInvoice: false,
+      addressInvoice: {
+        street: '',
+        city: '',
+        country: '',
+        postalCode: '',
+      },
+      email: 'dddd@gmail.com',
+      password: '123456Qq',
+    },
   });
 
   // dis btn submit
@@ -37,6 +58,7 @@ function RegistrationForm(): React.ReactElement {
   const watchShippingAddressCity = watch('address.city', '');
   const watchShippingAddressCountry = watch('address.country', '');
   const watchShippingAddressPostalCode = watch('address.postalCode', '');
+  const watchAddressDefault = watch('address.default', false);
 
   // Sync invoice address with shipping address when checkbox is checked
   useEffect(() => {
@@ -45,6 +67,7 @@ function RegistrationForm(): React.ReactElement {
       setValue('addressInvoice.city', watchShippingAddressCity);
       setValue('addressInvoice.country', watchShippingAddressCountry);
       setValue('addressInvoice.postalCode', watchShippingAddressPostalCode);
+      setValue('addressInvoice.default', watchAddressDefault);
     }
   }, [
     watchShowAddressInvoice,
@@ -52,11 +75,13 @@ function RegistrationForm(): React.ReactElement {
     watchShippingAddressCity,
     watchShippingAddressCountry,
     watchShippingAddressPostalCode,
+    watchAddressDefault,
     setValue,
   ]);
 
   const onSubmit = (data: FormDataRegister) => {
     const dataUser = data;
+    // console.log(dataUser);
     return dataUser;
   };
 
@@ -128,10 +153,10 @@ function RegistrationForm(): React.ReactElement {
 
       <fieldset className="fieldset">
         Address for shipping*
-        <label htmlFor="address.addressDefault">
+        <label htmlFor="address.default">
           <input
             type="checkbox"
-            id="address.addressDefault"
+            id="address.default"
             className="input-checkbox"
             {...register('address.default')}
           />
@@ -256,7 +281,7 @@ function RegistrationForm(): React.ReactElement {
             type="checkbox"
             id="addressInvoice.addressDefault"
             className="input-checkbox"
-            {...register('address.default')}
+            {...register('addressInvoice.default')}
           />
           Use as default
         </label>
