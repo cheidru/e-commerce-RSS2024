@@ -7,6 +7,8 @@ import {
   FormDataRegister,
   placeholder,
 } from '../validationRulesInput';
+/* API */
+import { registerNewCustomer } from '../../api/getCustomerToken';
 
 function RegistrationForm(): React.ReactElement {
   const [showPassword, setShowPassword] = useState(false);
@@ -79,10 +81,26 @@ function RegistrationForm(): React.ReactElement {
     setValue,
   ]);
 
-  const onSubmit = (data: FormDataRegister) => {
-    const dataUser = data;
-    // console.log(dataUser);
-    return dataUser;
+  const onSubmit = async (data: FormDataRegister) => {
+    const answer = await registerNewCustomer(
+      data.email,
+      data.password,
+      data.firstName,
+      data.lastName
+    );
+
+    if (answer.statusCode !== 200) {
+      const { message } = answer;
+      setValue('email', message);
+      const errorsBlock = document.getElementById('errorsAnswer');
+      if (message && errorsBlock) {
+        errorsBlock.innerText = message;
+        setTimeout(() => {
+          errorsBlock.innerText = '';
+        }, 5000);
+      }
+    }
+    return data;
   };
 
   return (
@@ -448,6 +466,7 @@ function RegistrationForm(): React.ReactElement {
       </div>
 
       <div className="input-wrapper-btn">
+        <div className="input-error" id="errorsAnswer" />
         <button
           type="submit"
           className="btn-submit"
