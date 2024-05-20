@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   validationSchemaLogin,
   FormDataLogin,
   placeholder,
 } from '../validationRulesInput';
+import { useAppDispatch } from '../../../redux/hooks';
+import { setAuthToken, AuthToken } from '../../../redux/store/userSlice';
+import { loginCustomer, formattedDataLogin } from '../../api/getCustomerToken2';
 
 function LoginForm(): React.ReactElement {
   // const [email, setEmail] = useState('');
   // const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const setAuthUserToken = (tokenNew: AuthToken) => {
+    dispatch(setAuthToken(tokenNew));
+  };
 
   const {
     register,
@@ -29,10 +38,27 @@ function LoginForm(): React.ReactElement {
     setIsSubmitDisabled(!isValid && isDirty);
   }, [isValid, isDirty]);
 
-  const onSubmit = (data: FormDataLogin) => {
-    const dataUser = data;
-    // console.log(dataUser);
-    return dataUser;
+  const onSubmit = async (data: FormDataLogin) => {
+    const dataUser = formattedDataLogin(data);
+
+    const tokenNew = await loginCustomer(dataUser); // console.log(dataUser);
+
+    if (tokenNew.statusCode) {
+      const { message } = tokenNew;
+      const errorsBlock = document.getElementById('errorsAnswer');
+      if (message && errorsBlock) {
+        errorsBlock.innerText = message;
+        setTimeout(() => {
+          errorsBlock.innerText = '';
+        }, 5000);
+      }
+    } else {
+      tokenNew.email = dataUser.email;
+      // console.log('tokenNew', tokenNew);
+      setAuthUserToken(tokenNew);
+      navigate(`/`);
+    }
+    return data;
   };
 
   return (
@@ -86,6 +112,7 @@ function LoginForm(): React.ReactElement {
         </button>
       </div>
       <div className="input-wrapper form__login-wrapper">
+        <div className="input-error" id="errorsAnswer" />
         <button
           type="submit"
           className="btn-submit form__login-btn"

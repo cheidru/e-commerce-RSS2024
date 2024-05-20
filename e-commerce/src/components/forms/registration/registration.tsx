@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
-import { setEmail } from '../../../redux/store/userSlice';
+import { setUserLogged, User } from '../../../redux/store/userSlice';
 import {
   validationSchemaRegister,
   FormDataRegister,
@@ -20,8 +20,8 @@ function RegistrationForm(): React.ReactElement {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const dispatch = useAppDispatch();
-  const setUserEmailToggler = (email: string) => {
-    dispatch(setEmail(email));
+  const setUserLogIn = (userNew: User) => {
+    dispatch(setUserLogged(userNew));
   };
 
   const {
@@ -101,7 +101,7 @@ function RegistrationForm(): React.ReactElement {
 
     if (userNew.statusCode) {
       const { message } = userNew;
-      setValue('email', message);
+      // setValue('email', message);
       const errorsBlock = document.getElementById('errorsAnswer');
       if (message && errorsBlock) {
         errorsBlock.innerText = message;
@@ -110,7 +110,7 @@ function RegistrationForm(): React.ReactElement {
         }, 5000);
       }
     } else {
-      setUserEmailToggler(userNew.customer.email);
+      setUserLogIn(userNew);
     }
     return data;
   };

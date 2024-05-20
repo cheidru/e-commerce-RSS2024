@@ -9,7 +9,9 @@ import Navigation from '../navigation/navigation';
 import { useAppSelector } from '../../redux/hooks';
 
 function Header() {
-  const userLoggedEmail = useAppSelector((state) => state.userSlice.email);
+  const userToken = useAppSelector((state) => state.userSlice.authToken);
+  const userLoggedEmail =
+    userToken.access_token.length > 0 ? `Hello, ${userToken.email}` : '';
   return (
     <header className="container header">
       <div className="header__top wrapper">
@@ -30,12 +32,11 @@ function Header() {
         <div
           className="header__bottom-item"
           style={{
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            height: '20px',
+            fontSize: '2rem',
+            color: 'green',
           }}
         >
+          {userLoggedEmail}
           {/* <a className="header__bottom-tel" href="tel:+79665588499">
             +7 (966) 55 88 499
           </a>
@@ -48,7 +49,6 @@ function Header() {
           <Link to="/login">
             <FaRegUser className="icon-header" />
           </Link> */}
-          {userLoggedEmail}
         </div>
       </div>
     </header>

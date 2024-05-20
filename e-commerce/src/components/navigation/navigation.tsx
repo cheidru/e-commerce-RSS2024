@@ -1,9 +1,16 @@
 import { NavLink, Link } from 'react-router-dom';
 /* Redux */
-import { useAppSelector } from '../../redux/hooks';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { logout } from '../../redux/store/userSlice';
 
 function Navigation() {
-  const isUserLogged = useAppSelector((state) => state.userSlice.isUserLogged);
+  const isUserLogged =
+    useAppSelector((state) => state.userSlice.authToken.access_token).length >
+    0;
+  const dispatch = useAppDispatch();
+  const userLogout = () => {
+    dispatch(logout());
+  };
   return (
     <nav className="navigation">
       <ul className="navigation__list">
@@ -45,6 +52,7 @@ function Navigation() {
           <Link
             to="/"
             className={!isUserLogged ? 'navigation__user-is-logged' : 'red'}
+            onClick={userLogout}
           >
             LogOut
           </Link>
