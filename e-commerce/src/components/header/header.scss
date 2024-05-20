@@ -24,6 +24,7 @@
   }
 
   &__bottom {
+    height: auto;
     display: flex;
     justify-content: space-between;
     line-height: 82px;
@@ -58,6 +59,9 @@
     height: 32px;
     transform: translateY(75%);
   }
+  &__bottom-logo {
+    max-width: none;
+  }
 }
 .icon-header {
   color: $Grey;
@@ -67,4 +71,15 @@
 .icon-header:hover {
   color: $Blue;
   transform: scale(1.2);
+}
+
+@media (max-width: 1300px) {
+  .header {
+    &__bottom {
+      justify-content: center;
+    }
+    &__bottom-item {
+      gap: 20px;
+    }
+  }
 }
