@@ -33,25 +33,19 @@ function Navigation() {
           <NavLink to="/profile">Profile</NavLink>
         </li>
         <li className="navigation__list-item">
-          <NavLink
-            to="/registration"
-            className={isUserLogged ? 'navigation__user-is-logged' : 'red'}
-          >
+          <NavLink to="/registration" className={isUserLogged ? 'none' : 'red'}>
             Registration
           </NavLink>
         </li>
         <li className="navigation__list-item">
-          <NavLink
-            to="/login"
-            className={isUserLogged ? 'navigation__user-is-logged' : 'red'}
-          >
+          <NavLink to="/login" className={isUserLogged ? 'none' : 'red'}>
             Login
           </NavLink>
         </li>
         <li className="navigation__list-item">
           <Link
             to="/"
-            className={!isUserLogged ? 'navigation__user-is-logged' : 'red'}
+            className={!isUserLogged ? 'none' : 'red'}
             onClick={userLogout}
           >
             LogOut

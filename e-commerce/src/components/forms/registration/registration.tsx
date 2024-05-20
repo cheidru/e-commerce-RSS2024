@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
-import { setUserLogged, User } from '../../../redux/store/userSlice';
+import {
+  setUserLogged,
+  User,
+  setAuthToken,
+  AuthToken,
+} from '../../../redux/store/userSlice';
 import {
   validationSchemaRegister,
   FormDataRegister,
@@ -13,15 +18,22 @@ import {
 import {
   registerNewCustomer,
   formattedDataRegister,
+  loginCustomer,
 } from '../../api/getCustomerToken';
 
 function RegistrationForm(): React.ReactElement {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
+  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
   const setUserLogIn = (userNew: User) => {
     dispatch(setUserLogged(userNew));
+  };
+
+  const setAuthUserToken = (tokenNew: AuthToken) => {
+    dispatch(setAuthToken(tokenNew));
   };
 
   const {
@@ -98,7 +110,6 @@ function RegistrationForm(): React.ReactElement {
     const dataUser = formattedDataRegister(data);
 
     const userNew = await registerNewCustomer(dataUser);
-
     if (userNew.statusCode) {
       const { message } = userNew;
       // setValue('email', message);
@@ -111,6 +122,24 @@ function RegistrationForm(): React.ReactElement {
       }
     } else {
       setUserLogIn(userNew);
+      /*   */
+      const tokenNew = await loginCustomer(dataUser); // console.log(dataUser);
+
+      if (tokenNew.statusCode) {
+        const { message } = tokenNew;
+        const errorsBlock = document.getElementById('errorsAnswer');
+        if (message && errorsBlock) {
+          errorsBlock.innerText = message;
+          setTimeout(() => {
+            errorsBlock.innerText = '';
+          }, 5000);
+        }
+      } else {
+        tokenNew.email = dataUser.email;
+        setAuthUserToken(tokenNew);
+        navigate(`/`);
+      }
+      return data;
     }
     return data;
   };

@@ -1,5 +1,10 @@
-import { IRegister, IAddress } from './Inreface';
-import { FormDataRegister } from '../forms/validationRulesInput';
+import { IRegister, IAddress, ILogin } from './Inreface';
+import { FormDataLogin, FormDataRegister } from '../forms/validationRulesInput';
+// import { resolve } from 'path';
+// import store from '../../redux/store/store';
+// import { useAppDispatch } from '../../redux/hooks';
+// import { setAppToken } from '../../redux/store/appSlice';
+
 // const clientID = 'MXjx0D7Jw1Cmi0ZqSHWq2MUJ';
 // const secret = 'HQk1sjqtKnouVW4uQ9ofT_6PGhL66lXT';
 // const scope = 'manage_project:e-commerce-asinc';
@@ -22,10 +27,24 @@ async function createAccessToken() {
       headers,
     }
   );
-  return answer;
+  const answerJSON = await answer.json();
+  return answerJSON;
 }
 
-async function register(customer: object, token: string) {
+export async function getAccessToken() {
+  // const appTokenStore = store.getState().appSlice.authToken;
+  // // console.log(appTokenStore)
+  // if (appTokenStore) {
+  //   console.log('getAccessToken, appTokenStore', appTokenStore);
+  //   return appTokenStore;
+  // }
+
+  const newToken = await createAccessToken();
+  // console.log('getAccessToken, newToken', newToken);
+  return newToken;
+}
+
+export async function register(customer: object, token: string) {
   const answer = await fetch(
     'https://api.us-central1.gcp.commercetools.com/e-commerce-asinc/me/signup',
     {
@@ -61,9 +80,55 @@ export function formattedDataRegister(data: FormDataRegister): IRegister {
 }
 
 export async function registerNewCustomer(formData: IRegister) {
-  const answer = createAccessToken()
-    .then((result) => result.json())
-    .then((result) => register(formData, result.access_token));
+  const answer = getAccessToken().then((result) =>
+    register(formData, result.access_token)
+  );
+
+  return answer;
+}
+
+export function formattedDataLogin(data: FormDataLogin): ILogin {
+  const formData: ILogin = {
+    email: data.email,
+    password: data.password,
+  };
+
+  return formData;
+}
+
+export async function login(formData: ILogin) {
+  const myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+  myHeaders.append(
+    'Authorization',
+    'Basic QW1EcVV5R2lsWGdDZmhHTVdLbjVMTmNfOjRzeEdXUWRmMG9aemhzbjFmYk95RTV3RHEtYmJmNUhm'
+  );
+
+  const urlencoded = new URLSearchParams();
+  urlencoded.append('grant_type', 'password');
+  urlencoded.append('username', formData.email);
+  urlencoded.append('password', formData.password);
+  urlencoded.append(
+    'scope',
+    'view_published_products:e-commerce-asinc manage_my_orders:e-commerce-asinc manage_my_profile:e-commerce-asinc'
+  );
+
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: urlencoded,
+  };
+
+  const answer = await fetch(
+    'https://auth.us-central1.gcp.commercetools.com/oauth/e-commerce-asinc/customers/token',
+    requestOptions
+  ).then((response) => response.json());
+
+  return answer;
+}
+
+export async function loginCustomer(formData: ILogin) {
+  const answer = login(formData);
 
   return answer;
 }

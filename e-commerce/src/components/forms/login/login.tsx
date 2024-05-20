@@ -9,7 +9,7 @@ import {
 } from '../validationRulesInput';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setAuthToken, AuthToken } from '../../../redux/store/userSlice';
-import { loginCustomer, formattedDataLogin } from '../../api/getCustomerToken2';
+import { loginCustomer, formattedDataLogin } from '../../api/getCustomerToken';
 
 function LoginForm(): React.ReactElement {
   // const [email, setEmail] = useState('');
