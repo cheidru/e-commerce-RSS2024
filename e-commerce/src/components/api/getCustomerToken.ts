@@ -1,3 +1,5 @@
+import { IRegister, IAddress } from './Inreface';
+import { FormDataRegister } from '../forms/validationRulesInput';
 // const clientID = 'MXjx0D7Jw1Cmi0ZqSHWq2MUJ';
 // const secret = 'HQk1sjqtKnouVW4uQ9ofT_6PGhL66lXT';
 // const scope = 'manage_project:e-commerce-asinc';
@@ -41,22 +43,27 @@ async function register(customer: object, token: string) {
 
 // https://docs.commercetools.com/api/projects/me-profile#create-sign-up-customer
 
-export async function registerNewCustomer(
-  email: string,
-  password: string,
-  firstName?: string,
-  lastName?: string
-) {
-  const customerObj = {
-    email,
-    firstName,
-    lastName,
-    password,
+export function formattedDataRegister(data: FormDataRegister): IRegister {
+  const addresses: IAddress[] = [data.address];
+  if (data.addressForInvoice) {
+    addresses.push(data.addressInvoice);
+  }
+  const formData: IRegister = {
+    email: data.email,
+    password: data.password,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    // dateOfBirth: new Date(data.dateOfBirth),
+    // ddresses: addresses,
   };
 
+  return formData;
+}
+
+export async function registerNewCustomer(formData: IRegister) {
   const answer = createAccessToken()
     .then((result) => result.json())
-    .then((result) => register(customerObj, result.access_token));
+    .then((result) => register(formData, result.access_token));
 
   return answer;
 }

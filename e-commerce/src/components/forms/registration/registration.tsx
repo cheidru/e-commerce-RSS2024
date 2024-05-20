@@ -10,7 +10,10 @@ import {
   placeholder,
 } from '../validationRulesInput';
 /* API */
-import { registerNewCustomer } from '../../api/getCustomerToken';
+import {
+  registerNewCustomer,
+  formattedDataRegister,
+} from '../../api/getCustomerToken';
 
 function RegistrationForm(): React.ReactElement {
   const [showPassword, setShowPassword] = useState(false);
@@ -92,15 +95,12 @@ function RegistrationForm(): React.ReactElement {
   ]);
 
   const onSubmit = async (data: FormDataRegister) => {
-    const answer = await registerNewCustomer(
-      data.email,
-      data.password,
-      data.firstName,
-      data.lastName
-    );
+    const dataUser = formattedDataRegister(data);
 
-    if (answer.statusCode) {
-      const { message } = answer;
+    const userNew = await registerNewCustomer(dataUser);
+
+    if (userNew.statusCode) {
+      const { message } = userNew;
       setValue('email', message);
       const errorsBlock = document.getElementById('errorsAnswer');
       if (message && errorsBlock) {
@@ -110,7 +110,7 @@ function RegistrationForm(): React.ReactElement {
         }, 5000);
       }
     } else {
-      setUserEmailToggler(answer.customer.email);
+      setUserEmailToggler(userNew.customer.email);
     }
     return data;
   };
