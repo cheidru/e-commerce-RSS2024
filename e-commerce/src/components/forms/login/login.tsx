@@ -10,14 +10,20 @@ import {
 import { useAppDispatch } from '../../../redux/hooks';
 import { setAuthToken, AuthToken } from '../../../redux/store/userSlice';
 import { loginCustomer, formattedDataLogin } from '../../api/getCustomerToken';
+import store from '../../../redux/store/store';
 
 function LoginForm(): React.ReactElement {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const navigate = useNavigate();
+  useEffect(() => {
+    const appTokenStore = store.getState().userSlice.authToken.access_token;
+    if (appTokenStore.length > 0) {
+      navigate(`/`);
+    }
+  });
+
   const dispatch = useAppDispatch();
   const setAuthUserToken = (tokenNew: AuthToken) => {
     dispatch(setAuthToken(tokenNew));
@@ -56,6 +62,7 @@ function LoginForm(): React.ReactElement {
       tokenNew.email = dataUser.email;
       // console.log('tokenNew', tokenNew);
       setAuthUserToken(tokenNew);
+
       navigate(`/`);
     }
     return data;

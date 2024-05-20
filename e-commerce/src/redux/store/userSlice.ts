@@ -25,6 +25,12 @@ type UserState = {
   authToken: AuthToken;
 };
 
+const someToken = localStorage.getItem('token');
+let savedToken;
+if (someToken) {
+  savedToken = JSON.parse(someToken);
+}
+
 const initialState: UserState = {
   user: {
     id: '',
@@ -35,7 +41,7 @@ const initialState: UserState = {
     shippingAddressIds: [],
     billingAddressIds: [],
   },
-  authToken: {
+  authToken: savedToken || {
     email: '',
     access_token: '',
     expires_in: 0,
@@ -54,6 +60,7 @@ const userSlice = createSlice({
     },
     setAuthToken(state, action: PayloadAction<AuthToken>) {
       state.authToken = action.payload;
+      localStorage.setItem('token', JSON.stringify(action.payload));
     },
     logout(state) {
       state.user = initialState.user;
