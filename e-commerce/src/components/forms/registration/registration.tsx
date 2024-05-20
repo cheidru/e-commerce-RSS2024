@@ -20,12 +20,19 @@ import {
   formattedDataRegister,
   loginCustomer,
 } from '../../api/getCustomerToken';
+import store from '../../../redux/store/store';
 
 function RegistrationForm(): React.ReactElement {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const navigate = useNavigate();
+  useEffect(() => {
+    const appTokenStore = store.getState().userSlice.authToken.access_token;
+    if (appTokenStore.length > 0) {
+      navigate(`/`);
+    }
+  });
 
   const dispatch = useAppDispatch();
   const setUserLogIn = (userNew: User) => {
@@ -46,28 +53,28 @@ function RegistrationForm(): React.ReactElement {
   } = useForm<FormDataRegister>({
     resolver: yupResolver(validationSchemaRegister),
     mode: 'all',
-    defaultValues: {
-      firstName: 'Ivan',
-      lastName: 'Ivanov',
-      dateOfBirth: new Date(),
-      address: {
-        default: true,
-        street: 'First',
-        city: 'Batumi',
-        country: 'Georgia',
-        postalCode: '',
-      },
-      addressForInvoice: false,
-      addressInvoice: {
-        default: false,
-        street: '',
-        city: '',
-        country: '',
-        postalCode: '',
-      },
-      email: 'dddd@gmail.com',
-      password: '123456Qq',
-    },
+    // defaultValues: {
+    //   firstName: 'Ivan',
+    //   lastName: 'Ivanov',
+    //   dateOfBirth: new Date(),
+    //   address: {
+    //     default: true,
+    //     street: 'First',
+    //     city: 'Batumi',
+    //     country: 'Georgia',
+    //     postalCode: '',
+    //   },
+    //   addressForInvoice: false,
+    //   addressInvoice: {
+    //     default: false,
+    //     street: '',
+    //     city: '',
+    //     country: '',
+    //     postalCode: '',
+    //   },
+    //   email: 'dddd@gmail.com',
+    //   password: '123456Qq',
+    // },
   });
 
   // dis btn submit

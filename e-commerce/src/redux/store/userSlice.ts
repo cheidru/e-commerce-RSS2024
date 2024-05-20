@@ -51,6 +51,26 @@ const initialState: UserState = {
   },
 };
 
+const EmptyState: UserState = {
+  user: {
+    id: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    addresses: [],
+    shippingAddressIds: [],
+    billingAddressIds: [],
+  },
+  authToken: {
+    email: '',
+    access_token: '',
+    expires_in: 0,
+    token_type: '',
+    scope: '',
+    refresh_token: '',
+  },
+};
+
 const userSlice = createSlice({
   name: 'userSlice',
   initialState,
@@ -63,8 +83,9 @@ const userSlice = createSlice({
       localStorage.setItem('token', JSON.stringify(action.payload));
     },
     logout(state) {
-      state.user = initialState.user;
-      state.authToken = initialState.authToken;
+      state.user = EmptyState.user;
+      state.authToken = EmptyState.authToken;
+      localStorage.setItem('token', '');
     },
   },
 });
