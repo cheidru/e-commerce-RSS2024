@@ -2,10 +2,18 @@ enum AuthenticationMode {
   Password = 'Password',
 }
 export interface IAddress {
-  street: string;
+  streetName: string;
   city: string;
   country: string;
   postalCode: string;
+}
+export interface IAddressSend {
+  streetName: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  key: string;
+  id: string;
 }
 export interface IUser {
   id: string;
@@ -37,7 +45,19 @@ export interface IRegister {
   firstName: string;
   lastName: string;
   // dateOfBirth: Date;
-  // addresses: IAddress[];
+  addresses: IAddress[];
+}
+export interface IRegisterSend {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  // dateOfBirth: Date;
+  addresses: IAddress[];
+  defaultShippingAddress?: number;
+  shippingAddresses: number[];
+  defaultBillingAddress?: number;
+  billingAddresses: number[];
 }
 
 export interface ILogin {

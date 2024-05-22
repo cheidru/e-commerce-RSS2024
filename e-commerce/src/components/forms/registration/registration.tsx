@@ -86,7 +86,7 @@ function RegistrationForm(): React.ReactElement {
   const watchShowAddressInvoice = watch('addressForInvoice', false);
 
   // Watch the shipping address fields
-  const watchShippingAddressStreet = watch('address.street', '');
+  const watchShippingAddressStreet = watch('address.streetName', '');
   const watchShippingAddressCity = watch('address.city', '');
   const watchShippingAddressCountry = watch('address.country', '');
   const watchShippingAddressPostalCode = watch('address.postalCode', '');
@@ -95,7 +95,7 @@ function RegistrationForm(): React.ReactElement {
   // Sync invoice address with shipping address when checkbox is checked
   useEffect(() => {
     if (watchShowAddressInvoice) {
-      setValue('addressInvoice.street', watchShippingAddressStreet);
+      setValue('addressInvoice.streetName', watchShippingAddressStreet);
       setValue('addressInvoice.city', watchShippingAddressCity);
       setValue('addressInvoice.country', watchShippingAddressCountry);
       setValue('addressInvoice.postalCode', watchShippingAddressPostalCode);
@@ -129,7 +129,7 @@ function RegistrationForm(): React.ReactElement {
       }
     } else {
       setUserLogIn(userNew);
-      /*   */
+
       const tokenNew = await loginCustomer(dataUser); // console.log(dataUser);
 
       if (tokenNew.statusCode) {
@@ -231,23 +231,23 @@ function RegistrationForm(): React.ReactElement {
         <div className="input-wrapper-line">
           <div className="registration-adress">
             <div className="input-wrapper-address">
-              <label htmlFor="address.street">
+              <label htmlFor="address.streetName">
                 Street*
                 <input
-                  id="address.street"
+                  id="address.streetName"
                   type="text"
                   className={`form__registration-adress input-text ${
-                    errors.address?.street ? 'error-background-input' : ''
+                    errors.address?.streetName ? 'error-background-input' : ''
                   }`}
                   /* eslint-disable react/jsx-props-no-spreading */
-                  {...register('address.street', {
-                    onChange: () => trigger('address.street'),
+                  {...register('address.streetName', {
+                    onChange: () => trigger('address.streetName'),
                   })}
                 />
               </label>
-              {errors.address?.street && (
+              {errors.address?.streetName && (
                 <div className="input-error">
-                  {errors.address.street.message}
+                  {errors.address.streetName.message}
                 </div>
               )}
             </div>
@@ -292,10 +292,10 @@ function RegistrationForm(): React.ReactElement {
                   }
                 >
                   <option value="-">--- Choose ---</option>
-                  <option value="Belarus">Belarus</option>
-                  <option value="Georgia">Georgia</option>
-                  <option value="Russia">Russia</option>
-                  <option value="Ukraine">Ukraine</option>
+                  <option value="BY">Belarus</option>
+                  <option value="GE">Georgia</option>
+                  <option value="RU">Russia</option>
+                  <option value="UA">Ukraine</option>
                 </select>
               </label>
               {errors.address?.country && (
@@ -354,28 +354,30 @@ function RegistrationForm(): React.ReactElement {
         <div className="input-wrapper-line">
           <div className="registration-adress">
             <div className="input-wrapper-address">
-              <label htmlFor="addressInvoice.street">
+              <label htmlFor="addressInvoice.streetName">
                 Street*
                 <input
-                  id="addressInvoice.street"
+                  id="addressInvoice.streetName"
                   type="text"
                   className={`form__registration-adress input-text ${
-                    errors.addressInvoice?.street && !watchShowAddressInvoice
+                    errors.addressInvoice?.streetName &&
+                    !watchShowAddressInvoice
                       ? 'error-background-input'
                       : ''
                   }`}
                   style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
                   /* eslint-disable react/jsx-props-no-spreading */
-                  {...register('addressInvoice.street', {
-                    onChange: () => trigger('addressInvoice.street'),
+                  {...register('addressInvoice.streetName', {
+                    onChange: () => trigger('addressInvoice.streetName'),
                   })}
                 />
               </label>
-              {errors.addressInvoice?.street && !watchShowAddressInvoice && (
-                <div className="input-error">
-                  {errors.addressInvoice.street.message}
-                </div>
-              )}
+              {errors.addressInvoice?.streetName &&
+                !watchShowAddressInvoice && (
+                  <div className="input-error">
+                    {errors.addressInvoice.streetName.message}
+                  </div>
+                )}
             </div>
 
             <div className="input-wrapper-address">
@@ -426,10 +428,10 @@ function RegistrationForm(): React.ReactElement {
                   }
                 >
                   <option value="-">--- Choose ---</option>
-                  <option value="Belarus">Belarus</option>
-                  <option value="Georgia">Georgia</option>
-                  <option value="Russia">Russia</option>
-                  <option value="Ukraine">Ukraine</option>
+                  <option value="BY">Belarus</option>
+                  <option value="GE">Georgia</option>
+                  <option value="RU">Russia</option>
+                  <option value="UA">Ukraine</option>
                 </select>
               </label>
               {errors.addressInvoice?.country && !watchShowAddressInvoice && (

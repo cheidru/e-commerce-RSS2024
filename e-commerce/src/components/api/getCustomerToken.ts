@@ -1,4 +1,10 @@
-import { IRegister, IAddress, ILogin } from './Inreface';
+import {
+  IRegister,
+  IAddress,
+  ILogin,
+  IAddressSend,
+  IRegisterSend,
+} from './Inreface';
 import { FormDataLogin, FormDataRegister } from '../forms/validationRulesInput';
 // import { resolve } from 'path';
 // import store from '../../redux/store/store';
@@ -61,21 +67,67 @@ export async function register(customer: object, token: string) {
 }
 
 // https://docs.commercetools.com/api/projects/me-profile#create-sign-up-customer
+function getRandomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-export function formattedDataRegister(data: FormDataRegister): IRegister {
-  const addresses: IAddress[] = [data.address];
-  if (data.addressForInvoice) {
-    addresses.push(data.addressInvoice);
+function generateRandomKey(): string {
+  const minLength = 36;
+  const maxLength = 36;
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
+
+  let result = '';
+
+  const randomValueLength = getRandomInt(minLength, maxLength);
+  for (let i = 0; i < randomValueLength; i += 1) {
+    const randomChar = characters.charAt(
+      getRandomInt(0, characters.length - 1)
+    );
+    result += randomChar;
   }
-  const formData: IRegister = {
+  return result;
+}
+
+function formattedDataAddress(data: IAddress): IAddressSend {
+  const key = generateRandomKey();
+  const result = {
+    streetName: data.streetName,
+    city: data.city,
+    country: data.country,
+    postalCode: data.postalCode,
+    key,
+    id: key,
+  };
+  return result;
+}
+
+export function formattedDataRegister(data: FormDataRegister): IRegisterSend {
+  const addressShipping = formattedDataAddress(data.address);
+  const addresses = [addressShipping];
+  const addressInvoice = formattedDataAddress(data.addressInvoice);
+
+  if (!data.addressForInvoice) {
+    addresses.push(addressInvoice);
+  }
+
+  const formData: IRegisterSend = {
     email: data.email,
     password: data.password,
     firstName: data.firstName,
     lastName: data.lastName,
     // dateOfBirth: new Date(data.dateOfBirth),
-    // ddresses: addresses,
+    addresses,
+    shippingAddresses: [0],
+    billingAddresses: data.addressForInvoice ? [0] : [1],
   };
 
+  if (data.address.default) {
+    formData.defaultShippingAddress = 0;
+  }
+  if (data.addressInvoice.default) {
+    formData.defaultBillingAddress = data.addressForInvoice ? 0 : 1;
+  }
   return formData;
 }
 
