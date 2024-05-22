@@ -44,7 +44,7 @@ export interface IRegister {
   password: string;
   firstName: string;
   lastName: string;
-  // dateOfBirth: Date;
+  dateOfBirth: Date;
   addresses: IAddress[];
 }
 export interface IRegisterSend {
@@ -52,7 +52,7 @@ export interface IRegisterSend {
   password: string;
   firstName: string;
   lastName: string;
-  // dateOfBirth: Date;
+  dateOfBirth: string;
   addresses: IAddress[];
   defaultShippingAddress?: number;
   shippingAddresses: number[];

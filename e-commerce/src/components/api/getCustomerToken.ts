@@ -1,5 +1,5 @@
 import {
-  IRegister,
+  // IRegister,
   IAddress,
   ILogin,
   IAddressSend,
@@ -116,7 +116,7 @@ export function formattedDataRegister(data: FormDataRegister): IRegisterSend {
     password: data.password,
     firstName: data.firstName,
     lastName: data.lastName,
-    // dateOfBirth: new Date(data.dateOfBirth),
+    dateOfBirth: data.dateOfBirth.toISOString().slice(0, 10),
     addresses,
     shippingAddresses: [0],
     billingAddresses: data.addressForInvoice ? [0] : [1],
@@ -131,7 +131,7 @@ export function formattedDataRegister(data: FormDataRegister): IRegisterSend {
   return formData;
 }
 
-export async function registerNewCustomer(formData: IRegister) {
+export async function registerNewCustomer(formData: IRegisterSend) {
   const answer = getAccessToken().then((result) =>
     register(formData, result.access_token)
   );
