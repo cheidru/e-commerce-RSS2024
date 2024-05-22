@@ -1,16 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../../redux/hooks';
+import {
+  setUserLogged,
+  User,
+  setAuthToken,
+  AuthToken,
+} from '../../../redux/store/userSlice';
 import {
   validationSchemaRegister,
   FormDataRegister,
   placeholder,
 } from '../validationRulesInput';
+/* API */
+import {
+  registerNewCustomer,
+  formattedDataRegister,
+  loginCustomer,
+} from '../../api/getCustomerToken';
+import store from '../../../redux/store/store';
 
 function RegistrationForm(): React.ReactElement {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const appTokenStore = store.getState().userSlice.authToken.access_token;
+    if (appTokenStore.length > 0) {
+      navigate(`/`);
+    }
+  });
+
+  const dispatch = useAppDispatch();
+  const setUserLogIn = (userNew: User) => {
+    dispatch(setUserLogged(userNew));
+  };
+
+  const setAuthUserToken = (tokenNew: AuthToken) => {
+    dispatch(setAuthToken(tokenNew));
+  };
 
   const {
     register,
@@ -21,7 +52,29 @@ function RegistrationForm(): React.ReactElement {
     trigger,
   } = useForm<FormDataRegister>({
     resolver: yupResolver(validationSchemaRegister),
-    mode: 'onChange',
+    mode: 'all',
+    // defaultValues: {
+    //   firstName: 'Ivan',
+    //   lastName: 'Ivanov',
+    //   dateOfBirth: new Date(),
+    //   address: {
+    //     default: true,
+    //     street: 'First',
+    //     city: 'Batumi',
+    //     country: 'Georgia',
+    //     postalCode: '',
+    //   },
+    //   addressForInvoice: false,
+    //   addressInvoice: {
+    //     default: false,
+    //     street: '',
+    //     city: '',
+    //     country: '',
+    //     postalCode: '',
+    //   },
+    //   email: 'dddd@gmail.com',
+    //   password: '123456Qq',
+    // },
   });
 
   // dis btn submit
@@ -29,12 +82,73 @@ function RegistrationForm(): React.ReactElement {
     setIsSubmitDisabled(!(isValid && isDirty));
   }, [isValid, isDirty]);
 
-  // address for invoice
-  const watchShowAddressInvoice = watch('addressForInvoice', true);
+  // Watch the checkbox for addressForInvoice
+  const watchShowAddressInvoice = watch('addressForInvoice', false);
 
-  const onSubmit = (data: FormDataRegister) => {
-    const dataUser = data;
-    return dataUser;
+  // Watch the shipping address fields
+  const watchShippingAddressStreet = watch('address.streetName', '');
+  const watchShippingAddressCity = watch('address.city', '');
+  const watchShippingAddressCountry = watch('address.country', '');
+  const watchShippingAddressPostalCode = watch('address.postalCode', '');
+  const watchAddressDefault = watch('address.default', false);
+
+  // Sync invoice address with shipping address when checkbox is checked
+  useEffect(() => {
+    if (watchShowAddressInvoice) {
+      setValue('addressInvoice.streetName', watchShippingAddressStreet);
+      setValue('addressInvoice.city', watchShippingAddressCity);
+      setValue('addressInvoice.country', watchShippingAddressCountry);
+      setValue('addressInvoice.postalCode', watchShippingAddressPostalCode);
+      setValue('addressInvoice.default', watchAddressDefault);
+      trigger('address');
+    }
+  }, [
+    watchShowAddressInvoice,
+    watchShippingAddressStreet,
+    watchShippingAddressCity,
+    watchShippingAddressCountry,
+    watchShippingAddressPostalCode,
+    watchAddressDefault,
+    setValue,
+    trigger,
+  ]);
+
+  const onSubmit = async (data: FormDataRegister) => {
+    const dataUser = formattedDataRegister(data);
+
+    const userNew = await registerNewCustomer(dataUser);
+    if (userNew.statusCode) {
+      const { message } = userNew;
+      // setValue('email', message);
+      const errorsBlock = document.getElementById('errorsAnswer');
+      if (message && errorsBlock) {
+        errorsBlock.innerText = message;
+        setTimeout(() => {
+          errorsBlock.innerText = '';
+        }, 5000);
+      }
+    } else {
+      setUserLogIn(userNew);
+
+      const tokenNew = await loginCustomer(dataUser); // console.log(dataUser);
+
+      if (tokenNew.statusCode) {
+        const { message } = tokenNew;
+        const errorsBlock = document.getElementById('errorsAnswer');
+        if (message && errorsBlock) {
+          errorsBlock.innerText = message;
+          setTimeout(() => {
+            errorsBlock.innerText = '';
+          }, 5000);
+        }
+      } else {
+        tokenNew.email = dataUser.email;
+        setAuthUserToken(tokenNew);
+        navigate(`/`);
+      }
+      return data;
+    }
+    return data;
   };
 
   return (
@@ -105,10 +219,10 @@ function RegistrationForm(): React.ReactElement {
 
       <fieldset className="fieldset">
         Address for shipping*
-        <label htmlFor="address.addressDefault">
+        <label htmlFor="address.default">
           <input
             type="checkbox"
-            id="address.addressDefault"
+            id="address.default"
             className="input-checkbox"
             {...register('address.default')}
           />
@@ -117,23 +231,23 @@ function RegistrationForm(): React.ReactElement {
         <div className="input-wrapper-line">
           <div className="registration-adress">
             <div className="input-wrapper-address">
-              <label htmlFor="address.street">
+              <label htmlFor="address.streetName">
                 Street*
                 <input
-                  id="address.street"
+                  id="address.streetName"
                   type="text"
                   className={`form__registration-adress input-text ${
-                    errors.address?.street ? 'error-background-input' : ''
+                    errors.address?.streetName ? 'error-background-input' : ''
                   }`}
                   /* eslint-disable react/jsx-props-no-spreading */
-                  {...register('address.street', {
-                    onChange: () => trigger('address.street'),
+                  {...register('address.streetName', {
+                    onChange: () => trigger('address.streetName'),
                   })}
                 />
               </label>
-              {errors.address?.street && (
+              {errors.address?.streetName && (
                 <div className="input-error">
-                  {errors.address.street.message}
+                  {errors.address.streetName.message}
                 </div>
               )}
             </div>
@@ -178,10 +292,10 @@ function RegistrationForm(): React.ReactElement {
                   }
                 >
                   <option value="-">--- Choose ---</option>
-                  <option value="Belarus">Belarus</option>
-                  <option value="Georgia">Georgia</option>
-                  <option value="Russia">Russia</option>
-                  <option value="Ukraine">Ukraine</option>
+                  <option value="BY">Belarus</option>
+                  <option value="GE">Georgia</option>
+                  <option value="RU">Russia</option>
+                  <option value="UA">Ukraine</option>
                 </select>
               </label>
               {errors.address?.country && (
@@ -228,40 +342,42 @@ function RegistrationForm(): React.ReactElement {
 
       <fieldset className="fieldset" disabled={watchShowAddressInvoice}>
         Address for invoices
-        <label htmlFor="addressInvoice.addressDefault">
+        <label htmlFor="addressInvoice.default">
           <input
             type="checkbox"
-            id="addressInvoice.addressDefault"
+            id="addressInvoice.default"
             className="input-checkbox"
-            {...register('address.default')}
+            {...register('addressInvoice.default')}
           />
           Use as default
         </label>
         <div className="input-wrapper-line">
           <div className="registration-adress">
             <div className="input-wrapper-address">
-              <label htmlFor="addressInvoice.street">
+              <label htmlFor="addressInvoice.streetName">
                 Street*
                 <input
-                  id="addressInvoice.street"
+                  id="addressInvoice.streetName"
                   type="text"
                   className={`form__registration-adress input-text ${
-                    errors.addressInvoice?.street && !watchShowAddressInvoice
+                    errors.addressInvoice?.streetName &&
+                    !watchShowAddressInvoice
                       ? 'error-background-input'
                       : ''
                   }`}
                   style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
                   /* eslint-disable react/jsx-props-no-spreading */
-                  {...register('addressInvoice.street', {
-                    onChange: () => trigger('addressInvoice.street'),
+                  {...register('addressInvoice.streetName', {
+                    onChange: () => trigger('addressInvoice.streetName'),
                   })}
                 />
               </label>
-              {errors.addressInvoice?.street && !watchShowAddressInvoice && (
-                <div className="input-error">
-                  {errors.addressInvoice.street.message}
-                </div>
-              )}
+              {errors.addressInvoice?.streetName &&
+                !watchShowAddressInvoice && (
+                  <div className="input-error">
+                    {errors.addressInvoice.streetName.message}
+                  </div>
+                )}
             </div>
 
             <div className="input-wrapper-address">
@@ -312,10 +428,10 @@ function RegistrationForm(): React.ReactElement {
                   }
                 >
                   <option value="-">--- Choose ---</option>
-                  <option value="Belarus">Belarus</option>
-                  <option value="Georgia">Georgia</option>
-                  <option value="Russia">Russia</option>
-                  <option value="Ukraine">Ukraine</option>
+                  <option value="BY">Belarus</option>
+                  <option value="GE">Georgia</option>
+                  <option value="RU">Russia</option>
+                  <option value="UA">Ukraine</option>
                 </select>
               </label>
               {errors.addressInvoice?.country && !watchShowAddressInvoice && (
@@ -400,6 +516,7 @@ function RegistrationForm(): React.ReactElement {
       </div>
 
       <div className="input-wrapper-btn">
+        <div className="input-error" id="errorsAnswer" />
         <button
           type="submit"
           className="btn-submit"

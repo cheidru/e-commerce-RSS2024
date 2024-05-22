@@ -82,7 +82,15 @@ button:disabled {
   background-color: $Grey-dark-pagination;
   cursor: none;
 }
+.none {
+  display: none;
+}
 
+@media (max-width: 1300px) {
+  .wrapper {
+    padding: 0 1vw;
+  }
+}
 @media (max-width: 700px) {
   //   body {
   //   @include font($size: 1.6rem, $height: 150%, $weight: 400);

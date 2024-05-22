@@ -1,6 +1,8 @@
 import { describe, it, expect, test } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from '../redux/store/store';
 import App from '../App/App';
 
 test('demo', () => {
@@ -10,9 +12,11 @@ test('demo', () => {
 describe('render', () => {
   it('renders the main page Header', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(screen.queryByText('Back call')).toBeInTheDocument();
@@ -22,9 +26,11 @@ describe('render', () => {
 describe('App component', () => {
   it('renders the main page and includes the Footer contact title', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(screen.getByText('Our phones')).toBeInTheDocument();

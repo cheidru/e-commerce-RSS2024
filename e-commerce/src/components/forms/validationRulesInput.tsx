@@ -48,7 +48,7 @@ const lastNameValidation = yup
 // dateOfBirth
 const minimumAge = 13;
 const today = new Date();
-const minimumDateOfBirth = new Date(
+export const minimumDateOfBirth = new Date(
   today.getFullYear() - minimumAge,
   today.getMonth(),
   today.getDate()
@@ -63,7 +63,7 @@ const dateOfBirthValidation = yup
 
 const addressValidation = yup.object({
   default: yup.boolean(),
-  street: yup.string().required('Street is required'),
+  streetName: yup.string().required('Street is required'),
   city: yup
     .string()
     .required('City is required')
@@ -85,7 +85,7 @@ const addressValidation = yup.object({
         if (country === '-') {
           return true;
         }
-        if (country === 'Belarus') {
+        if (country === 'BY') {
           return /^2[0-9]{5}$/.test(value || '');
         }
         return true;
@@ -99,7 +99,7 @@ const addressValidation = yup.object({
           parent: { country },
         } = validationContext;
 
-        if (country === 'Georgia') {
+        if (country === 'GE') {
           return /^[0-9]{4}$/.test(value || '');
         }
         return true;
@@ -113,7 +113,7 @@ const addressValidation = yup.object({
           parent: { country },
         } = validationContext;
 
-        if (country === 'Russia') {
+        if (country === 'RU') {
           return /^[0-9]{6}$/.test(value || '');
         }
         return true;
@@ -126,7 +126,7 @@ const addressValidation = yup.object({
         const {
           parent: { country },
         } = validationContext;
-        if (country === 'Ukraine') {
+        if (country === 'UA') {
           return /^[0-9]{5}$/.test(value || '');
         }
         return true;
@@ -136,7 +136,7 @@ const addressValidation = yup.object({
     .string()
     .required('Country is required')
     .oneOf(
-      ['Belarus', 'Georgia', 'Russia', 'Ukraine'], // e-commerce - setting project - area
+      ['BY', 'GE', 'RU', 'UA'], // e-commerce - setting project - area
       'Country is required'
     ),
 });
@@ -160,8 +160,8 @@ export const validationSchemaRegister = yup
     lastName: lastNameValidation,
     dateOfBirth: dateOfBirthValidation,
     address: addressValidation,
-    addressInvoice: addressValidation,
     addressForInvoice,
+    addressInvoice: addressValidation,
   })
   .required();
 
