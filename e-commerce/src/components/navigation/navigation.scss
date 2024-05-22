@@ -6,12 +6,21 @@
     display: flex;
     justify-content: space-between;
     gap: 32px;
+    flex-wrap: wrap;
+    @media (max-width: 700px) {
+      flex-direction: column;
+      line-height: 30px;
+    }
   }
   &__list-item {
     @include font($size: 2rem, $height: 2.4rem, $weight: 300, $style: normal);
     color: $Black;
     white-space: nowrap;
     line-height: 82px;
+    @media (max-width: 700px) {
+      flex-direction: column;
+      line-height: 30px;
+    }
   }
   &__user-is-logged {
     pointer-events: none;
