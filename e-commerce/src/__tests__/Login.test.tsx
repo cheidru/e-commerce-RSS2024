@@ -82,7 +82,8 @@ describe('checking input value on Login page', () => {
   });
 });
 
-/* Wrong value */
+// Wrong value for email
+// spaces
 describe('checking input wrong value on Login page', () => {
   it('checking input wrong value for email on Login page', async () => {
     render(
@@ -98,5 +99,159 @@ describe('checking input wrong value on Login page', () => {
     fireEvent.change(email, { target: { value: '  some@gmail.com ' } });
 
     expect(await screen.findByText('Email must not contain spaces'));
+  });
+});
+// doesn't have @
+describe('checking input wrong value on Login page', () => {
+  it('checking input wrong value for email on Login page', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Pages.Login />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const email = document.getElementById('email') as HTMLInputElement;
+
+    fireEvent.change(email, { target: { value: 'somegmail.com' } });
+
+    expect(
+      await screen.findByText(
+        'Email must be properly formatted (e.g., example@email.com)'
+      )
+    );
+  });
+});
+// doesn't have domain
+describe('checking input wrong value on Login page', () => {
+  it('checking input wrong value for email on Login page', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Pages.Login />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const email = document.getElementById('email') as HTMLInputElement;
+
+    fireEvent.change(email, { target: { value: 'somegmail@ffff' } });
+
+    expect(
+      await screen.findByText(
+        'Email must be contain a domain name (e.g., example.com)'
+      )
+    );
+  });
+});
+
+// Wrong value for password
+// only numbers
+describe('checking input wrong value on Login page', () => {
+  it('checking input wrong value for password on Login page', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Pages.Login />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const password = document.getElementById('password') as HTMLInputElement;
+
+    fireEvent.change(password, { target: { value: '11111111' } });
+
+    expect(
+      await screen.findByText(
+        'Password must contain at least one uppercase letter'
+      )
+    );
+  });
+});
+// only numbers and lower case letters
+describe('checking input wrong value on Login page', () => {
+  it('checking input wrong value for password on Login page', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Pages.Login />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const password = document.getElementById('password') as HTMLInputElement;
+
+    fireEvent.change(password, { target: { value: '11111qqq' } });
+
+    expect(
+      await screen.findByText(
+        'Password must contain at least one uppercase letter'
+      )
+    );
+  });
+});
+// only Uppercase letters
+describe('checking input wrong value on Login page', () => {
+  it('checking input wrong value for password on Login page', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Pages.Login />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const password = document.getElementById('password') as HTMLInputElement;
+
+    fireEvent.change(password, { target: { value: 'SSSSSUTS' } });
+
+    expect(
+      await screen.findByText(
+        'Password must contain at least one lowercase letter'
+      )
+    );
+  });
+});
+// only Uppercase letters
+describe('checking input wrong value on Login page', () => {
+  it('checking input wrong value for password on Login page', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Pages.Login />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const password = document.getElementById('password') as HTMLInputElement;
+
+    fireEvent.change(password, { target: { value: ' dsYrsds1' } });
+
+    expect(
+      await screen.findByText(
+        'Password must not contain leading or trailing whitespace'
+      )
+    );
+  });
+});
+// min 8 chars
+describe('checking input wrong value on Login page', () => {
+  it('checking input wrong value for password on Login page', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Pages.Login />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const password = document.getElementById('password') as HTMLInputElement;
+
+    fireEvent.change(password, { target: { value: 'aSq1223' } });
+
+    expect(
+      await screen.findByText('Password must be at least 8 characters long')
+    );
   });
 });
