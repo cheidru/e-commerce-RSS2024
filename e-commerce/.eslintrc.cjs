@@ -18,7 +18,7 @@ module.exports = {
   "overrides": [
   ],
   "ignorePatterns": [
-    'dist', '.eslintrc.cjs', 'vite.config.ts'
+    'dist', '.eslintrc.cjs', 'vite.config.ts', 'coverage'
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
