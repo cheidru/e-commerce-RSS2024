@@ -53,31 +53,9 @@ function RegistrationForm(): React.ReactElement {
   } = useForm<FormDataRegister>({
     resolver: yupResolver(validationSchemaRegister),
     mode: 'all',
-    // defaultValues: {
-    //   firstName: 'Ivan',
-    //   lastName: 'Ivanov',
-    //   dateOfBirth: new Date(),
-    //   address: {
-    //     default: true,
-    //     street: 'First',
-    //     city: 'Batumi',
-    //     country: 'Georgia',
-    //     postalCode: '',
-    //   },
-    //   addressForInvoice: false,
-    //   addressInvoice: {
-    //     default: false,
-    //     street: '',
-    //     city: '',
-    //     country: '',
-    //     postalCode: '',
-    //   },
-    //   email: 'dddd@gmail.com',
-    //   password: '123456Qq',
-    // },
   });
 
-  // dis btn submit
+  // Disable button submit
   useEffect(() => {
     setIsSubmitDisabled(!(isValid && isDirty));
   }, [isValid, isDirty]);
@@ -119,7 +97,6 @@ function RegistrationForm(): React.ReactElement {
     const userNew = await registerNewCustomer(dataUser);
     if (userNew.statusCode) {
       const { message } = userNew;
-      // setValue('email', message);
       const errorsBlock = document.getElementById('errorsAnswer');
       if (message && errorsBlock) {
         errorsBlock.innerText = message;
@@ -130,7 +107,7 @@ function RegistrationForm(): React.ReactElement {
     } else {
       setUserLogIn(userNew);
 
-      const tokenNew = await loginCustomer(dataUser); // console.log(dataUser);
+      const tokenNew = await loginCustomer(dataUser);
 
       if (tokenNew.statusCode) {
         const { message } = tokenNew;
@@ -166,7 +143,6 @@ function RegistrationForm(): React.ReactElement {
               className={`form__registration-firstName input-text ${
                 errors.firstName ? 'error-background-input' : ''
               }`}
-              /* eslint-disable react/jsx-props-no-spreading */
               {...register('firstName', {
                 onChange: () => trigger('firstName'),
               })}
@@ -187,7 +163,6 @@ function RegistrationForm(): React.ReactElement {
               className={`form__registration-lastName input-text ${
                 errors.lastName ? 'error-background-input' : ''
               }`}
-              /* eslint-disable react/jsx-props-no-spreading */
               {...register('lastName', { onChange: () => trigger('lastName') })}
             />
             {errors.lastName && (
@@ -205,7 +180,6 @@ function RegistrationForm(): React.ReactElement {
               className={`form__registration-login input-text ${
                 errors.dateOfBirth ? 'error-background-input' : ''
               }`}
-              /* eslint-disable react/jsx-props-no-spreading */
               {...register('dateOfBirth', {
                 onChange: () => trigger('dateOfBirth'),
               })}
@@ -239,7 +213,6 @@ function RegistrationForm(): React.ReactElement {
                   className={`form__registration-adress input-text ${
                     errors.address?.streetName ? 'error-background-input' : ''
                   }`}
-                  /* eslint-disable react/jsx-props-no-spreading */
                   {...register('address.streetName', {
                     onChange: () => trigger('address.streetName'),
                   })}
@@ -261,7 +234,6 @@ function RegistrationForm(): React.ReactElement {
                   className={`form__registration-adress input-text ${
                     errors.address?.city ? 'error-background-input' : ''
                   }`}
-                  /* eslint-disable react/jsx-props-no-spreading */
                   {...register('address.city', {
                     onChange: () => trigger('address.city'),
                   })}
@@ -280,7 +252,6 @@ function RegistrationForm(): React.ReactElement {
                   className={`form__registration-adress input-text ${
                     errors.address?.country ? 'error-background-input' : ''
                   }`}
-                  /* eslint-disable react/jsx-props-no-spreading */
                   {...register('address.country', {
                     onBlur: () => trigger('address.country'),
                   })}
@@ -314,7 +285,6 @@ function RegistrationForm(): React.ReactElement {
                   className={`form__registration-adress input-text ${
                     errors.address?.postalCode ? 'error-background-input' : ''
                   }`}
-                  /* eslint-disable react/jsx-props-no-spreading */
                   {...register('address.postalCode', {
                     onChange: () => trigger('address.postalCode'),
                   })}
@@ -366,7 +336,6 @@ function RegistrationForm(): React.ReactElement {
                       : ''
                   }`}
                   style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-                  /* eslint-disable react/jsx-props-no-spreading */
                   {...register('addressInvoice.streetName', {
                     onChange: () => trigger('addressInvoice.streetName'),
                   })}
@@ -391,7 +360,6 @@ function RegistrationForm(): React.ReactElement {
                       ? 'error-background-input'
                       : ''
                   }`}
-                  /* eslint-disable react/jsx-props-no-spreading */
                   style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
                   {...register('addressInvoice.city', {
                     onChange: () => trigger('addressInvoice.city'),
@@ -416,7 +384,6 @@ function RegistrationForm(): React.ReactElement {
                       : ''
                   }`}
                   style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-                  /* eslint-disable react/jsx-props-no-spreading */
                   {...register('addressInvoice.country', {
                     onBlur: () => trigger('addressInvoice.country'),
                   })}
@@ -454,7 +421,6 @@ function RegistrationForm(): React.ReactElement {
                       : ''
                   }`}
                   style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-                  /* eslint-disable react/jsx-props-no-spreading */
                   {...register('addressInvoice.postalCode', {
                     onChange: () => trigger('addressInvoice.postalCode'),
                   })}
@@ -482,7 +448,6 @@ function RegistrationForm(): React.ReactElement {
               className={`form__registration-email input-text ${
                 errors.email ? 'error-background-input' : ''
               }`}
-              /* eslint-disable react/jsx-props-no-spreading */
               {...register('email', { onChange: () => trigger('email') })}
             />
             {errors.email && (
@@ -498,7 +463,6 @@ function RegistrationForm(): React.ReactElement {
               id="password"
               type={showPassword ? 'text' : 'password'}
               className={`form__registration-password input-text ${errors.password ? 'error-background-input' : ''}`}
-              /* eslint-disable react/jsx-props-no-spreading */
               {...register('password', { onChange: () => trigger('password') })}
             />
           </label>

@@ -35,5 +35,6 @@ module.exports = {
   "rules": {
       // "react-refresh/only-export-components": ['warn', { allowConstantExport: true }],
     'react/react-in-jsx-scope': 0,
+    "react/jsx-props-no-spreading": "off",
   }
 }

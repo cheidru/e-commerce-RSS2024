@@ -39,7 +39,7 @@ function LoginForm(): React.ReactElement {
     mode: 'onChange',
   });
 
-  // dis btn submit
+  // Disable button submit
   useEffect(() => {
     setIsSubmitDisabled(!isValid && isDirty);
   }, [isValid, isDirty]);
@@ -47,7 +47,7 @@ function LoginForm(): React.ReactElement {
   const onSubmit = async (data: FormDataLogin) => {
     const dataUser = formattedDataLogin(data);
 
-    const tokenNew = await loginCustomer(dataUser); // console.log(dataUser);
+    const tokenNew = await loginCustomer(dataUser);
 
     if (tokenNew.statusCode) {
       const { message } = tokenNew;
@@ -60,7 +60,6 @@ function LoginForm(): React.ReactElement {
       }
     } else {
       tokenNew.email = dataUser.email;
-      // console.log('tokenNew', tokenNew);
       setAuthUserToken(tokenNew);
 
       navigate(`/`);
@@ -84,7 +83,6 @@ function LoginForm(): React.ReactElement {
             className={`form__login-login input-text ${
               errors.email ? 'error-background-input' : ''
             }`}
-            /* eslint-disable react/jsx-props-no-spreading */
             {...register('email', {
               onChange: () => {
                 trigger('email');
@@ -103,7 +101,6 @@ function LoginForm(): React.ReactElement {
             id="password"
             type={showPassword ? 'text' : 'password'}
             className={`form__login-password input-text ${errors.password ? 'error-background-input' : ''}`}
-            /* eslint-disable react/jsx-props-no-spreading */
             {...register('password', { onChange: () => trigger('password') })}
           />
         </label>
