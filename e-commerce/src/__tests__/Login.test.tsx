@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from '../redux/store/store';
@@ -253,5 +253,60 @@ describe('checking input wrong value on Login page', () => {
     expect(
       await screen.findByText('Password must be at least 8 characters long')
     );
+  });
+});
+
+// Button disabled or not
+// incorrect values button disabled
+describe('checking button disabled with wrong data on Login page', () => {
+  it('checking button disabled with wrong data on Login page', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Pages.Login />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const email = screen.getByLabelText(/email/i) as HTMLInputElement;
+    const password = screen.getByLabelText(/password/i) as HTMLInputElement;
+
+    // Wrong data
+    fireEvent.change(email, { target: { value: 'rsschoolgmail.com' } });
+    fireEvent.change(password, { target: { value: 'aSqte229' } });
+
+    await waitFor(() => {
+      const button = screen.getByRole('button', {
+        name: /login/i,
+      }) as HTMLButtonElement;
+      expect(button).toBeDisabled();
+    });
+  });
+});
+
+// correct values the button work
+describe('checking button disabled with wrong data on Login page', () => {
+  it('checking button disabled with wrong data on Login page', async () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Pages.Login />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const email = screen.getByLabelText(/email/i) as HTMLInputElement;
+    const password = screen.getByLabelText(/password/i) as HTMLInputElement;
+
+    // Correct data
+    fireEvent.change(email, { target: { value: 'rsschool@gmail.com' } });
+    fireEvent.change(password, { target: { value: 'aSqte229' } });
+
+    await waitFor(() => {
+      const button = screen.getByRole('button', {
+        name: /login/i,
+      }) as HTMLButtonElement;
+      expect(button).not.toBeDisabled();
+    });
   });
 });
