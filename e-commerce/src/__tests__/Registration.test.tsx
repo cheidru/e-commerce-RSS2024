@@ -16,7 +16,7 @@ describe('render Registration page', () => {
       </Provider>
     );
 
-    expect(screen.queryByText('Registration')).toBeInTheDocument();
+    screen.getByText('Registration');
   });
 });
 
@@ -31,7 +31,7 @@ describe('checking input labels on Registration page', () => {
       </Provider>
     );
 
-    expect(screen.getByLabelText('Email*'));
+    screen.getByLabelText('Email*');
   });
 });
 
@@ -145,7 +145,7 @@ describe('checking input value on Registration page', () => {
     );
 
     const email = document.getElementById('email') as HTMLInputElement;
-    if (email) email.value = 'alex@gmail.com';
+    fireEvent.change(email, { target: { value: 'alex@gmail.com' } });
 
     expect(screen.getByDisplayValue('alex@gmail.com') === email);
   });
@@ -179,7 +179,7 @@ describe('checking input value on Registration page', () => {
     );
 
     const firstName = document.getElementById('firstName') as HTMLInputElement;
-    if (firstName) firstName.value = 'John';
+    fireEvent.change(firstName, { target: { value: 'John' } });
 
     expect(screen.getByDisplayValue('John') === firstName);
   });
@@ -196,7 +196,7 @@ describe('checking input value on Registration page', () => {
     );
 
     const lastName = document.getElementById('lastName') as HTMLInputElement;
-    if (lastName) lastName.value = 'Dou';
+    fireEvent.change(lastName, { target: { value: 'Dou' } });
 
     expect(screen.getByDisplayValue('Dou') === lastName);
   });
@@ -356,7 +356,6 @@ describe('checking input wrong value on Registration page', () => {
     const addressCountry = document.getElementById(
       'address.country'
     ) as HTMLInputElement;
-    // console.log(addressCountry);
     const postalCode = document.getElementById(
       'address.postalCode'
     ) as HTMLInputElement;

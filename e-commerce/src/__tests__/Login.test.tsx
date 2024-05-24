@@ -76,7 +76,7 @@ describe('checking input value on Login page', () => {
     );
 
     const email = document.getElementById('email') as HTMLInputElement;
-    if (email) email.value = 'alex@gmail.com';
+    fireEvent.change(email, { target: { value: 'alex@gmail.com' } });
 
     expect(screen.getByDisplayValue('alex@gmail.com') === email);
   });
