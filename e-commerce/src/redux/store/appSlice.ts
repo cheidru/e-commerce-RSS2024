@@ -1,23 +1,23 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type AuthToken = {
-  token: string;
-  refreshToken: string;
-  dateCreate: Date;
-  ttl: number;
+export type AppToken = {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  scope: string;
 };
 
 type AppState = {
-  authToken: AuthToken;
+  authToken: AppToken;
 };
 
 const initialState: AppState = {
   authToken: {
-    token: '',
-    refreshToken: '',
-    dateCreate: new Date(),
-    ttl: 0,
+    access_token: '',
+    token_type: '',
+    expires_in: 0,
+    scope: '',
   },
 };
 
@@ -25,12 +25,15 @@ const appSlice = createSlice({
   name: 'appSlice',
   initialState,
   reducers: {
-    setAppToken(state, action: PayloadAction<AuthToken>) {
+    setAppToken(state, action: PayloadAction<AppToken>) {
       state.authToken = action.payload;
+    },
+    setAppAccessToken(state, action: PayloadAction<string>) {
+      state.authToken.access_token = action.payload;
     },
   },
 });
 
-export const { setAppToken } = appSlice.actions;
+export const { setAppToken, setAppAccessToken } = appSlice.actions;
 
 export default appSlice.reducer;

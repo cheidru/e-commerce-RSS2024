@@ -5,11 +5,14 @@ import {
   IAddressSend,
   IRegisterSend,
 } from './Inreface';
-import { FormDataLogin, FormDataRegister } from '../forms/validationRulesInput';
+import {
+  FormDataLogin,
+  FormDataRegister,
+} from '../../components/forms/validationRulesInput';
 // import { resolve } from 'path';
-// import store from '../../redux/store/store';
+import store from '../../redux/store/store';
 // import { useAppDispatch } from '../../redux/hooks';
-// import { setAppToken } from '../../redux/store/appSlice';
+import { AppToken } from '../../redux/store/appSlice';
 
 // const clientID = 'MXjx0D7Jw1Cmi0ZqSHWq2MUJ';
 // const secret = 'HQk1sjqtKnouVW4uQ9ofT_6PGhL66lXT';
@@ -22,7 +25,14 @@ export const authURL = 'https://auth.us-central1.gcp.commercetools.com';
 // https://docs.commercetools.com/api/authorization#password-flow
 // https://docs.commercetools.com/getting-started/make-first-api-call#get-your-access-token
 
-async function createAccessToken() {
+function formattedAppTokenNew(token: AppToken): AppToken {
+  const result = { ...token };
+  const currenDateValue = new Date().getTime() / 1000;
+  result.expires_in = currenDateValue + token.expires_in;
+  return result;
+}
+
+export async function createAccessToken() {
   const headers = new Headers({
     Authorization: `Basic ${btoa('MXjx0D7Jw1Cmi0ZqSHWq2MUJ:HQk1sjqtKnouVW4uQ9ofT_6PGhL66lXT')}`,
   });
@@ -33,17 +43,17 @@ async function createAccessToken() {
       headers,
     }
   );
-  const answerJSON = await answer.json();
+  const answerJSON = await answer
+    .json()
+    .then((tokenNew) => formattedAppTokenNew(tokenNew));
   return answerJSON;
 }
 
 export async function getAccessToken() {
-  // const appTokenStore = store.getState().appSlice.authToken;
-  // // console.log(appTokenStore)
-  // if (appTokenStore) {
-  //   console.log('getAccessToken, appTokenStore', appTokenStore);
-  //   return appTokenStore;
-  // }
+  const appTokenStore = store.getState().appSlice.authToken;
+  if (appTokenStore) {
+    return appTokenStore;
+  }
 
   const newToken = await createAccessToken();
   // console.log('getAccessToken, newToken', newToken);

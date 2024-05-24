@@ -7,6 +7,10 @@ import Footer from '../components/footer/footer';
 import * as Pages from '../pages/pages';
 /* Style */
 import './app.scss';
+import { useAppDispatch } from '../redux/hooks';
+import { setAppToken, setAppAccessToken } from '../redux/store/appSlice';
+import { createAccessToken } from '../services/api/getCustomerToken';
+import store from '../redux/store/store';
 
 function App() {
   const navigate = useNavigate();
@@ -23,6 +27,19 @@ function App() {
       navigate(`/${navigateTo}`);
     }
   });
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const appTokenStore = store.getState().appSlice.authToken;
+    const currenDateValue = new Date().getTime() / 1000;
+    if (
+      appTokenStore.expires_in < currenDateValue &&
+      appTokenStore.access_token === ''
+    ) {
+      dispatch(setAppAccessToken('fetching'));
+      createAccessToken().then((tokenNew) => dispatch(setAppToken(tokenNew)));
+    }
+  });
+
   return (
     <>
       <Header />

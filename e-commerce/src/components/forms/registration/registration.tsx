@@ -19,7 +19,7 @@ import {
   registerNewCustomer,
   formattedDataRegister,
   loginCustomer,
-} from '../../api/getCustomerToken';
+} from '../../../services/api/getCustomerToken';
 import store from '../../../redux/store/store';
 
 function RegistrationForm(): React.ReactElement {

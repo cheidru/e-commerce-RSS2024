@@ -9,7 +9,10 @@ import {
 } from '../validationRulesInput';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setAuthToken, AuthToken } from '../../../redux/store/userSlice';
-import { loginCustomer, formattedDataLogin } from '../../api/getCustomerToken';
+import {
+  loginCustomer,
+  formattedDataLogin,
+} from '../../../services/api/getCustomerToken';
 import store from '../../../redux/store/store';
 
 function LoginForm(): React.ReactElement {
