@@ -45,7 +45,7 @@ describe('checking input labels on Registration page', () => {
       </Provider>
     );
 
-    expect(screen.getByLabelText('Password*'));
+    screen.getByLabelText('Password*');
   });
 });
 
@@ -59,7 +59,7 @@ describe('checking input labels on Registration page', () => {
       </Provider>
     );
 
-    expect(screen.getByLabelText('first Name*'));
+    screen.getByLabelText('first Name*');
   });
 });
 
@@ -73,7 +73,7 @@ describe('checking input labels on Registration page', () => {
       </Provider>
     );
 
-    expect(screen.getByLabelText('last Name*'));
+    screen.getByLabelText('last Name*');
   });
 });
 
@@ -87,7 +87,7 @@ describe('checking input labels on Registration page', () => {
       </Provider>
     );
 
-    expect(screen.getByLabelText('Date of Birth*'));
+    screen.getByLabelText('Date of Birth*');
   });
 });
 
@@ -101,7 +101,7 @@ describe('checking input labels on Registration page', () => {
       </Provider>
     );
 
-    expect(screen.getAllByLabelText('City*'));
+    screen.getAllByLabelText('City*');
   });
 });
 
@@ -115,7 +115,7 @@ describe('checking input labels on Registration page', () => {
       </Provider>
     );
 
-    expect(screen.getAllByLabelText('Country*'));
+    screen.getAllByLabelText('Country*');
   });
 });
 
@@ -129,7 +129,7 @@ describe('checking input labels on Registration page', () => {
       </Provider>
     );
 
-    expect(screen.getAllByLabelText('POST Code*'));
+    screen.getAllByLabelText('POST Code*');
   });
 });
 
@@ -229,7 +229,7 @@ describe('checking input wrong value on Registration page', () => {
 
     fireEvent.change(email, { target: { value: '  some@gmail.com ' } });
 
-    expect(await screen.findByText('Email must not contain spaces'));
+    await screen.findByText('Email must not contain spaces');
   });
 });
 
@@ -247,10 +247,8 @@ describe('checking input wrong value on Registration page', () => {
 
     fireEvent.change(password, { target: { value: 'oopsididit2times' } });
 
-    expect(
-      await screen.findByText(
-        'Password must contain at least one uppercase letter'
-      )
+    await screen.findByText(
+      'Password must contain at least one uppercase letter'
     );
   });
 });
@@ -269,10 +267,8 @@ describe('checking input wrong value on Registration page', () => {
 
     fireEvent.change(firstName, { target: { value: 'Jo5n' } });
 
-    expect(
-      await screen.findByText(
-        'First name must contain at least one character and no special characters or numbers'
-      )
+    await screen.findByText(
+      'First name must contain at least one character and no special characters or numbers'
     );
   });
 });
@@ -291,10 +287,8 @@ describe('checking input wrong value on Registration page', () => {
 
     fireEvent.change(lastName, { target: { value: 'D5u' } });
 
-    expect(
-      await screen.findByText(
-        'Last name must contain at least one character and no special characters or numbers'
-      )
+    await screen.findByText(
+      'Last name must contain at least one character and no special characters or numbers'
     );
   });
 });
@@ -317,7 +311,7 @@ describe('checking choose empty value Country on Registration page', () => {
     fireEvent.change(addressCountry, { target: { value: '-' } });
     fireEvent.blur(addressCountry);
 
-    expect(await screen.findByText('Country is required'));
+    await screen.findByText('Country is required');
   });
 });
 
@@ -345,12 +339,9 @@ describe('checking input correct value on Registration page', () => {
 
     fireEvent.change(postalCode, { target: { value: '200000' } });
 
-    expect(
-      await screen
-        .findByText('Postal code must be 2#####')
-        .then(() => false)
-        .catch(() => true)
-    ).toBeTruthy();
+    expect(async () => {
+      await screen.findByText('Postal code must be 2#####');
+    }).rejects.toThrow();
   });
 });
 
@@ -377,7 +368,7 @@ describe('checking input wrong value on Registration page', () => {
 
     fireEvent.change(postalCode, { target: { value: '100000' } });
 
-    expect(await screen.findByText('Postal code must be 2#####'));
+    await screen.findByText('Postal code must be 2#####');
   });
 });
 
@@ -405,12 +396,9 @@ describe('checking input correct value on Registration page', () => {
 
     fireEvent.change(postalCode, { target: { value: '2000' } });
 
-    expect(
-      await screen
-        .findByText('Postal code must be 4 digit')
-        .then(() => false)
-        .catch(() => true)
-    ).toBeTruthy();
+    expect(async () => {
+      await screen.findByText('Postal code must be 4 digit');
+    }).rejects.toThrow();
   });
 });
 
@@ -438,7 +426,7 @@ describe('checking input wrong value on Registration page', () => {
 
     fireEvent.change(postalCode, { target: { value: '100' } });
 
-    expect(await screen.findByText('Postal code must be 4 digit'));
+    await screen.findByText('Postal code must be 4 digit');
   });
 });
 
@@ -466,12 +454,9 @@ describe('checking input correct value on Registration page', () => {
 
     fireEvent.change(postalCode, { target: { value: '200000' } });
 
-    expect(
-      await screen
-        .findByText('Postal code must be 6 digit')
-        .then(() => false)
-        .catch(() => true)
-    ).toBeTruthy();
+    expect(async () => {
+      await screen.findByText('Postal code must be 6 digit');
+    }).rejects.toThrow();
   });
 });
 
@@ -499,6 +484,6 @@ describe('checking input wrong value on Registration page', () => {
 
     fireEvent.change(postalCode, { target: { value: '1000000' } });
 
-    expect(await screen.findByText('Postal code must be 6 digit'));
+    await screen.findByText('Postal code must be 6 digit');
   });
 });
