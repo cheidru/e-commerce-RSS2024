@@ -66,7 +66,7 @@ describe('checking input placeholder on Login page', () => {
 
 /* checking input fields */
 describe('checking input value on Login page', () => {
-  it('checking input value for email on Login page', () => {
+  it('checking input value for email on Login page', async () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
@@ -78,7 +78,10 @@ describe('checking input value on Login page', () => {
     const email = document.getElementById('email') as HTMLInputElement;
     fireEvent.change(email, { target: { value: 'alex@gmail.com' } });
 
-    expect(screen.getByDisplayValue('alex@gmail.com') === email);
+    await waitFor(() => {
+      const emailInput = screen.getByDisplayValue('alex@gmail.com');
+      expect(emailInput === email);
+    });
   });
 });
 

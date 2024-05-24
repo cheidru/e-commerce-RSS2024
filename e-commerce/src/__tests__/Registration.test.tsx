@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from '../redux/store/store';
@@ -135,7 +135,7 @@ describe('checking input labels on Registration page', () => {
 
 /* checking input fields */
 describe('checking input value on Registration page', () => {
-  it('checking input value for email on Registration page', () => {
+  it('checking input value for email on Registration page', async () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
@@ -147,12 +147,15 @@ describe('checking input value on Registration page', () => {
     const email = document.getElementById('email') as HTMLInputElement;
     fireEvent.change(email, { target: { value: 'alex@gmail.com' } });
 
-    expect(screen.getByDisplayValue('alex@gmail.com') === email);
+    await waitFor(() => {
+      const emailInput = screen.getByDisplayValue('alex@gmail.com');
+      expect(emailInput === email);
+    });
   });
 });
 
 describe('checking input value on Registration page', () => {
-  it('checking input value for password on Registration page', () => {
+  it('checking input value for password on Registration page', async () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
@@ -162,14 +165,17 @@ describe('checking input value on Registration page', () => {
     );
 
     const password = document.getElementById('password') as HTMLInputElement;
-    if (password) password.value = 'oopsIdidit2times';
+    fireEvent.change(password, { target: { value: 'oopsIdidit2times' } });
 
-    expect(screen.getByDisplayValue('oopsIdidit2times') === password);
+    await waitFor(() => {
+      const passwordInput = screen.getByDisplayValue('oopsIdidit2times');
+      expect(password === passwordInput);
+    });
   });
 });
 
 describe('checking input value on Registration page', () => {
-  it('checking input value for first name on Registration page', () => {
+  it('checking input value for first name on Registration page', async () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
@@ -181,12 +187,15 @@ describe('checking input value on Registration page', () => {
     const firstName = document.getElementById('firstName') as HTMLInputElement;
     fireEvent.change(firstName, { target: { value: 'John' } });
 
-    expect(screen.getByDisplayValue('John') === firstName);
+    await waitFor(() => {
+      const firstNameInput = screen.getByDisplayValue('John');
+      expect(firstName === firstNameInput);
+    });
   });
 });
 
 describe('checking input value on Registration page', () => {
-  it('checking input value for last name on Registration page', () => {
+  it('checking input value for last name on Registration page', async () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
@@ -198,7 +207,10 @@ describe('checking input value on Registration page', () => {
     const lastName = document.getElementById('lastName') as HTMLInputElement;
     fireEvent.change(lastName, { target: { value: 'Dou' } });
 
-    expect(screen.getByDisplayValue('Dou') === lastName);
+    await waitFor(() => {
+      const lastNameInput = screen.getByDisplayValue('Dou');
+      expect(lastName === lastNameInput);
+    });
   });
 });
 
