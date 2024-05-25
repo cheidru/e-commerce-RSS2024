@@ -1,10 +1,26 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import store from './redux/store/store';
 import App from './App/App';
-import './index.css';
+import './assets/sass/style.scss';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root') as HTMLElement;
+const root = ReactDOM.createRoot(rootElement);
+
+root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <BrowserRouter
+        basename={
+          process.env.NODE_ENV === 'production'
+            ? '/e-commerce-deployment'
+            : '/e-commerce'
+        }
+      >
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );

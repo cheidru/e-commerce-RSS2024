@@ -18,7 +18,7 @@ module.exports = {
   "overrides": [
   ],
   "ignorePatterns": [
-    'dist', '.eslintrc.cjs', 'vite.config.ts'
+    'dist', '.eslintrc.cjs', 'vite.config.ts', 'coverage'
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -35,5 +35,6 @@ module.exports = {
   "rules": {
       // "react-refresh/only-export-components": ['warn', { allowConstantExport: true }],
     'react/react-in-jsx-scope': 0,
+    "react/jsx-props-no-spreading": "off",
   }
 }
