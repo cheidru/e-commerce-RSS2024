@@ -23,9 +23,9 @@ import {
 import store from '../../../redux/store/store';
 import Input from '../elements/input';
 import CheckBox from '../elements/checkBox';
+import Password from '../elements/password';
 
 function RegistrationForm(): React.ReactElement {
-  const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const navigate = useNavigate();
@@ -347,27 +347,14 @@ function RegistrationForm(): React.ReactElement {
           registerObject={register('email')}
         />
 
-        <div className="input-wrapper">
-          <label htmlFor="password">
-            Password*
-            <input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              className={`form__registration-password input-text ${errors.password ? 'error-background-input' : ''}`}
-              {...register('password', { onChange: () => trigger('password') })}
-            />
-          </label>
-          {errors.password && (
-            <div className="input-error">{errors.password.message}</div>
-          )}
-          <button
-            type="button"
-            className="btn-show"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? 'Hide' : 'Show'}
-          </button>
-        </div>
+        <Password
+          id="password"
+          title="Password"
+          isRequared
+          className="form__registration-password input-text"
+          errorMessage={errors.password?.message}
+          registerObject={register('password')}
+        />
       </div>
 
       <div className="input-wrapper-btn">
