@@ -14,9 +14,10 @@ import {
   formattedDataLogin,
 } from '../../../services/api/getCustomerToken';
 import store from '../../../redux/store/store';
+import Input from '../elements/input';
+import Password from '../elements/password';
 
 function LoginForm(): React.ReactElement {
-  const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const navigate = useNavigate();
@@ -36,7 +37,6 @@ function LoginForm(): React.ReactElement {
     register,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-    trigger,
   } = useForm<FormDataLogin>({
     resolver: yupResolver(validationSchemaLogin),
     mode: 'onChange',
@@ -73,51 +73,29 @@ function LoginForm(): React.ReactElement {
   return (
     <form className="form__login form" onSubmit={handleSubmit(onSubmit)}>
       <legend>Login</legend>
-      <div className="input-wrapper form__login-wrapper">
-        <label htmlFor="email">
-          Email*
-          <input
-            id="email"
-            type="text"
-            required
-            pattern="^\S*$"
-            placeholder={placeholder.email}
-            autoComplete="on"
-            className={`form__login-login input-text ${
-              errors.email ? 'error-background-input' : ''
-            }`}
-            {...register('email', {
-              onChange: () => {
-                trigger('email');
-              },
-            })}
-          />
-        </label>
-        {errors.email && (
-          <div className="input-error">{errors.email.message}</div>
-        )}
-      </div>
-      <div className="input-wrapper form__login-wrapper">
-        <label htmlFor="password">
-          Password*
-          <input
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            className={`form__login-password input-text ${errors.password ? 'error-background-input' : ''}`}
-            {...register('password', { onChange: () => trigger('password') })}
-          />
-        </label>
-        {errors.password && (
-          <div className="input-error">{errors.password.message}</div>
-        )}
-        <button
-          type="button"
-          className="btn-submit btn-show"
-          onClick={() => setShowPassword(!showPassword)}
-        >
-          {showPassword ? 'Hide' : 'Show'}
-        </button>
-      </div>
+
+      <Input
+        id="email"
+        classNameComponent="input-wrapper form__login-wrapper"
+        title="Email"
+        isRequared
+        placeholder={placeholder.email}
+        className="form__login-login input-text"
+        errorMessage={errors.email?.message}
+        registerObject={register('email')}
+      />
+
+      <Password
+        id="password"
+        classNameComponent="input-wrapper form__login-wrapper"
+        title="Password"
+        isRequared
+        className="form__registration-password input-text"
+        classNameButton="btn-submit btn-show"
+        errorMessage={errors.password?.message}
+        registerObject={register('password')}
+      />
+
       <div className="input-wrapper form__login-wrapper">
         <div className="input-error" id="errorsAnswer" />
         <button

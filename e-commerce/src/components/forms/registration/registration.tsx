@@ -24,6 +24,7 @@ import store from '../../../redux/store/store';
 import Input from '../elements/input';
 import CheckBox from '../elements/checkBox';
 import Password from '../elements/password';
+import Country from '../elements/country';
 
 function RegistrationForm(): React.ReactElement {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -54,7 +55,7 @@ function RegistrationForm(): React.ReactElement {
     trigger,
   } = useForm<FormDataRegister>({
     resolver: yupResolver(validationSchemaRegister),
-    mode: 'onChange',
+    mode: 'all',
   });
 
   // Disable button submit
@@ -157,7 +158,6 @@ function RegistrationForm(): React.ReactElement {
           id="dateOfBirth"
           inputType="date"
           title="Date of Birth"
-          placeholder={placeholder.dateOfBirth.toISOString()}
           isRequared
           errorMessage={errors.dateOfBirth?.message}
           registerObject={register('dateOfBirth')}
@@ -193,37 +193,20 @@ function RegistrationForm(): React.ReactElement {
               registerObject={register('address.city')}
             />
 
-            <div className="input-wrapper-address">
-              <label htmlFor="address.country">
-                Country*
-                <select
-                  id="address.country"
-                  className={`form__registration-adress input-text ${
-                    errors.address?.country ? 'error-background-input' : ''
-                  }`}
-                  {...register('address.country', {
-                    onBlur: () => trigger('address.country'),
-                  })}
-                  onChange={() =>
-                    setValue('address.postalCode', '', {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }
-                >
-                  <option value="-">--- Choose ---</option>
-                  <option value="BY">Belarus</option>
-                  <option value="GE">Georgia</option>
-                  <option value="RU">Russia</option>
-                  <option value="UA">Ukraine</option>
-                </select>
-              </label>
-              {errors.address?.country && (
-                <div className="input-error">
-                  {errors.address.country.message}
-                </div>
-              )}
-            </div>
+            <Country
+              id="address.country"
+              classNameComponent="input-wrapper-address"
+              isRequared
+              className="form__registration-adress input-text"
+              errorMessage={errors.address?.country?.message}
+              registerObject={register('address.country')}
+              onChangeHandler={() =>
+                setValue('address.postalCode', '', {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+            />
 
             <Input
               id="address.postalCode"
@@ -283,40 +266,25 @@ function RegistrationForm(): React.ReactElement {
               registerObject={register('addressInvoice.city')}
             />
 
-            <div className="input-wrapper-address">
-              <label htmlFor="addressInvoice.country">
-                Country*
-                <select
-                  id="addressInvoice.country"
-                  className={`form__registration-adress input-text ${
-                    errors.addressInvoice?.country && !watchShowAddressInvoice
-                      ? 'error-background-input'
-                      : ''
-                  }`}
-                  style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-                  {...register('addressInvoice.country', {
-                    onBlur: () => trigger('addressInvoice.country'),
-                  })}
-                  onChange={() =>
-                    setValue('addressInvoice.postalCode', '', {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }
-                >
-                  <option value="-">--- Choose ---</option>
-                  <option value="BY">Belarus</option>
-                  <option value="GE">Georgia</option>
-                  <option value="RU">Russia</option>
-                  <option value="UA">Ukraine</option>
-                </select>
-              </label>
-              {errors.addressInvoice?.country && !watchShowAddressInvoice && (
-                <div className="input-error">
-                  {errors.addressInvoice.country.message}
-                </div>
-              )}
-            </div>
+            <Country
+              id="addressInvoice.country"
+              classNameComponent="input-wrapper-address"
+              isRequared
+              className="form__registration-adress input-text"
+              errorMessage={
+                !watchShowAddressInvoice
+                  ? errors.addressInvoice?.country?.message
+                  : ''
+              }
+              style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
+              registerObject={register('addressInvoice.country')}
+              onChangeHandler={() =>
+                setValue('addressInvoice.postalCode', '', {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+            />
 
             <Input
               id="addressInvoice.postalCode"
