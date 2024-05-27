@@ -1,24 +1,26 @@
-type ProductCardProps = {
+export type ProductCardProps = {
   imageUrl: string;
-  inStock: boolean;
+  inStock?: boolean;
   onSale: boolean;
-  hasGift: boolean;
+  hasGift?: boolean;
   title: string;
-  newPrice: string;
-  oldPrice: string;
+  newPrice: number;
+  oldPrice?: number;
+  id: string;
 };
 
-function ProductCard({
+export function ProductCard({
   imageUrl,
-  inStock,
+  inStock = false,
   onSale,
-  hasGift,
+  hasGift = false,
   title,
   newPrice,
   oldPrice,
+  id,
 }: ProductCardProps) {
   return (
-    <div className="card">
+    <div className="card" data-id={id}>
       <div
         className="card__img"
         style={{ backgroundImage: `url(${imageUrl})` }}
@@ -35,5 +37,3 @@ function ProductCard({
     </div>
   );
 }
-
-export default ProductCard;

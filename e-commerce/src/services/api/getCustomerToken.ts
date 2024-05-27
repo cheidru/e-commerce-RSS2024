@@ -51,7 +51,7 @@ export async function createAccessToken() {
 
 export async function getAccessToken() {
   const appTokenStore = store.getState().appSlice.authToken;
-  if (appTokenStore) {
+  if (appTokenStore.expires_in) {
     return appTokenStore;
   }
 
