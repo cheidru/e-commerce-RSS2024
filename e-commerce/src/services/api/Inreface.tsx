@@ -12,8 +12,6 @@ export interface IAddressSend {
   city: string;
   country: string;
   postalCode: string;
-  key: string;
-  id: string;
 }
 export interface IUser {
   id: string;

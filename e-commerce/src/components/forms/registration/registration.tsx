@@ -18,8 +18,8 @@ import {
 import {
   registerNewCustomer,
   formattedDataRegister,
-  loginCustomer,
-} from '../../../services/api/getCustomerToken';
+} from '../../../services/api/register';
+import { login } from '../../../services/api/login';
 import store from '../../../redux/store/store';
 
 function RegistrationForm(): React.ReactElement {
@@ -105,9 +105,7 @@ function RegistrationForm(): React.ReactElement {
         }, 5000);
       }
     } else {
-      setUserLogIn(userNew);
-
-      const tokenNew = await loginCustomer(dataUser);
+      const tokenNew = await login(dataUser);
 
       if (tokenNew.statusCode) {
         const { message } = tokenNew;
@@ -119,7 +117,8 @@ function RegistrationForm(): React.ReactElement {
           }, 5000);
         }
       } else {
-        tokenNew.email = dataUser.email;
+        // tokenNew.email = dataUser.email;
+        setUserLogIn(userNew);
         setAuthUserToken(tokenNew);
         navigate(`/`);
       }
