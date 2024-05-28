@@ -1,4 +1,3 @@
-import env from './env';
 import { getAppToken } from './getAppToken';
 import { getUserToken } from './getUserToken';
 
@@ -10,7 +9,7 @@ async function customerInfo(email: string, token: string) {
   };
   const searchString = encodeURIComponent(`email="${email}"`);
   const answer = await fetch(
-    `${env.apiURL}/${env.projectKey}/customers?limit=1&offset=0&where=${searchString}`,
+    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/customers?limit=1&offset=0&where=${searchString}`,
     requestOptions
   );
   const answerJSON = await answer.json();

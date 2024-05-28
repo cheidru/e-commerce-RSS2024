@@ -1,17 +1,19 @@
 import { IAddress, IAddressSend, IRegisterSend } from './Inreface';
 import { FormDataRegister } from '../../components/forms/validationRulesInput';
 import { getAppToken } from './getAppToken';
-import env from './env';
 
 export async function register(customer: object, token: string) {
-  const answer = await fetch(`${env.apiURL}/${env.projectKey}/me/signup`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(customer),
-  });
+  const answer = await fetch(
+    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/me/signup`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(customer),
+    }
+  );
   const answerJSON = await answer.json();
   return answerJSON;
 }

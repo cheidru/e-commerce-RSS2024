@@ -1,4 +1,3 @@
-import env from './env';
 import store from '../../redux/store/store';
 import { AppToken } from '../../redux/store/appSlice';
 
@@ -10,12 +9,14 @@ function formattedAppTokenNew(token: AppToken): AppToken {
 }
 
 export async function createAccessToken() {
-  const auth = btoa(`${env.app.clientId}:${env.app.clientSecret}`);
+  const auth = btoa(
+    `${import.meta.env.VITE_CTP_CLIENT_ID}:${import.meta.env.VITE_CTP_CLIENT_SECRET}`
+  );
   const headers = new Headers({
     Authorization: `Basic ${auth}`,
   });
   const answer = await fetch(
-    `${env.authURL}/oauth/token?grant_type=client_credentials&scope=${env.app.scopes.join(' ')}`,
+    `${import.meta.env.VITE_CTP_AUTH_URL}/oauth/token?grant_type=client_credentials&scope=${import.meta.env.VITE_CTP_SCOPES}`,
     {
       method: 'POST',
       headers,
