@@ -1,5 +1,7 @@
 import { IProductResponse } from '../../services/api/InterfaceProduct';
 import { ProductCardProps } from '../../components/productCard/productCard';
+import { ICategoryesResponse } from '../../services/api/InterfaceCategories';
+import { CategoryProps } from '../../components/asideCatalogCategory/asideCatalogCategory';
 
 const converterDigit = (digit: number): number => {
   switch (digit) {
@@ -12,7 +14,7 @@ const converterDigit = (digit: number): number => {
   }
 };
 
-function formatedDataForCard(array: IProductResponse) {
+export function formatedDataForCard(array: IProductResponse) {
   const allproductsGet: ProductCardProps[] = [];
   array.results.forEach((product) => {
     const title: string = product.masterData.current.name.en;
@@ -45,4 +47,16 @@ function formatedDataForCard(array: IProductResponse) {
   return allproductsGet;
 }
 
-export default formatedDataForCard;
+export function formatedDataForCategory(array: ICategoryesResponse) {
+  const categories: CategoryProps[] = [];
+  array.results.forEach((category) => {
+    const name: string = category.name.en;
+    const { id } = category;
+    const propsCategory: CategoryProps = {
+      name,
+      id,
+    };
+    categories.push(propsCategory);
+  });
+  return categories;
+}

@@ -1,5 +1,6 @@
 import { getAccessToken } from './getCustomerToken';
 import { IProductResponse } from './InterfaceProduct';
+import { ICategoryesResponse } from './InterfaceCategories';
 
 export async function getProductsAll(): Promise<IProductResponse> {
   const myHeaders = new Headers();
@@ -54,6 +55,25 @@ export async function getProduct(id: string) {
   return result;
 }
 
+export async function getCategories(): Promise<ICategoryesResponse> {
+  const myHeaders = new Headers();
+  myHeaders.append('Authorization', 'Bearer DkNPdCgTpXJt_J9iJluQHvGQ0V6x8yMv');
+
+  const requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+  };
+
+  const answer = await fetch(
+    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/categories`,
+    requestOptions
+  );
+
+  const result = await answer.json();
+
+  return result;
+}
+
 // async function getProduct() {
 //   const myHeaders = new Headers();
 //   myHeaders.append('Authorization', 'Bearer DkNPdCgTpXJt_J9iJluQHvGQ0V6x8yMv');
@@ -75,5 +95,3 @@ export async function getProduct(id: string) {
 
 //   return result;
 // }
-
-export default getProductsAll;
