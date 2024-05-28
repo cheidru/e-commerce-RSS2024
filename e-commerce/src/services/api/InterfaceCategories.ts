@@ -12,12 +12,12 @@ interface Category {
   lastMessageSequenceNumber: number;
   lastModifiedAt: string;
   lastModifiedBy: {
-    clientId: 'MXjx0D7Jw1Cmi0ZqSHWq2MUJ';
+    clientId: string;
     isPlatformClient: false;
   };
-  name: { en: 'Door Levers' };
+  name: { en: string };
   orderHint: string;
-  slug: { en: 'door-levers' };
+  slug: { en: string };
   version: number;
   versionModifiedAt: string;
 }
