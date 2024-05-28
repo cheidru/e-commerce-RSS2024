@@ -57,7 +57,8 @@ export async function getProduct(id: string) {
 
 export async function getCategories(): Promise<ICategoryesResponse> {
   const myHeaders = new Headers();
-  myHeaders.append('Authorization', 'Bearer DkNPdCgTpXJt_J9iJluQHvGQ0V6x8yMv');
+  const appToken = await getAccessToken().then((result) => result.access_token);
+  myHeaders.append('Authorization', `Bearer ${appToken}`);
 
   const requestOptions = {
     method: 'GET',
