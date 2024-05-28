@@ -49,6 +49,11 @@ export function formatedDataForCard(array: IProductResponse) {
 
 export function formatedDataForCategory(array: ICategoryesResponse) {
   const categories: CategoryProps[] = [];
+  const categoryDefault: CategoryProps = {
+    name: 'All',
+    id: '0',
+  };
+  categories.push(categoryDefault);
   array.results.forEach((category) => {
     const name: string = category.name.en;
     const { id } = category;
