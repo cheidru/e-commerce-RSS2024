@@ -2,63 +2,30 @@ import './catalog.scss';
 import { useEffect, useState } from 'react';
 import { getProductsAll } from '../../services/api/getProducts';
 import { IProductResponse } from '../../services/api/InterfaceProduct';
+import formatedDataForCard from './formatedData';
 import {
   ProductCard,
   ProductCardProps,
 } from '../../components/productCard/productCard';
+import spinner from '../../assets/img/gif/spinner.gif';
 
 function Catalog() {
-  const allproducts1: ProductCardProps[] = [];
-  const [prodactCardProps, setProdactCardProps] = useState(allproducts1);
-  const converterDigit = (digit: number): number => {
-    switch (digit) {
-      case 1:
-        return 10;
-      case 2:
-        return 100;
-      default:
-        return 1;
-    }
-  };
+  const allproducts: ProductCardProps[] = [];
+  const [prodactCardProps, setProdactCardProps] = useState(allproducts);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const products = async () => {
-      const allproducts: ProductCardProps[] = [];
-      const getAllproducts: IProductResponse = await getProductsAll();
-      getAllproducts.results.forEach((product) => {
-        // console.log(product)
-        const title: string = product.masterData.current.name.en;
-        // const descriptionProduct: string =  product.masterData.current.description.en;
-        const { fractionDigits } =
-          product.masterData.staged.masterVariant.prices[0].value;
-        let priceOld: number =
-          product.masterData.staged.masterVariant.prices[0].value.centAmount;
-        priceOld /= converterDigit(fractionDigits);
-        let newPrice: number = priceOld;
-        let onSale = false;
-        if (product.masterData.staged.masterVariant.prices[0].discounted) {
-          newPrice =
-            product.masterData.staged.masterVariant.prices[0].discounted.value
-              .centAmount;
-          newPrice /= converterDigit(fractionDigits);
-          onSale = true;
-        }
-        // const currency: string = product.masterData.staged.masterVariant.prices[0].value.currencyCode;
-        const imageUrl: string =
-          product.masterData.staged.masterVariant.images[0].url;
-        const { id } = product;
-        // console.log(title, descriptionProduct, priceOld, newPrice, currency, imageUrl);
-        const propsCard: ProductCardProps = {
-          imageUrl,
-          onSale,
-          title,
-          newPrice,
-          id,
-        };
-        allproducts.push(propsCard);
-      });
-      setProdactCardProps(allproducts);
-      // console.log(allproducts);
+      try {
+        const getAllproducts: IProductResponse = await getProductsAll();
+        const allproductsGet = formatedDataForCard(getAllproducts);
+        setProdactCardProps(allproductsGet);
+      } catch {
+        setError('Failed to fetch products. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     // const productInfo = async (id:string) => {
@@ -71,6 +38,14 @@ function Catalog() {
     // productInfo(productForSale);
     // productInfo(productNotSale);
   }, []);
+
+  if (loading) {
+    return <img src={spinner} alt="loading..." />;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <>

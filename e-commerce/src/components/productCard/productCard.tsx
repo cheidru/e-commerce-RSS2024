@@ -25,9 +25,9 @@ export function ProductCard({
         className="card__img"
         style={{ backgroundImage: `url(${imageUrl})` }}
       >
-        if ({inStock}) <div className="label-in-stock">In stock</div>
-        if ({onSale}) <div className="label-sale">SALE</div>
-        if ({hasGift}) <div className="lebel-gift">Present</div>
+        {inStock && <div className="label-in-stock">In stock</div>}
+        {onSale && <div className="label-sale">SALE</div>}
+        {hasGift && <div className="lebel-gift">Present</div>}
       </div>
       <div className="card__info">
         <div className="card__info-title">{title}</div>
