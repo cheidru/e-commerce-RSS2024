@@ -9,7 +9,7 @@ import * as Pages from '../pages/pages';
 import './app.scss';
 import { useAppDispatch } from '../redux/hooks';
 import { setAppToken, setAppAccessToken } from '../redux/store/appSlice';
-import { createAccessToken } from '../services/api/getCustomerToken';
+import { createAccessToken } from '../services/api/getAppToken';
 import store from '../redux/store/store';
 
 function App() {

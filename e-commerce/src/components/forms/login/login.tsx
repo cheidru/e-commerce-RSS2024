@@ -8,14 +8,17 @@ import {
   placeholder,
 } from '../validationRulesInput';
 import { useAppDispatch } from '../../../redux/hooks';
-import { setAuthToken, AuthToken } from '../../../redux/store/userSlice';
 import {
-  loginCustomer,
-  formattedDataLogin,
-} from '../../../services/api/getCustomerToken';
+  setUserLogged,
+  User,
+  setAuthToken,
+  AuthToken,
+} from '../../../redux/store/userSlice';
+import { login } from '../../../services/api/login';
 import store from '../../../redux/store/store';
 import Input from '../elements/input';
 import Password from '../elements/password';
+import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 
 function LoginForm(): React.ReactElement {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -31,6 +34,9 @@ function LoginForm(): React.ReactElement {
   const dispatch = useAppDispatch();
   const setAuthUserToken = (tokenNew: AuthToken) => {
     dispatch(setAuthToken(tokenNew));
+  };
+  const setUserLogIn = (userNew: User) => {
+    dispatch(setUserLogged(userNew));
   };
 
   const {
@@ -48,9 +54,7 @@ function LoginForm(): React.ReactElement {
   }, [isValid, isDirty]);
 
   const onSubmit = async (data: FormDataLogin) => {
-    const dataUser = formattedDataLogin(data);
-
-    const tokenNew = await loginCustomer(dataUser);
+    const tokenNew = await login(data);
 
     if (tokenNew.statusCode) {
       const { message } = tokenNew;
@@ -62,8 +66,10 @@ function LoginForm(): React.ReactElement {
         }, 5000);
       }
     } else {
-      tokenNew.email = dataUser.email;
       setAuthUserToken(tokenNew);
+      const userInfo = await getCustomerInfo();
+
+      if (userInfo) setUserLogIn(userInfo);
 
       navigate(`/`);
     }

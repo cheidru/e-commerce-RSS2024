@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
 import {
   setUserLogged,
   User,
   setAuthToken,
   AuthToken,
+  logout,
 } from '../../../redux/store/userSlice';
 import {
   validationSchemaRegister,
@@ -25,19 +26,35 @@ import Input from '../elements/input';
 import CheckBox from '../elements/checkBox';
 import Password from '../elements/password';
 import Country from '../elements/country';
+import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 
 function UserProfile(): React.ReactElement {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const getUserInfo = async () => {
+    const userInfo = await getCustomerInfo();
+    if (!userInfo) {
+      dispatch(logout());
+      navigate(`/login`);
+    }
+    // There are here is a date about customer
+    dispatch(setUserLogged(userInfo));
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  });
 
   useEffect(() => {
     const appTokenStore = store.getState().userSlice.authToken.access_token;
-    if (appTokenStore.length > 0) {
-      navigate(`/`);
+    if (appTokenStore.length === 0) {
+      // the next line leads to an infinite test
+      // navigate(`/login`);
     }
   });
 
-  const dispatch = useAppDispatch();
   const setUserLogIn = (userNew: User) => {
     dispatch(setUserLogged(userNew));
   };
@@ -132,8 +149,8 @@ function UserProfile(): React.ReactElement {
   };
 
   return (
-    <form className="form__profile form" onSubmit={handleSubmit(onSubmit)}>
-      <legend>User Profile</legend>
+    <form className="form__registration form" onSubmit={handleSubmit(onSubmit)}>
+      <legend>Profile</legend>
 
       <div className="input-wrapper-line">
         <Input
@@ -332,16 +349,8 @@ function UserProfile(): React.ReactElement {
           className="btn-submit"
           disabled={isSubmitDisabled}
         >
-          Register
+          Save
         </button>
-      </div>
-      <div className="input-wrapper-link link-box">
-        <span className="link-text">
-          If you have an account, you can logIn here
-        </span>
-        <Link to="/login" className="btn-submit link">
-          Login
-        </Link>
       </div>
     </form>
   );
