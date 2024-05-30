@@ -12,6 +12,7 @@ type Props = {
   errorMessage?: string;
   style?: CSSProperties;
   registerObject: UseFormRegisterReturn;
+  disabled?: boolean;
 };
 
 function Input({
@@ -25,6 +26,7 @@ function Input({
   errorMessage,
   style,
   registerObject,
+  disabled,
 }: Props) {
   return (
     <div className={classNameComponent}>
@@ -33,6 +35,7 @@ function Input({
         {isRequared && '*'}
         <input
           id={id}
+          disabled={disabled}
           type={inputType}
           placeholder={placeholder}
           className={`${className} ${

@@ -23,7 +23,7 @@ import {
 } from '../../../services/api/getCustomerToken';
 import store from '../../../redux/store/store';
 import Input from '../elements/input';
-import CheckBox from '../elements/checkBox';
+// import CheckBox from '../elements/checkBox';
 import Password from '../elements/password';
 import Country from '../elements/country';
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
@@ -32,20 +32,6 @@ function UserProfile(): React.ReactElement {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const getUserInfo = async () => {
-    const userInfo = await getCustomerInfo();
-    if (!userInfo) {
-      dispatch(logout());
-      navigate(`/login`);
-    }
-    // There are here is a date about customer
-    dispatch(setUserLogged(userInfo));
-  };
-
-  useEffect(() => {
-    getUserInfo();
-  });
 
   useEffect(() => {
     const appTokenStore = store.getState().userSlice.authToken.access_token;
@@ -73,6 +59,25 @@ function UserProfile(): React.ReactElement {
   } = useForm<FormDataRegister>({
     resolver: yupResolver(validationSchemaRegister),
     mode: 'all',
+  });
+
+  const getUserInfo = async () => {
+    const userInfo = await getCustomerInfo();
+    if (!userInfo) {
+      dispatch(logout());
+      navigate(`/login`);
+    }
+    // There are here is a date about customer
+    dispatch(setUserLogged(userInfo));
+    setValue('firstName', userInfo.firstName);
+    setValue('lastName', userInfo.lastName);
+    setValue('dateOfBirth', userInfo.dateOfBirth);
+    setValue('email', userInfo.email);
+    setValue('password', userInfo.password);
+  };
+
+  useEffect(() => {
+    getUserInfo();
   });
 
   // Disable button submit
@@ -182,12 +187,7 @@ function UserProfile(): React.ReactElement {
       </div>
 
       <fieldset className="fieldset">
-        Address for shipping*
-        <CheckBox
-          id="address.default"
-          title="Use as default"
-          registerObject={register('address.default')}
-        />
+        Your addresses for shipping and billing
         <div className="input-wrapper-line">
           <div className="registration-adress">
             <Input
@@ -238,89 +238,6 @@ function UserProfile(): React.ReactElement {
         </div>
       </fieldset>
 
-      <CheckBox
-        id="addressForInvoice"
-        title="Is your shipping address the same as your billing address?"
-        registerObject={register('addressForInvoice')}
-      />
-
-      <fieldset className="fieldset" disabled={watchShowAddressInvoice}>
-        Address for invoices
-        <CheckBox
-          id="addressInvoice.default"
-          title="Use as default"
-          registerObject={register('addressInvoice.default')}
-        />
-        <div className="input-wrapper-line">
-          <div className="registration-adress">
-            <Input
-              id="addressInvoice.streetName"
-              classNameComponent="input-wrapper-address"
-              title="Street"
-              isRequared
-              className="form__registration-adress input-text"
-              errorMessage={
-                !watchShowAddressInvoice
-                  ? errors.addressInvoice?.streetName?.message
-                  : ''
-              }
-              style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-              registerObject={register('addressInvoice.streetName')}
-            />
-
-            <Input
-              id="addressInvoice.city"
-              classNameComponent="input-wrapper-address"
-              title="City"
-              isRequared
-              className="form__registration-adress input-text"
-              errorMessage={
-                !watchShowAddressInvoice
-                  ? errors.addressInvoice?.city?.message
-                  : ''
-              }
-              style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-              registerObject={register('addressInvoice.city')}
-            />
-
-            <Country
-              id="addressInvoice.country"
-              classNameComponent="input-wrapper-address"
-              isRequared
-              className="form__registration-adress input-text"
-              errorMessage={
-                !watchShowAddressInvoice
-                  ? errors.addressInvoice?.country?.message
-                  : ''
-              }
-              style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-              registerObject={register('addressInvoice.country')}
-              onChangeHandler={() =>
-                setValue('addressInvoice.postalCode', '', {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                })
-              }
-            />
-
-            <Input
-              id="addressInvoice.postalCode"
-              classNameComponent="input-wrapper-address"
-              title="POST Code"
-              isRequared
-              className="form__registration-adress input-text"
-              errorMessage={
-                !watchShowAddressInvoice
-                  ? errors.addressInvoice?.postalCode?.message
-                  : ''
-              }
-              style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-              registerObject={register('addressInvoice.postalCode')}
-            />
-          </div>
-        </div>
-      </fieldset>
-
       <div className="input-wrapper-line">
         <Input
           id="email"
@@ -330,6 +247,7 @@ function UserProfile(): React.ReactElement {
           className="form__registration-email input-text"
           errorMessage={errors.email?.message}
           registerObject={register('email')}
+          disabled
         />
 
         <Password
