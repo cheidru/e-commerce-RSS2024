@@ -109,3 +109,65 @@ export interface IProductResponse {
   total: number;
   results: Product[];
 }
+// Category Interface
+interface ProductCategoryProducts {
+  categories: {
+    typeId: string;
+    id: string;
+  };
+  categoryOrderHints: string;
+  createdAt: string;
+  description: {
+    en: string;
+  };
+  hasStagedChanges: boolean;
+  id: string;
+  lastModifiedAt: string;
+  masterVariant: {
+    assets: string[];
+    attributes: [
+      {
+        size: string;
+        name: string;
+        model: string;
+      },
+    ];
+    id: number;
+    images: Image[];
+    key: string;
+    prices: Price[];
+    sku: string;
+  };
+  metaDescription: {
+    en: string;
+  };
+  metaTitle: {
+    en: string;
+  };
+  name: {
+    en: string;
+  };
+  productType: {
+    typeId: string;
+    id: string;
+  };
+  published: boolean;
+  searchKeywords: string;
+  slug: {
+    en: string;
+  };
+  taxCategory: {
+    typeId: string;
+    id: string;
+  };
+  variants: Variant[];
+  version: number;
+}
+
+export interface IProductResponseCategory {
+  count: number;
+  facets: object;
+  limit: number;
+  offset: number;
+  results: ProductCategoryProducts[];
+}

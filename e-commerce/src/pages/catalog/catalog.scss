@@ -1,4 +1,27 @@
-.wrapper-catalog {
+.catalog {
   display: flex;
   flex-direction: column;
+  &-title {
+    margin-bottom: 40px;
+  }
+  &-wrapper {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    @media (max-width: 550px) {
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+    }
+  }
+  .categories {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+.catalog-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-evenly;
 }

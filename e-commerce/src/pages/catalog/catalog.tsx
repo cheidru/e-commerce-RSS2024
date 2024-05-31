@@ -1,34 +1,71 @@
 import './catalog.scss';
 import { useEffect, useState } from 'react';
-import { getProductsAll, getCategories } from '../../services/api/getProducts';
-import { IProductResponse } from '../../services/api/InterfaceProduct';
-import { ICategoryesResponse } from '../../services/api/InterfaceCategories';
-import { formatedDataForCard, formatedDataForCategory } from './formatedData';
+import {
+  getProductsAll,
+  getCategories,
+  getProductsSorted,
+} from '../../services/api/getProducts';
+import {
+  IProductResponse,
+  IProductResponseCategory,
+} from '../../services/api/InterfaceProduct';
+import { ICategoriesResponse } from '../../services/api/InterfaceCategories';
+import {
+  formattedDataForCard,
+  formattedDataForCategory,
+  formattedDataForCardInCategory,
+} from './formattedData';
 import {
   ProductCard,
   ProductCardProps,
 } from '../../components/productCard/productCard';
 import {
+  OnClickType,
   CategoryProps,
   Category,
 } from '../../components/asideCatalogCategory/asideCatalogCategory';
 import spinner from '../../assets/img/gif/spinner.gif';
 
 function Catalog() {
-  const allproducts: ProductCardProps[] = [];
-  const allcategories: CategoryProps[] = [];
+  const productsAll: ProductCardProps[] = [];
+  const categoriesAll: CategoryProps[] = [];
+  const categoryIdDefault: string = '0';
 
-  const [prodactCardProps, setProdactCardProps] = useState(allproducts);
-  const [categoryProps, setcategoryProps] = useState(allcategories);
+  const [productCardProps, setProductCardProps] = useState(productsAll);
+  const [categoryProps, setCategoryProps] = useState(categoriesAll);
+  const [categoryId, setCategoryId] = useState(categoryIdDefault);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  // render products for category
+  const productsCategory = async (categoryIdClick: string) => {
+    if (categoryIdClick === categoryIdDefault) {
+      const productsAllGet: IProductResponse = await getProductsAll();
+      const productsPropsAll = formattedDataForCard(productsAllGet);
+      setProductCardProps(productsPropsAll);
+    } else {
+      const products: IProductResponseCategory =
+        await getProductsSorted(categoryIdClick);
+      const productsProps = formattedDataForCardInCategory(products);
+      setProductCardProps(productsProps);
+    }
+  };
+
+  // Handle Clicked category
+  const handlerCategoryChoose: OnClickType['onClick'] = async (event) => {
+    const categoryChoiceIdClick = event.currentTarget.getAttribute('data-id');
+    if (categoryChoiceIdClick) {
+      setCategoryId(categoryChoiceIdClick);
+      await productsCategory(categoryChoiceIdClick);
+    }
+  };
 
   useEffect(() => {
     const products = async () => {
       try {
-        const getAllproducts: IProductResponse = await getProductsAll();
-        const allproductsGet = formatedDataForCard(getAllproducts);
-        setProdactCardProps(allproductsGet);
+        const productsAllGet: IProductResponse = await getProductsAll();
+        const productsProps = formattedDataForCard(productsAllGet);
+        setProductCardProps(productsProps);
       } catch {
         setError('Failed to fetch products. Please try again later.');
       } finally {
@@ -36,9 +73,12 @@ function Catalog() {
       }
     };
     const categories = async () => {
-      const categoriesAllGet: ICategoryesResponse = await getCategories();
-      const categoriesAll = formatedDataForCategory(categoriesAllGet);
-      setcategoryProps(categoriesAll);
+      const categoriesAllGet: ICategoriesResponse = await getCategories();
+      const categoriesAllData = formattedDataForCategory(
+        categoriesAllGet,
+        handlerCategoryChoose
+      );
+      setCategoryProps(categoriesAllData);
     };
 
     // const productInfo = async (id:string) => {
@@ -62,20 +102,27 @@ function Catalog() {
   }
 
   return (
-    <>
-      <h2 className="catalog free-page">Catalog</h2>
+    <section className="catalog">
+      <h2 className="catalog-title">Catalog</h2>
       <div className="catalog-wrapper">
         <aside className="categories">
           {categoryProps.map((category) => (
-            <Category {...category} key={category.id} />
+            <Category
+              key={category.id}
+              name={category.name}
+              id={category.id}
+              onClick={handlerCategoryChoose}
+              isCurrent={category.id === categoryId}
+            />
           ))}
-          <div className="category" />
         </aside>
-        {prodactCardProps.map((product) => (
-          <ProductCard {...product} key={product.id} />
-        ))}
+        <div className="catalog-products">
+          {productCardProps.map((product) => (
+            <ProductCard {...product} key={product.id} />
+          ))}
+        </div>
       </div>
-    </>
+    </section>
   );
 }
 

@@ -22,7 +22,7 @@ interface Category {
   versionModifiedAt: string;
 }
 
-export interface ICategoryesResponse {
+export interface ICategoriesResponse {
   count: number;
   limit: number;
   offset: number;

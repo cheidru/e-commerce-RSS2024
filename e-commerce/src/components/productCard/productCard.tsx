@@ -4,8 +4,10 @@ export type ProductCardProps = {
   onSale: boolean;
   hasGift?: boolean;
   title: string;
+  description: string;
   newPrice: number;
-  oldPrice?: number;
+  oldPrice: number;
+  currency: string;
   id: string;
 };
 
@@ -15,8 +17,10 @@ export function ProductCard({
   onSale,
   hasGift = false,
   title,
+  description,
   newPrice,
   oldPrice,
+  currency,
   id,
 }: ProductCardProps) {
   return (
@@ -27,12 +31,21 @@ export function ProductCard({
       >
         {inStock && <div className="label-in-stock">In stock</div>}
         {onSale && <div className="label-sale">SALE</div>}
-        {hasGift && <div className="lebel-gift">Present</div>}
+        {hasGift && <div className="label-gift">Present</div>}
       </div>
       <div className="card__info">
         <div className="card__info-title">{title}</div>
-        <span className="price-new">${newPrice}</span>
-        <span className="price-old">${oldPrice}</span>
+        <div className="card__info-description">{description}</div>
+        <span className="price-new">
+          {currency}
+          {newPrice}
+        </span>
+        {onSale && (
+          <span className="price-old">
+            {currency}
+            {oldPrice}
+          </span>
+        )}
       </div>
     </div>
   );
