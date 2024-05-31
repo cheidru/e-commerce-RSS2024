@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 type Props = {
@@ -6,11 +6,12 @@ type Props = {
   classNameComponent?: string;
   title: string;
   placeholder?: string;
-  isRequared: boolean;
+  isRequared?: boolean;
   className?: string;
   classNameButton?: string;
   errorMessage?: string;
   style?: CSSProperties;
+  after?: ReactNode;
   registerObject: UseFormRegisterReturn;
 };
 
@@ -24,6 +25,7 @@ function Password({
   classNameButton = 'btn-show',
   errorMessage,
   style,
+  after,
   registerObject,
 }: Props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,6 +34,7 @@ function Password({
     <div className={classNameComponent}>
       <label htmlFor={id}>
         {title}
+        {after}
         {isRequared && '*'}
         <input
           id={id}

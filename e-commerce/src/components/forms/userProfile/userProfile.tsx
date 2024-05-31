@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 import { useAppDispatch } from '../../../redux/hooks';
 import {
   setUserLogged,
@@ -23,15 +25,77 @@ import {
 } from '../../../services/api/getCustomerToken';
 import store from '../../../redux/store/store';
 import Input from '../elements/input';
-// import CheckBox from '../elements/checkBox';
 import Password from '../elements/password';
 import Country from '../elements/country';
+import ButtonEdit from '../elements/buttonEdit';
+import ChangePassword from '../floatForms/changePassword';
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 
 function UserProfile(): React.ReactElement {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  // Modal.setAppElement('#root');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const customStyles = {
+    content: {
+      top: '20%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -20%)',
+    },
+  };
+
+  const showToast = ({
+    message,
+    thisError,
+  }: {
+    message: string;
+    thisError: boolean;
+  }) => {
+    if (!thisError) {
+      toast.success(message, {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: 'white',
+          backgroundColor: 'green',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'green',
+        },
+      });
+    } else {
+      toast.error(message, {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: 'red',
+          backgroundColor: 'pink',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'red',
+        },
+      });
+    }
+  };
+
+  const modalContent = (
+    <ChangePassword closeModal={closeModal} showToast={showToast} />
+  );
 
   useEffect(() => {
     const appTokenStore = store.getState().userSlice.authToken.access_token;
@@ -66,14 +130,15 @@ function UserProfile(): React.ReactElement {
     if (!userInfo) {
       dispatch(logout());
       navigate(`/login`);
+    } else {
+      // There are here is a date about customer
+      dispatch(setUserLogged(userInfo));
+      setValue('firstName', userInfo.firstName);
+      setValue('lastName', userInfo.lastName);
+      setValue('dateOfBirth', userInfo.dateOfBirth);
+      setValue('email', userInfo.email);
+      setValue('password', userInfo.password);
     }
-    // There are here is a date about customer
-    dispatch(setUserLogged(userInfo));
-    setValue('firstName', userInfo.firstName);
-    setValue('lastName', userInfo.lastName);
-    setValue('dateOfBirth', userInfo.dateOfBirth);
-    setValue('email', userInfo.email);
-    setValue('password', userInfo.password);
   };
 
   useEffect(() => {
@@ -154,123 +219,137 @@ function UserProfile(): React.ReactElement {
   };
 
   return (
-    <form className="form__registration form" onSubmit={handleSubmit(onSubmit)}>
-      <legend>Profile</legend>
+    <>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+      >
+        {modalContent}
+      </Modal>
+      <form
+        className="form__registration form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <legend>Profile</legend>
 
-      <div className="input-wrapper-line">
-        <Input
-          id="firstName"
-          title="first Name"
-          placeholder={placeholder.firstName}
-          isRequared
-          errorMessage={errors.firstName?.message}
-          registerObject={register('firstName')}
-        />
-
-        <Input
-          id="lastName"
-          title="last Name"
-          placeholder={placeholder.lastName}
-          isRequared
-          errorMessage={errors.lastName?.message}
-          registerObject={register('lastName')}
-        />
-
-        <Input
-          id="dateOfBirth"
-          inputType="date"
-          title="Date of Birth"
-          isRequared
-          errorMessage={errors.dateOfBirth?.message}
-          registerObject={register('dateOfBirth')}
-        />
-      </div>
-
-      <fieldset className="fieldset">
-        Your addresses for shipping and billing
         <div className="input-wrapper-line">
-          <div className="registration-adress">
-            <Input
-              id="address.streetName"
-              classNameComponent="input-wrapper-address"
-              title="Street"
-              isRequared
-              className="form__registration-adress input-text"
-              errorMessage={errors.address?.streetName?.message}
-              registerObject={register('address.streetName')}
-            />
+          <Input
+            id="firstName"
+            title="first Name"
+            placeholder={placeholder.firstName}
+            isRequared
+            errorMessage={errors.firstName?.message}
+            registerObject={register('firstName')}
+          />
 
-            <Input
-              id="address.city"
-              classNameComponent="input-wrapper-address"
-              title="City"
-              isRequared
-              className="form__registration-adress input-text"
-              errorMessage={errors.address?.city?.message}
-              registerObject={register('address.city')}
-            />
+          <Input
+            id="lastName"
+            title="last Name"
+            placeholder={placeholder.lastName}
+            isRequared
+            errorMessage={errors.lastName?.message}
+            registerObject={register('lastName')}
+          />
 
-            <Country
-              id="address.country"
-              classNameComponent="input-wrapper-address"
-              isRequared
-              className="form__registration-adress input-text"
-              errorMessage={errors.address?.country?.message}
-              registerObject={register('address.country')}
-              onChangeHandler={() =>
-                setValue('address.postalCode', '', {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                })
-              }
-            />
-
-            <Input
-              id="address.postalCode"
-              classNameComponent="input-wrapper-address"
-              title="POST Code"
-              isRequared
-              className="form__registration-adress input-text"
-              errorMessage={errors.address?.postalCode?.message}
-              registerObject={register('address.postalCode')}
-            />
-          </div>
+          <Input
+            id="dateOfBirth"
+            inputType="date"
+            title="Date of Birth"
+            isRequared
+            errorMessage={errors.dateOfBirth?.message}
+            registerObject={register('dateOfBirth')}
+          />
         </div>
-      </fieldset>
 
-      <div className="input-wrapper-line">
-        <Input
-          id="email"
-          classNameComponent="input-wrapper"
-          title="Email"
-          isRequared
-          className="form__registration-email input-text"
-          errorMessage={errors.email?.message}
-          registerObject={register('email')}
-          disabled
-        />
+        <fieldset className="fieldset">
+          Your addresses for shipping and billing
+          <div className="input-wrapper-line">
+            <div className="registration-adress">
+              <Input
+                id="address.streetName"
+                classNameComponent="input-wrapper-address"
+                title="Street"
+                isRequared
+                className="form__registration-adress input-text"
+                errorMessage={errors.address?.streetName?.message}
+                registerObject={register('address.streetName')}
+              />
 
-        <Password
-          id="password"
-          title="Password"
-          isRequared
-          className="form__registration-password input-text"
-          errorMessage={errors.password?.message}
-          registerObject={register('password')}
-        />
-      </div>
+              <Input
+                id="address.city"
+                classNameComponent="input-wrapper-address"
+                title="City"
+                isRequared
+                className="form__registration-adress input-text"
+                errorMessage={errors.address?.city?.message}
+                registerObject={register('address.city')}
+              />
 
-      <div className="input-wrapper-btn">
-        <div className="input-error" id="errorsAnswer" />
-        <button
-          type="submit"
-          className="btn-submit"
-          disabled={isSubmitDisabled}
-        >
-          Save
-        </button>
-      </div>
-    </form>
+              <Country
+                id="address.country"
+                classNameComponent="input-wrapper-address"
+                isRequared
+                className="form__registration-adress input-text"
+                errorMessage={errors.address?.country?.message}
+                registerObject={register('address.country')}
+                onChangeHandler={() =>
+                  setValue('address.postalCode', '', {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  })
+                }
+              />
+
+              <Input
+                id="address.postalCode"
+                classNameComponent="input-wrapper-address"
+                title="POST Code"
+                isRequared
+                className="form__registration-adress input-text"
+                errorMessage={errors.address?.postalCode?.message}
+                registerObject={register('address.postalCode')}
+              />
+            </div>
+          </div>
+        </fieldset>
+
+        <div className="input-wrapper-line">
+          <Input
+            id="email"
+            classNameComponent="input-wrapper"
+            title="Email"
+            isRequared
+            className="form__registration-email input-text"
+            errorMessage={errors.email?.message}
+            registerObject={register('email')}
+            disabled
+          />
+
+          <Password
+            id="password"
+            title="Password"
+            isRequared
+            className="form__registration-password input-text"
+            errorMessage={errors.password?.message}
+            after={<ButtonEdit id="buttonEditPassword" onClick={openModal} />}
+            registerObject={register('password')}
+          />
+        </div>
+
+        <div className="input-wrapper-btn">
+          <div className="input-error" id="errorsAnswer" />
+          <button
+            type="submit"
+            className="btn-submit"
+            disabled={isSubmitDisabled}
+          >
+            Save
+          </button>
+        </div>
+      </form>
+      <Toaster position="top-right" reverseOrder={false} />
+    </>
   );
 }
 

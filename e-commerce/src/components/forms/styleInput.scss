@@ -201,3 +201,23 @@ label {
     position: absolute;
   }
 }
+.formComponents-buttonEdit-position-absolute {
+  position: absolute;
+  border: none;
+  background-color: unset;
+  padding: 0;
+  margin: 0;
+  position: fixed;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.formComponents-buttons-position-absolute-right {
+  position: absolute;
+  border: none;
+  background-color: unset;
+  padding: 0;
+  margin: 0;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
