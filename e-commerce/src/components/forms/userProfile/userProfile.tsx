@@ -32,30 +32,9 @@ import ChangePassword from '../floatForms/changePassword';
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 
 function UserProfile(): React.ReactElement {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  // Modal.setAppElement('#root');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  const customStyles = {
-    content: {
-      top: '20%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -20%)',
-    },
-  };
 
   const showToast = ({
     message,
@@ -93,8 +72,30 @@ function UserProfile(): React.ReactElement {
     }
   };
 
-  const modalContent = (
-    <ChangePassword closeModal={closeModal} showToast={showToast} />
+  const [modalPasswordIsOpen, setModalPasswordIsOpen] = useState(false);
+  // Modal.setAppElement('#root');
+
+  const openModalPassword = () => {
+    setModalPasswordIsOpen(true);
+  };
+
+  const closeModalPassword = () => {
+    setModalPasswordIsOpen(false);
+  };
+
+  const modalStyles = {
+    content: {
+      top: '20%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -20%)',
+    },
+  };
+
+  const modalPasswordContent = (
+    <ChangePassword closeModal={closeModalPassword} showToast={showToast} />
   );
 
   useEffect(() => {
@@ -221,11 +222,11 @@ function UserProfile(): React.ReactElement {
   return (
     <>
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
+        isOpen={modalPasswordIsOpen}
+        onRequestClose={closeModalPassword}
+        style={modalStyles}
       >
-        {modalContent}
+        {modalPasswordContent}
       </Modal>
       <form
         className="form__registration form"
@@ -332,7 +333,9 @@ function UserProfile(): React.ReactElement {
             isRequared
             className="form__registration-password input-text"
             errorMessage={errors.password?.message}
-            after={<ButtonEdit id="buttonEditPassword" onClick={openModal} />}
+            after={
+              <ButtonEdit id="buttonEditPassword" onClick={openModalPassword} />
+            }
             registerObject={register('password')}
           />
         </div>
