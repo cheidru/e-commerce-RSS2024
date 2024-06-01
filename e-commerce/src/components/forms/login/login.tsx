@@ -8,15 +8,19 @@ import {
   placeholder,
 } from '../validationRulesInput';
 import { useAppDispatch } from '../../../redux/hooks';
-import { setAuthToken, AuthToken } from '../../../redux/store/userSlice';
 import {
-  loginCustomer,
-  formattedDataLogin,
-} from '../../../services/api/getCustomerToken';
+  setUserLogged,
+  User,
+  setAuthToken,
+  AuthToken,
+} from '../../../redux/store/userSlice';
+import { login } from '../../../services/api/login';
 import store from '../../../redux/store/store';
+import Input from '../elements/input';
+import Password from '../elements/password';
+import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 
 function LoginForm(): React.ReactElement {
-  const [showPassword, setShowPassword] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const navigate = useNavigate();
@@ -31,12 +35,14 @@ function LoginForm(): React.ReactElement {
   const setAuthUserToken = (tokenNew: AuthToken) => {
     dispatch(setAuthToken(tokenNew));
   };
+  const setUserLogIn = (userNew: User) => {
+    dispatch(setUserLogged(userNew));
+  };
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-    trigger,
   } = useForm<FormDataLogin>({
     resolver: yupResolver(validationSchemaLogin),
     mode: 'onChange',
@@ -48,9 +54,7 @@ function LoginForm(): React.ReactElement {
   }, [isValid, isDirty]);
 
   const onSubmit = async (data: FormDataLogin) => {
-    const dataUser = formattedDataLogin(data);
-
-    const tokenNew = await loginCustomer(dataUser);
+    const tokenNew = await login(data);
 
     if (tokenNew.statusCode) {
       const { message } = tokenNew;
@@ -62,8 +66,10 @@ function LoginForm(): React.ReactElement {
         }, 5000);
       }
     } else {
-      tokenNew.email = dataUser.email;
       setAuthUserToken(tokenNew);
+      const userInfo = await getCustomerInfo();
+
+      if (userInfo) setUserLogIn(userInfo);
 
       navigate(`/`);
     }
@@ -73,51 +79,29 @@ function LoginForm(): React.ReactElement {
   return (
     <form className="form__login form" onSubmit={handleSubmit(onSubmit)}>
       <legend>Login</legend>
-      <div className="input-wrapper form__login-wrapper">
-        <label htmlFor="email">
-          Email*
-          <input
-            id="email"
-            type="text"
-            required
-            pattern="^\S*$"
-            placeholder={placeholder.email}
-            autoComplete="on"
-            className={`form__login-login input-text ${
-              errors.email ? 'error-background-input' : ''
-            }`}
-            {...register('email', {
-              onChange: () => {
-                trigger('email');
-              },
-            })}
-          />
-        </label>
-        {errors.email && (
-          <div className="input-error">{errors.email.message}</div>
-        )}
-      </div>
-      <div className="input-wrapper form__login-wrapper">
-        <label htmlFor="password">
-          Password*
-          <input
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            className={`form__login-password input-text ${errors.password ? 'error-background-input' : ''}`}
-            {...register('password', { onChange: () => trigger('password') })}
-          />
-        </label>
-        {errors.password && (
-          <div className="input-error">{errors.password.message}</div>
-        )}
-        <button
-          type="button"
-          className="btn-submit btn-show"
-          onClick={() => setShowPassword(!showPassword)}
-        >
-          {showPassword ? 'Hide' : 'Show'}
-        </button>
-      </div>
+
+      <Input
+        id="email"
+        classNameComponent="input-wrapper form__login-wrapper"
+        title="Email"
+        isRequared
+        placeholder={placeholder.email}
+        className="form__login-login input-text"
+        errorMessage={errors.email?.message}
+        registerObject={register('email')}
+      />
+
+      <Password
+        id="password"
+        classNameComponent="input-wrapper form__login-wrapper"
+        title="Password"
+        isRequared
+        className="form__registration-password input-text"
+        classNameButton="btn-submit btn-show"
+        errorMessage={errors.password?.message}
+        registerObject={register('password')}
+      />
+
       <div className="input-wrapper form__login-wrapper">
         <div className="input-error" id="errorsAnswer" />
         <button
