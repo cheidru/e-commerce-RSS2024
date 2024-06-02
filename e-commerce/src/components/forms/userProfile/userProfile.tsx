@@ -129,12 +129,7 @@ function UserProfile(): React.ReactElement {
     mode: 'all',
   });
 
-  function checkBoxSet(
-    userInfo: object,
-    checkboxID: string,
-    address: string,
-    defaultID: string
-  ) {
+  function checkBoxSet(checkboxID: string, address: string, defaultID: string) {
     const chkbox = document.getElementById(checkboxID);
     if (address === defaultID) {
       chkbox?.setAttribute('checked', '');
@@ -162,7 +157,6 @@ function UserProfile(): React.ReactElement {
       setValue(
         'address.default',
         checkBoxSet(
-          userInfo,
           'address.default',
           userInfo.addresses[0].id,
           userInfo.defaultShippingAddressId
@@ -175,7 +169,6 @@ function UserProfile(): React.ReactElement {
       setValue(
         'addressInvoice.default',
         checkBoxSet(
-          userInfo,
           'addressInvoice.default',
           userInfo.addresses[1].id,
           userInfo.defaultBillingAddressId
@@ -185,7 +178,6 @@ function UserProfile(): React.ReactElement {
       setValue('addressInvoice.country', userInfo.addresses[1].country);
       setValue('addressInvoice.streetName', userInfo.addresses[1].streetName);
       setValue('addressInvoice.postalCode', userInfo.addresses[1].postalCode);
-      // console.log(userInfo);
     }
   };
 
@@ -405,6 +397,9 @@ function UserProfile(): React.ReactElement {
                 />
               </div>
             </div>
+            <button className="add-address btn-show" type="button">
+              +
+            </button>
           </fieldset>
 
           <CheckBox
@@ -488,6 +483,9 @@ function UserProfile(): React.ReactElement {
                 />
               </div>
             </div>
+            <button className="add-address btn-show" type="button">
+              +
+            </button>
           </fieldset>
 
           <div className="input-wrapper-btn">

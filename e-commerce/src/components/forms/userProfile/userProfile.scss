@@ -11,6 +11,20 @@
   margin-bottom: 20px;
 }
 
+.fieldset .btn-show {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  font-size: 2rem;
+}
+
+.fieldset .input-wrapper-address {
+  margin: 0;
+}
+
 .profile-fieldset {
   border: none;
 }
