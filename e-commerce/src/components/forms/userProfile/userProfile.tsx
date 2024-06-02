@@ -129,8 +129,24 @@ function UserProfile(): React.ReactElement {
     mode: 'all',
   });
 
+  function checkBoxSet(
+    userInfo: object,
+    checkboxID: string,
+    address: string,
+    defaultID: string
+  ) {
+    const chkbox = document.getElementById(checkboxID);
+    if (address === defaultID) {
+      chkbox?.setAttribute('checked', '');
+    } else {
+      chkbox?.setAttribute('unchecked', '');
+    }
+    return true;
+  }
+
   const getUserInfo = async () => {
     const userInfo = await getCustomerInfo();
+
     if (!userInfo) {
       dispatch(logout());
       navigate(`/login`);
@@ -142,10 +158,29 @@ function UserProfile(): React.ReactElement {
       setValue('dateOfBirth', userInfo.dateOfBirth);
       setValue('email', userInfo.email);
       setValue('password', userInfo.password);
+
+      setValue(
+        'address.default',
+        checkBoxSet(
+          userInfo,
+          'address.default',
+          userInfo.addresses[0].id,
+          userInfo.defaultShippingAddressId
+        )
+      );
       setValue('address.city', userInfo.addresses[0].city);
       setValue('address.country', userInfo.addresses[0].country);
       setValue('address.streetName', userInfo.addresses[0].streetName);
       setValue('address.postalCode', userInfo.addresses[0].postalCode);
+      setValue(
+        'addressInvoice.default',
+        checkBoxSet(
+          userInfo,
+          'addressInvoice.default',
+          userInfo.addresses[1].id,
+          userInfo.defaultBillingAddressId
+        )
+      );
       setValue('addressInvoice.city', userInfo.addresses[1].city);
       setValue('addressInvoice.country', userInfo.addresses[1].country);
       setValue('addressInvoice.streetName', userInfo.addresses[1].streetName);
