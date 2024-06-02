@@ -20,7 +20,7 @@ interface Price {
   };
 }
 
-interface Image {
+export interface Image {
   url: string;
   dimensions: {
     w: number;
@@ -42,6 +42,12 @@ interface Variant {
   attributes: Attribute[];
   assets: string; // []
 }
+interface Categories {
+  categories: {
+    typeId: string;
+    id: string;
+  }[];
+}
 
 interface Current {
   name: {
@@ -50,10 +56,7 @@ interface Current {
   description: {
     en: string;
   };
-  categories: {
-    typeId: string;
-    id: string;
-  }[];
+  categories: Categories;
   categoryOrderHints: string; // object
   slug: {
     en: string;
@@ -75,7 +78,24 @@ interface MasterData {
   published: boolean;
   hasStagedChanges: boolean;
 }
-
+interface CreatedBy {
+  createdBy: {
+    clientId: string;
+    isPlatformClient: boolean;
+  };
+}
+interface ProductType {
+  productType: {
+    typeId: string;
+    id: string;
+  };
+}
+interface TaxCategory {
+  taxCategory: {
+    typeId: string;
+    id: string;
+  };
+}
 interface Product {
   id: string;
   version: number;
@@ -86,19 +106,10 @@ interface Product {
   lastModifiedBy: {
     isPlatformClient: boolean;
   };
-  createdBy: {
-    clientId: string;
-    isPlatformClient: boolean;
-  };
-  productType: {
-    typeId: string;
-    id: string;
-  };
+  createdBy: CreatedBy;
+  productType: ProductType;
   masterData: MasterData;
-  taxCategory: {
-    typeId: string;
-    id: string;
-  };
+  taxCategory: TaxCategory;
   lastVariantId: number;
 }
 
@@ -111,57 +122,34 @@ export interface IProductResponse {
 }
 // Category Interface
 interface ProductCategoryProducts {
-  categories: {
-    typeId: string;
-    id: string;
+  id: string;
+  version: number;
+  productType: ProductType;
+  name: {
+    en: string;
   };
-  categoryOrderHints: string;
-  createdAt: string;
   description: {
     en: string;
   };
-  hasStagedChanges: boolean;
-  id: string;
-  lastModifiedAt: string;
-  masterVariant: {
-    assets: string[];
-    attributes: [
-      {
-        size: string;
-        name: string;
-        model: string;
-      },
-    ];
-    id: number;
-    images: Image[];
-    key: string;
-    prices: Price[];
-    sku: string;
-  };
-  metaDescription: {
+  categories: Categories;
+  categoryOrderHints: string;
+  slug: {
     en: string;
   };
   metaTitle: {
     en: string;
   };
-  name: {
+  metaDescription: {
     en: string;
-  };
-  productType: {
-    typeId: string;
-    id: string;
-  };
-  published: boolean;
-  searchKeywords: string;
-  slug: {
-    en: string;
-  };
-  taxCategory: {
-    typeId: string;
-    id: string;
   };
   variants: Variant[];
-  version: number;
+  masterVariant: Variant;
+  searchKeywords: string;
+  hasStagedChanges: boolean;
+  published: boolean;
+  taxCategory: TaxCategory;
+  createdAt: string;
+  lastModifiedAt: string;
 }
 
 export interface IProductResponseCategory {
@@ -170,4 +158,22 @@ export interface IProductResponseCategory {
   limit: number;
   offset: number;
   results: ProductCategoryProducts[];
+}
+
+/* Page product */
+export interface IProductPage {
+  createdAt: CreatedBy;
+  createdBy: CreatedBy;
+  id: string;
+  lastMessageSequenceNumber: number;
+  lastModifiedAt: string;
+  lastModifiedBy: {
+    isPlatformClient: boolean;
+  };
+  lastVariantId: number;
+  masterData: MasterData;
+  productType: ProductType;
+  taxCategory: TaxCategory;
+  version: number;
+  versionModifiedAt: string;
 }

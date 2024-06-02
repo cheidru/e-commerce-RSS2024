@@ -6,7 +6,7 @@ export type OnClickType = {
 export interface CategoryProps {
   name: string;
   id: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   isCurrent: boolean;
 }
 

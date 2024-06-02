@@ -1,5 +1,5 @@
 export type ProductCardProps = {
-  imageUrl: string;
+  imageUrl: string[];
   inStock?: boolean;
   onSale: boolean;
   hasGift?: boolean;
@@ -9,6 +9,7 @@ export type ProductCardProps = {
   oldPrice: number;
   currency: string;
   id: string;
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 export function ProductCard({
@@ -21,13 +22,14 @@ export function ProductCard({
   newPrice,
   oldPrice,
   currency,
+  onClick,
   id,
 }: ProductCardProps) {
   return (
-    <div className="card" data-id={id}>
+    <div className="card" data-id={id} onClick={onClick} aria-hidden="true">
       <div
         className="card__img"
-        style={{ backgroundImage: `url(${imageUrl})` }}
+        style={{ backgroundImage: `url(${imageUrl[0]})` }}
       >
         {inStock && <div className="label-in-stock">In stock</div>}
         {onSale && <div className="label-sale">SALE</div>}

@@ -1,17 +1,14 @@
 import './catalog.scss';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  getProductsAll,
   getCategories,
   getProductsSorted,
+  SortField,
 } from '../../services/api/getProducts';
-import {
-  IProductResponse,
-  IProductResponseCategory,
-} from '../../services/api/InterfaceProduct';
+import { IProductResponseCategory } from '../../services/api/InterfaceProduct';
 import { ICategoriesResponse } from '../../services/api/InterfaceCategories';
 import {
-  formattedDataForCard,
   formattedDataForCategory,
   formattedDataForCardInCategory,
 } from './formattedData';
@@ -29,7 +26,8 @@ import spinner from '../../assets/img/gif/spinner.gif';
 function Catalog() {
   const productsAll: ProductCardProps[] = [];
   const categoriesAll: CategoryProps[] = [];
-  const categoryIdDefault: string = '0';
+  const categoryIdDefault: string = 'exists';
+  const navigate = useNavigate();
 
   const [productCardProps, setProductCardProps] = useState(productsAll);
   const [categoryProps, setCategoryProps] = useState(categoriesAll);
@@ -39,16 +37,10 @@ function Catalog() {
 
   // render products for category
   const productsCategory = async (categoryIdClick: string) => {
-    if (categoryIdClick === categoryIdDefault) {
-      const productsAllGet: IProductResponse = await getProductsAll();
-      const productsPropsAll = formattedDataForCard(productsAllGet);
-      setProductCardProps(productsPropsAll);
-    } else {
-      const products: IProductResponseCategory =
-        await getProductsSorted(categoryIdClick);
-      const productsProps = formattedDataForCardInCategory(products);
-      setProductCardProps(productsProps);
-    }
+    const products: IProductResponseCategory =
+      await getProductsSorted(categoryIdClick);
+    const productsProps = formattedDataForCardInCategory(products);
+    setProductCardProps(productsProps);
   };
 
   // Handle Clicked category
@@ -59,12 +51,38 @@ function Catalog() {
       await productsCategory(categoryChoiceIdClick);
     }
   };
+  // Handle category sorted
+  const handleSortChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const sortFieldKey = event.target.value as SortField;
+    const sortedProducts = await getProductsSorted(categoryId, sortFieldKey);
+    const sortedProductsProps = formattedDataForCardInCategory(sortedProducts);
+    setProductCardProps(sortedProductsProps);
+  };
+
+  // Open product page
+  const openProduct = async (id: string) => {
+    if (id) {
+      navigate(`/product/${id}`);
+    }
+  };
+  // Handle Clicked product
+  const handlerProductChoose: (
+    event: React.MouseEvent<HTMLDivElement>
+  ) => void = async (event) => {
+    const productChoiceClick = event.currentTarget.getAttribute('data-id');
+    if (productChoiceClick) {
+      await openProduct(productChoiceClick);
+    }
+  };
 
   useEffect(() => {
     const products = async () => {
       try {
-        const productsAllGet: IProductResponse = await getProductsAll();
-        const productsProps = formattedDataForCard(productsAllGet);
+        const productsAllGet: IProductResponseCategory =
+          await getProductsSorted(categoryIdDefault);
+        const productsProps = formattedDataForCardInCategory(productsAllGet);
         setProductCardProps(productsProps);
       } catch {
         setError('Failed to fetch products. Please try again later.');
@@ -74,23 +92,12 @@ function Catalog() {
     };
     const categories = async () => {
       const categoriesAllGet: ICategoriesResponse = await getCategories();
-      const categoriesAllData = formattedDataForCategory(
-        categoriesAllGet,
-        handlerCategoryChoose
-      );
+      const categoriesAllData = formattedDataForCategory(categoriesAllGet);
       setCategoryProps(categoriesAllData);
     };
 
-    // const productInfo = async (id:string) => {
-    //   const oneProduct: IProductResponse = await getProduct(id);
-    //   //console.log('oneProduct', oneProduct)
-    // }
-    // const productForSale = '52df2b34-33ea-491f-a95d-e9d7224d9a7c';
-    // const productNotSale = '4c3156fc-706e-4675-a80a-2d1249e1b72d';
     products();
     categories();
-    // productInfo(productForSale);
-    // productInfo(productNotSale);
   }, []);
 
   if (loading) {
@@ -117,8 +124,27 @@ function Catalog() {
           ))}
         </aside>
         <div className="catalog-products">
+          <div className="catalog-sort">
+            <label htmlFor="site-search">
+              Search the site:
+              <input type="search" id="site-search" name="q" />
+              <button type="button">Search</button>
+            </label>
+            <select id="sorted-products" onChange={handleSortChange}>
+              <option value={SortField.Default}>Sort by</option>
+              <option value={SortField.PriceAsc}>Lowest price</option>
+              <option value={SortField.PriceDesc}>Highest price</option>
+              <option value={SortField.CreatedAt}>What&apos;s New</option>
+              <option value={SortField.NameAsc}>Name (A To Z)</option>
+              <option value={SortField.NameDesc}>Name (Z To A)</option>
+            </select>
+          </div>
           {productCardProps.map((product) => (
-            <ProductCard {...product} key={product.id} />
+            <ProductCard
+              {...product}
+              key={product.id}
+              onClick={handlerProductChoose}
+            />
           ))}
         </div>
       </div>

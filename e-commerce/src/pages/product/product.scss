@@ -1,5 +1,23 @@
 .product {
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  &-wrapper {
+    display: flex;
+    gap: 50px;
+  }
+  &__img-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 400px;
+    & > * {
+      width: 100px;
+    }
+  }
+}
+.product__img-main:nth-child(1) {
+  width: 400px;
+}
+.product__img-main:nth-child(1) {
+  min-width: 300px;
 }
