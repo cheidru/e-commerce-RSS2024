@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAppDispatch } from '../../../redux/hooks';
+import { setUserLogged } from '../../../redux/store/userSlice';
 import { changePassword } from '../../../services/api/changePassword';
+import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 import {
   validationSchema,
   FormDataChangePassword,
@@ -23,6 +26,7 @@ type Props = {
 
 function ChangePassword({ closeModal, showToast }: Props) {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -50,6 +54,10 @@ function ChangePassword({ closeModal, showToast }: Props) {
         const { message } = result;
         showToast({ message, thisError: true });
       } else {
+        const userInfo = await getCustomerInfo(true);
+        if (userInfo) {
+          dispatch(setUserLogged(userInfo));
+        }
         showToast({
           message: 'Password changed successfully',
           thisError: false,

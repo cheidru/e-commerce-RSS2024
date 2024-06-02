@@ -1,3 +1,4 @@
+import store from '../../redux/store/store';
 import { getAppToken } from './getAppToken';
 import { getUserToken } from './getUserToken';
 
@@ -16,7 +17,10 @@ async function customerInfo(email: string, token: string) {
   return answerJSON;
 }
 
-export async function getCustomerInfo() {
+export async function getCustomerInfo(update = false) {
+  const userInfo = store.getState().userSlice.user;
+  if (userInfo.email !== '' && !update) return userInfo;
+
   const appToken = await getAppToken();
   if (!appToken) return undefined;
   const userToken = await getUserToken();

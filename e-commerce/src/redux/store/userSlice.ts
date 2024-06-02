@@ -34,7 +34,7 @@ if (someToken) {
   savedToken = JSON.parse(someToken);
 }
 
-const userInitial: User = {
+export const userInitial: User = {
   id: '',
   email: '',
   firstName: '',

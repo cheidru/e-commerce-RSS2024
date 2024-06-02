@@ -36,6 +36,11 @@ function formattedDataAddress(data: IAddress): IAddressSend {
   return result;
 }
 
+function dateToStringForServerZone(date: Date): string {
+  // 2010-10-23
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
 export function formattedDataRegister(data: FormDataRegister): IRegisterSend {
   const addressShipping = formattedDataAddress(data.address);
   const addresses = [addressShipping];
@@ -50,7 +55,7 @@ export function formattedDataRegister(data: FormDataRegister): IRegisterSend {
     password: data.password,
     firstName: data.firstName,
     lastName: data.lastName,
-    dateOfBirth: data.dateOfBirth.toISOString().slice(0, 10),
+    dateOfBirth: dateToStringForServerZone(data.dateOfBirth),
     addresses,
     shippingAddresses: [0],
     billingAddresses: data.addressForInvoice ? [0] : [1],

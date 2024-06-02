@@ -123,7 +123,7 @@ function UserProfile(): React.ReactElement {
     setValue,
     watch,
     formState: { errors, isValid, isDirty },
-    trigger,
+    // trigger,
   } = useForm<FormDataRegister>({
     resolver: yupResolver(validationSchemaRegister),
     mode: 'all',
@@ -152,7 +152,7 @@ function UserProfile(): React.ReactElement {
       setValue('lastName', userInfo.lastName);
       setValue('dateOfBirth', userInfo.dateOfBirth);
       setValue('email', userInfo.email);
-      setValue('password', userInfo.password);
+      setValue('password', '********');
 
       setValue(
         'address.default',
@@ -194,32 +194,32 @@ function UserProfile(): React.ReactElement {
   const watchShowAddressInvoice = watch('addressForInvoice', false);
 
   // Watch the shipping address fields
-  const watchShippingAddressStreet = watch('address.streetName', '');
-  const watchShippingAddressCity = watch('address.city', '');
-  const watchShippingAddressCountry = watch('address.country', '');
-  const watchShippingAddressPostalCode = watch('address.postalCode', '');
-  const watchAddressDefault = watch('address.default', false);
+  // const watchShippingAddressStreet = watch('address.streetName', '');
+  // const watchShippingAddressCity = watch('address.city', '');
+  // const watchShippingAddressCountry = watch('address.country', '');
+  // const watchShippingAddressPostalCode = watch('address.postalCode', '');
+  // const watchAddressDefault = watch('address.default', false);
 
   // Sync invoice address with shipping address when checkbox is checked
-  useEffect(() => {
-    if (watchShowAddressInvoice) {
-      setValue('addressInvoice.streetName', watchShippingAddressStreet);
-      setValue('addressInvoice.city', watchShippingAddressCity);
-      setValue('addressInvoice.country', watchShippingAddressCountry);
-      setValue('addressInvoice.postalCode', watchShippingAddressPostalCode);
-      setValue('addressInvoice.default', watchAddressDefault);
-      trigger('address');
-    }
-  }, [
-    watchShowAddressInvoice,
-    watchShippingAddressStreet,
-    watchShippingAddressCity,
-    watchShippingAddressCountry,
-    watchShippingAddressPostalCode,
-    watchAddressDefault,
-    setValue,
-    trigger,
-  ]);
+  // useEffect(() => {
+  //   if (watchShowAddressInvoice) {
+  //     setValue('addressInvoice.streetName', watchShippingAddressStreet);
+  //     setValue('addressInvoice.city', watchShippingAddressCity);
+  //     setValue('addressInvoice.country', watchShippingAddressCountry);
+  //     setValue('addressInvoice.postalCode', watchShippingAddressPostalCode);
+  //     setValue('addressInvoice.default', watchAddressDefault);
+  //     trigger('address');
+  //   }
+  // }, [
+  //   watchShowAddressInvoice,
+  //   watchShippingAddressStreet,
+  //   watchShippingAddressCity,
+  //   watchShippingAddressCountry,
+  //   watchShippingAddressPostalCode,
+  //   watchAddressDefault,
+  //   setValue,
+  //   trigger,
+  // ]);
 
   const onSubmit = async (data: FormDataRegister) => {
     const dataUser = formattedDataRegister(data);
@@ -264,6 +264,7 @@ function UserProfile(): React.ReactElement {
         isOpen={modalPasswordIsOpen}
         onRequestClose={closeModalPassword}
         style={modalStyles}
+        ariaHideApp={false}
       >
         {modalPasswordContent}
       </Modal>

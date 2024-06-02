@@ -9,7 +9,9 @@ import * as Pages from '../pages/pages';
 import './app.scss';
 import { useAppDispatch } from '../redux/hooks';
 import { setAppToken, setAppAccessToken } from '../redux/store/appSlice';
+import { logout, setUserLogged } from '../redux/store/userSlice';
 import { createAccessToken } from '../services/api/getAppToken';
+import { getCustomerInfo } from '../services/api/getCustomerInfo';
 import store from '../redux/store/store';
 
 function App() {
@@ -22,13 +24,8 @@ function App() {
       navigateTo = `/${startLocationParts[1]}`;
     }
   }
-  useEffect(() => {
-    if (navigateTo) {
-      navigate(`/${navigateTo}`);
-    }
-  });
   const dispatch = useAppDispatch();
-  useEffect(() => {
+  const getInitialDate = async () => {
     const appTokenStore = store.getState().appSlice.authToken;
     const currenDateValue = new Date().getTime() / 1000;
     if (
@@ -36,8 +33,18 @@ function App() {
       appTokenStore.access_token === ''
     ) {
       dispatch(setAppAccessToken('fetching'));
-      createAccessToken().then((tokenNew) => dispatch(setAppToken(tokenNew)));
+      const appToken = await createAccessToken();
+      dispatch(setAppToken(appToken));
     }
+    const userInfo = await getCustomerInfo();
+    if (!userInfo) dispatch(logout());
+    else dispatch(setUserLogged(userInfo));
+    if (navigateTo) {
+      navigate(`/${navigateTo}`);
+    }
+  };
+  useEffect(() => {
+    getInitialDate();
   });
 
   return (
