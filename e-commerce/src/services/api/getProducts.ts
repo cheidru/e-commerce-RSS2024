@@ -71,46 +71,21 @@ export async function getProductsSorted(
   url.searchParams.append('filter', filterCategory);
   url.searchParams.append('sort', sortFieldGet);
   url.searchParams.append('priceCurrency', 'USD');
-  // const url =  `${urlProject}/product-projections/search?filter=categories.id:"${categoryId}"&sort="${sortFieldGet}"&priceCurrency=USD`
+
   const answer = await fetch(url.toString(), options);
 
   const categoryProducts = await answer.json();
   return categoryProducts;
 }
-/** ************************************************* */
-// Sorted
-// export async function getProductsSorted(
-//   categoryId: string
-// ): Promise<IProductResponseCategory> {
-//   const options = await requestOptions();
 
-//   const answer = await fetch(
-//     `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/product-projections/search?filter=categories.id:"${categoryId}"`,
-//     options
-//   );
+export async function searchProducts(value: string) {
+  const options = await requestOptions();
+  const language = 'en';
+  const fuzzy = true;
+  const url = `${urlProject}/product-projections/search?text.${language}=${value}&fuzzy=${fuzzy}`;
 
-//   const categoryProducts = await answer.json();
-//   return categoryProducts;
-// }
-/** ************************************** */
-// async function getProduct(id: string) {
-//   const myHeaders = new Headers();
-//   myHeaders.append('Authorization', 'Bearer DkNPdCgTpXJt_J9iJluQHvGQ0V6x8yMv');
+  const answer = await fetch(url, options);
+  const result = await answer.json();
 
-//   // const urlencoded = new URLSearchParams();
-
-//   const requestOptions = {
-//     method: 'GET',
-//     headers: myHeaders,
-//     // body: urlencoded,
-//   };
-
-//   const answer = await fetch(
-//     `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/products?limit=8&offset=2&sort=masterData.current.name.en asc`,
-//     requestOptions
-//   );
-
-//   const result = await answer.json();
-
-//   return result;
-// }
+  return result;
+}

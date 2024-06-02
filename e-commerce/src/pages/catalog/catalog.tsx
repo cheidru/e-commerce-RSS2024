@@ -1,10 +1,11 @@
 import './catalog.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   getCategories,
   getProductsSorted,
   SortField,
+  searchProducts,
 } from '../../services/api/getProducts';
 import { IProductResponseCategory } from '../../services/api/InterfaceProduct';
 import { ICategoriesResponse } from '../../services/api/InterfaceCategories';
@@ -28,12 +29,14 @@ function Catalog() {
   const categoriesAll: CategoryProps[] = [];
   const categoryIdDefault: string = 'exists';
   const navigate = useNavigate();
+  const searchQueryDefault: string = '';
 
   const [productCardProps, setProductCardProps] = useState(productsAll);
   const [categoryProps, setCategoryProps] = useState(categoriesAll);
   const [categoryId, setCategoryId] = useState(categoryIdDefault);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState(searchQueryDefault);
 
   // render products for category
   const productsCategory = async (categoryIdClick: string) => {
@@ -59,6 +62,19 @@ function Catalog() {
     const sortedProducts = await getProductsSorted(categoryId, sortFieldKey);
     const sortedProductsProps = formattedDataForCardInCategory(sortedProducts);
     setProductCardProps(sortedProductsProps);
+  };
+  // Handle Search Panel
+  const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+  const handleSearchPanel: OnClickType['onClick'] = async () => {
+    if (searchQuery.length > 1) {
+      const searchResponse = await searchProducts(searchQuery);
+      const searchResponseProductProps =
+        formattedDataForCardInCategory(searchResponse);
+      setProductCardProps(searchResponseProductProps);
+      setSearchQuery('');
+    }
   };
 
   // Open product page
@@ -127,8 +143,16 @@ function Catalog() {
           <div className="catalog-sort">
             <label htmlFor="site-search">
               Search the site:
-              <input type="search" id="site-search" name="q" />
-              <button type="button">Search</button>
+              <input
+                type="search"
+                id="site-search"
+                name="search"
+                value={searchQuery}
+                onChange={handleChangeInputSearch}
+              />
+              <button type="button" onClick={handleSearchPanel}>
+                Search
+              </button>
             </label>
             <select id="sorted-products" onChange={handleSortChange}>
               <option value={SortField.Default}>Sort by</option>
