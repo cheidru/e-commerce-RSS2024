@@ -28,3 +28,29 @@
 .profile-fieldset {
   border: none;
 }
+
+.textfield-component {
+  width: 100%;
+  display: block;
+  font-weight: bold;
+  color: #555;
+  font-size: 14px;
+}
+
+.textfield-title {
+  text-align: start;
+  // margin-bottom: 8px;
+  // font-weight: bold;
+  // color: #555;
+  // font-size: 14px;
+}
+
+.textfield-body {
+  text-align: start;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #8b8989;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+}

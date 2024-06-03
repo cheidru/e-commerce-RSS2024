@@ -15,7 +15,6 @@ import {
 import {
   validationSchemaRegister,
   FormDataRegister,
-  placeholder,
 } from '../validationRulesInput';
 /* API */
 import {
@@ -25,10 +24,11 @@ import {
 } from '../../../services/api/getCustomerToken';
 import store from '../../../redux/store/store';
 import Input from '../elements/input';
+import TextField from '../elements/textField';
 import Country from '../elements/country';
 import ButtonEdit from '../elements/buttonEdit';
 import CheckBox from '../elements/checkBox';
-// import ChangePassword from '../floatForms/changePassword';
+import ChangePassword from '../floatForms/changePassword';
 import UserMainData from '../floatForms/userMainData';
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 // import { boolean } from 'yup';
@@ -75,17 +75,17 @@ function UserProfile(): React.ReactElement {
     }
   };
 
-  // const [modalPasswordIsOpen, setModalPasswordIsOpen] = useState(false);
+  const [modalPasswordIsOpen, setModalPasswordIsOpen] = useState(false);
   const [modalMainIsOpen, setModalMainIsOpen] = useState(false);
   // Modal.setAppElement('#root');
 
-  // const openModalPassword = () => {
-  //   setModalPasswordIsOpen(true);
-  // };
+  const openModalPassword = () => {
+    setModalPasswordIsOpen(true);
+  };
 
-  // const closeModalPassword = () => {
-  //   setModalPasswordIsOpen(false);
-  // };
+  const closeModalPassword = () => {
+    setModalPasswordIsOpen(false);
+  };
 
   const openModalMain = () => {
     setModalMainIsOpen(true);
@@ -95,16 +95,16 @@ function UserProfile(): React.ReactElement {
     setModalMainIsOpen(false);
   };
 
-  // const modalStyles = {
-  //   content: {
-  //     top: '20%',
-  //     left: '50%',
-  //     right: 'auto',
-  //     bottom: 'auto',
-  //     marginRight: '-50%',
-  //     transform: 'translate(-50%, -20%)',
-  //   },
-  // };
+  const modalStyles = {
+    content: {
+      top: '20%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -20%)',
+    },
+  };
 
   const modalStylesMain = {
     content: {
@@ -118,9 +118,9 @@ function UserProfile(): React.ReactElement {
     },
   };
 
-  // const modalPasswordContent = (
-  //   <ChangePassword closeModal={closeModalPassword} showToast={showToast} />
-  // );
+  const modalPasswordContent = (
+    <ChangePassword closeModal={closeModalPassword} showToast={showToast} />
+  );
 
   const modalMainContent = (
     <UserMainData closeModal={closeModalMain} showToast={showToast} />
@@ -265,235 +265,229 @@ function UserProfile(): React.ReactElement {
       </Modal>
 
       <ButtonEdit id="buttonEditMain" onClick={openModalMain} />
-      {/* <Modal
+      <Modal
         isOpen={modalPasswordIsOpen}
         onRequestClose={closeModalPassword}
         style={modalStyles}
         ariaHideApp={false}
       >
         {modalPasswordContent}
-      </Modal> */}
-      <form className="form__profile form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="input-wrapper-header">
-          <legend>Profile</legend>
-          <button
-            className="btn-show"
-            type="button"
-            onClick={() => {
-              setIsEditDisabled(!isEditDisabled);
-            }}
-          >
-            {isEditDisabled ? 'Edit' : 'Cancel'}
-          </button>
-        </div>
+      </Modal>
+      <div className="input-wrapper-header">
+        <legend>Profile</legend>
 
-        <div
-          className="form__profile profile-fieldset"
-          // disabled={isEditDisabled}
+        <button
+          className="btn-show"
+          type="button"
+          onClick={() => {
+            setIsEditDisabled(!isEditDisabled);
+          }}
         >
-          <div className="input-wrapper-line">
-            <Input
-              id="firstName"
-              title="first Name"
-              placeholder={placeholder.firstName}
-              isRequared
-              errorMessage={errors.firstName?.message}
-              registerObject={register('firstName')}
-            />
+          {isEditDisabled ? 'Edit' : 'Cancel'}
+        </button>
 
-            <Input
-              id="lastName"
-              title="last Name"
-              placeholder={placeholder.lastName}
-              isRequared
-              errorMessage={errors.lastName?.message}
-              registerObject={register('lastName')}
-            />
+        <button className="btn-show" type="button" onClick={openModalPassword}>
+          {isEditDisabled ? 'Edit' : 'Cancel'}
+        </button>
+      </div>
 
-            <Input
-              id="dateOfBirth"
-              inputType="date"
-              title="Date of Birth"
-              isRequared
-              errorMessage={errors.dateOfBirth?.message}
-              registerObject={register('dateOfBirth')}
-            />
-          </div>
-
-          <div className="input-wrapper-line">
-            <Input
-              id="email"
-              classNameComponent="input-wrapper"
-              title="Email"
-              isRequared
-              className="form__profile-email input-text"
-              errorMessage={errors.email?.message}
-              registerObject={register('email')}
-              disabled
-            />
-
-            {/* <ButtonEdit
-              id="buttonEditPassword"
-              onClick={openModalPassword}
-            /> */}
-          </div>
-
-          <fieldset className="fieldset">
-            Address for shipping*
-            <CheckBox
-              id="address.default"
-              title="Use as default"
-              registerObject={register('address.default')}
-            />
-            <div className="input-wrapper-line">
-              <div className="registration-adress">
-                <Input
-                  id="address.streetName"
-                  classNameComponent="input-wrapper-address"
-                  title="Street"
-                  isRequared
-                  className="form__profile-adress input-text"
-                  errorMessage={errors.address?.streetName?.message}
-                  registerObject={register('address.streetName')}
-                />
-
-                <Input
-                  id="address.city"
-                  classNameComponent="input-wrapper-address"
-                  title="City"
-                  isRequared
-                  className="form__profile-adress input-text"
-                  errorMessage={errors.address?.city?.message}
-                  registerObject={register('address.city')}
-                />
-
-                <Country
-                  id="address.country"
-                  classNameComponent="input-wrapper-address"
-                  isRequared
-                  className="form__profile-adress input-text"
-                  errorMessage={errors.address?.country?.message}
-                  registerObject={register('address.country')}
-                  onChangeHandler={() =>
-                    setValue('address.postalCode', '', {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }
-                />
-
-                <Input
-                  id="address.postalCode"
-                  classNameComponent="input-wrapper-address"
-                  title="POST Code"
-                  isRequared
-                  className="form__profile-adress input-text"
-                  errorMessage={errors.address?.postalCode?.message}
-                  registerObject={register('address.postalCode')}
-                />
-              </div>
-            </div>
-            <button className="add-address btn-show" type="button">
-              +
-            </button>
-          </fieldset>
-
-          <CheckBox
-            id="addressForInvoice"
-            title="Is your shipping address the same as your billing address?"
-            registerObject={register('addressForInvoice')}
+      <div className="form__profile profile-fieldset">
+        <div className="input-wrapper-line">
+          <TextField
+            classNameComponent="textfield-component"
+            classNameTitle="textfield-title"
+            classNameBody="textfield-body"
+            title="first Name"
+            value="first Name"
           />
 
-          <fieldset className="fieldset" disabled={watchShowAddressInvoice}>
-            Address for invoices
-            <CheckBox
-              id="addressInvoice.default"
-              title="Use as default"
-              registerObject={register('addressInvoice.default')}
-            />
-            <div className="input-wrapper-line">
-              <div className="registration-adress">
-                <Input
-                  id="addressInvoice.streetName"
-                  classNameComponent="input-wrapper-address"
-                  title="Street"
-                  isRequared
-                  className="form__profile-adress input-text"
-                  errorMessage={
-                    !watchShowAddressInvoice
-                      ? errors.addressInvoice?.streetName?.message
-                      : ''
-                  }
-                  style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-                  registerObject={register('addressInvoice.streetName')}
-                />
+          <TextField
+            classNameComponent="textfield-component"
+            classNameTitle="textfield-title"
+            classNameBody="textfield-body"
+            title="last Name"
+            value="last Name"
+          />
 
-                <Input
-                  id="addressInvoice.city"
-                  classNameComponent="input-wrapper-address"
-                  title="City"
-                  isRequared
-                  className="form__profile-adress input-text"
-                  errorMessage={
-                    !watchShowAddressInvoice
-                      ? errors.addressInvoice?.city?.message
-                      : ''
-                  }
-                  style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-                  registerObject={register('addressInvoice.city')}
-                />
+          <TextField
+            classNameComponent="textfield-component"
+            classNameTitle="textfield-title"
+            classNameBody="textfield-body"
+            title="Date of Birth"
+            value="Date of Birth"
+          />
 
-                <Country
-                  id="addressInvoice.country"
-                  classNameComponent="input-wrapper-address"
-                  isRequared
-                  className="form__profile-adress input-text"
-                  errorMessage={
-                    !watchShowAddressInvoice
-                      ? errors.addressInvoice?.country?.message
-                      : ''
-                  }
-                  style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-                  registerObject={register('addressInvoice.country')}
-                  onChangeHandler={() =>
-                    setValue('addressInvoice.postalCode', '', {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }
-                />
+          <TextField
+            classNameComponent="textfield-component"
+            classNameTitle="textfield-title"
+            classNameBody="textfield-body"
+            title="Email"
+            value="Email"
+          />
 
-                <Input
-                  id="addressInvoice.postalCode"
-                  classNameComponent="input-wrapper-address"
-                  title="POST Code"
-                  isRequared
-                  className="form__profile-adress input-text"
-                  errorMessage={
-                    !watchShowAddressInvoice
-                      ? errors.addressInvoice?.postalCode?.message
-                      : ''
-                  }
-                  style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
-                  registerObject={register('addressInvoice.postalCode')}
-                />
-              </div>
+          {/* <ButtonEdit
+                id="buttonEditPassword"
+                onClick={openModalPassword}
+              /> */}
+        </div>
+      </div>
+
+      <form className="form__profile form" onSubmit={handleSubmit(onSubmit)}>
+        <fieldset className="fieldset">
+          Address for shipping*
+          <CheckBox
+            id="address.default"
+            title="Use as default"
+            registerObject={register('address.default')}
+          />
+          <div className="input-wrapper-line">
+            <div className="registration-adress">
+              <Input
+                id="address.streetName"
+                classNameComponent="input-wrapper-address"
+                title="Street"
+                isRequared
+                className="form__profile-adress input-text"
+                errorMessage={errors.address?.streetName?.message}
+                registerObject={register('address.streetName')}
+              />
+
+              <Input
+                id="address.city"
+                classNameComponent="input-wrapper-address"
+                title="City"
+                isRequared
+                className="form__profile-adress input-text"
+                errorMessage={errors.address?.city?.message}
+                registerObject={register('address.city')}
+              />
+
+              <Country
+                id="address.country"
+                classNameComponent="input-wrapper-address"
+                isRequared
+                className="form__profile-adress input-text"
+                errorMessage={errors.address?.country?.message}
+                registerObject={register('address.country')}
+                onChangeHandler={() =>
+                  setValue('address.postalCode', '', {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  })
+                }
+              />
+
+              <Input
+                id="address.postalCode"
+                classNameComponent="input-wrapper-address"
+                title="POST Code"
+                isRequared
+                className="form__profile-adress input-text"
+                errorMessage={errors.address?.postalCode?.message}
+                registerObject={register('address.postalCode')}
+              />
             </div>
-            <button className="add-address btn-show" type="button">
-              +
-            </button>
-          </fieldset>
-
-          <div className="input-wrapper-btn">
-            <div className="input-error" id="errorsAnswer" />
-            <button
-              type="submit"
-              className="btn-submit"
-              disabled={isSubmitDisabled}
-            >
-              Save
-            </button>
           </div>
+          <button className="add-address btn-show" type="button">
+            +
+          </button>
+        </fieldset>
+
+        <CheckBox
+          id="addressForInvoice"
+          title="Is your shipping address the same as your billing address?"
+          registerObject={register('addressForInvoice')}
+        />
+
+        <fieldset className="fieldset" disabled={watchShowAddressInvoice}>
+          Address for invoices
+          <CheckBox
+            id="addressInvoice.default"
+            title="Use as default"
+            registerObject={register('addressInvoice.default')}
+          />
+          <div className="input-wrapper-line">
+            <div className="registration-adress">
+              <Input
+                id="addressInvoice.streetName"
+                classNameComponent="input-wrapper-address"
+                title="Street"
+                isRequared
+                className="form__profile-adress input-text"
+                errorMessage={
+                  !watchShowAddressInvoice
+                    ? errors.addressInvoice?.streetName?.message
+                    : ''
+                }
+                style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
+                registerObject={register('addressInvoice.streetName')}
+              />
+
+              <Input
+                id="addressInvoice.city"
+                classNameComponent="input-wrapper-address"
+                title="City"
+                isRequared
+                className="form__profile-adress input-text"
+                errorMessage={
+                  !watchShowAddressInvoice
+                    ? errors.addressInvoice?.city?.message
+                    : ''
+                }
+                style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
+                registerObject={register('addressInvoice.city')}
+              />
+
+              <Country
+                id="addressInvoice.country"
+                classNameComponent="input-wrapper-address"
+                isRequared
+                className="form__profile-adress input-text"
+                errorMessage={
+                  !watchShowAddressInvoice
+                    ? errors.addressInvoice?.country?.message
+                    : ''
+                }
+                style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
+                registerObject={register('addressInvoice.country')}
+                onChangeHandler={() =>
+                  setValue('addressInvoice.postalCode', '', {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  })
+                }
+              />
+
+              <Input
+                id="addressInvoice.postalCode"
+                classNameComponent="input-wrapper-address"
+                title="POST Code"
+                isRequared
+                className="form__profile-adress input-text"
+                errorMessage={
+                  !watchShowAddressInvoice
+                    ? errors.addressInvoice?.postalCode?.message
+                    : ''
+                }
+                style={watchShowAddressInvoice ? { color: '#CCC' } : {}}
+                registerObject={register('addressInvoice.postalCode')}
+              />
+            </div>
+          </div>
+          <button className="add-address btn-show" type="button">
+            +
+          </button>
+        </fieldset>
+
+        <div className="input-wrapper-btn">
+          <div className="input-error" id="errorsAnswer" />
+          <button
+            type="submit"
+            className="btn-submit"
+            disabled={isSubmitDisabled}
+          >
+            Save
+          </button>
         </div>
       </form>
       <Toaster position="top-right" reverseOrder={false} />

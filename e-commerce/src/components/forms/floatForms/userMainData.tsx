@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { userInitial } from '../../../redux/store/userSlice';
 import {
   validationSchemaMain,
   ValidationSchemaCall,
@@ -25,23 +24,25 @@ type Props = {
 
 function UserMainData({ closeModal, showToast }: Props) {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  const [user, setUser] = useState(userInitial);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid, isDirty },
   } = useForm<ValidationSchemaCall>({
     resolver: yupResolver(validationSchemaMain),
     mode: 'all',
   });
 
-  const getUserInfo = async () => {
-    const userInfo = await getCustomerInfo();
-    setUser(userInfo);
-  };
-
   useEffect(() => {
+    const getUserInfo = async () => {
+      const userInfo = await getCustomerInfo();
+      setValue('firstName', userInfo.firstName);
+      setValue('lastName', userInfo.lastName);
+      setValue('dateOfBirth', userInfo.dateOfBirth);
+      setValue('email', userInfo.email);
+    };
     getUserInfo();
   });
 
@@ -70,7 +71,6 @@ function UserMainData({ closeModal, showToast }: Props) {
           <Input
             id="firstName"
             title="first Name"
-            value={user.firstName}
             isRequared
             errorMessage={errors.firstName?.message}
             registerObject={register('firstName')}
@@ -79,7 +79,6 @@ function UserMainData({ closeModal, showToast }: Props) {
           <Input
             id="lastName"
             title="last Name"
-            value={user.lastName}
             isRequared
             errorMessage={errors.lastName?.message}
             registerObject={register('lastName')}
@@ -89,7 +88,6 @@ function UserMainData({ closeModal, showToast }: Props) {
             id="dateOfBirth"
             inputType="date"
             title="Date of Birth"
-            value={user.dateOfBirth}
             isRequared
             errorMessage={errors.dateOfBirth?.message}
             registerObject={register('dateOfBirth')}
@@ -101,7 +99,6 @@ function UserMainData({ closeModal, showToast }: Props) {
             id="email"
             classNameComponent="input-wrapper"
             title="Email"
-            value={user.email}
             isRequared
             className="form__profile-email input-text"
             errorMessage={errors.email?.message}
