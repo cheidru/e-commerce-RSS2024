@@ -1,5 +1,6 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+
 /* Components */
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
@@ -60,7 +61,7 @@ function App() {
             <Route path="/registration" element={<Pages.Registration />} />
             <Route path="/about" element={<Pages.About />} />
             <Route path="/catalog" element={<Pages.Catalog />} />
-            <Route path="/product" element={<Pages.Product />} />
+            <Route path="/product/:id" element={<Pages.Product />} />
             <Route path="/profile" element={<Pages.Profile />} />
             <Route path="/basket" element={<Pages.Basket />} />
             <Route path="/*" element={<Pages.Unknown />} />
