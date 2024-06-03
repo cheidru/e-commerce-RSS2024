@@ -6,8 +6,12 @@ import {
   getProductsSorted,
   SortField,
   searchProducts,
+  filterProductsInfo,
 } from '../../services/api/getProducts';
-import { IProductResponseCategory } from '../../services/api/InterfaceProduct';
+import {
+  IFilter,
+  IProductResponseCategory,
+} from '../../services/api/InterfaceProduct';
 import { ICategoriesResponse } from '../../services/api/InterfaceCategories';
 import {
   formattedDataForCategory,
@@ -30,6 +34,12 @@ function Catalog() {
   const categoryIdDefault: string = 'exists';
   const navigate = useNavigate();
   const searchQueryDefault: string = '';
+  const filterPanelPropsDefault: IFilter = {
+    priceMax: 0,
+    priceMin: 0,
+    color: [],
+    model: [],
+  };
 
   const [productCardProps, setProductCardProps] = useState(productsAll);
   const [categoryProps, setCategoryProps] = useState(categoriesAll);
@@ -37,6 +47,7 @@ function Catalog() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState(searchQueryDefault);
+  const [filterPanelProps, setFilterPanel] = useState(filterPanelPropsDefault);
 
   // render products for category
   const productsCategory = async (categoryIdClick: string) => {
@@ -76,7 +87,6 @@ function Catalog() {
       setSearchQuery('');
     }
   };
-
   // Open product page
   const openProduct = async (id: string) => {
     if (id) {
@@ -111,9 +121,14 @@ function Catalog() {
       const categoriesAllData = formattedDataForCategory(categoriesAllGet);
       setCategoryProps(categoriesAllData);
     };
+    const filterInfo = async () => {
+      const filterInfoResponse = await filterProductsInfo();
+      setFilterPanel(filterInfoResponse);
+    };
 
     products();
     categories();
+    filterInfo();
   }, []);
 
   if (loading) {
@@ -138,6 +153,71 @@ function Catalog() {
               isCurrent={category.id === categoryId}
             />
           ))}
+          <details>
+            <summary>Filter</summary>
+            <form className="form-filter">
+              <fieldset>
+                <legend>Price</legend>
+                <label htmlFor="priceMin">
+                  Min price
+                  <input
+                    className="input-text"
+                    type="number"
+                    id="priceMin"
+                    placeholder={`${filterPanelProps.priceMin}`}
+                    min={filterPanelProps.priceMin}
+                    max={filterPanelProps.priceMax}
+                  />
+                </label>
+                <label htmlFor="priceMax">
+                  {' '}
+                  Max price
+                  <input
+                    className="input-text"
+                    type="number"
+                    id="priceMax"
+                    placeholder={`${filterPanelProps.priceMax}`}
+                    min={filterPanelProps.priceMin}
+                    max={filterPanelProps.priceMax}
+                  />
+                </label>
+              </fieldset>
+              <fieldset>
+                <legend>Color</legend>
+                {filterPanelProps.color.map((color) => (
+                  <label htmlFor={color} key={color}>
+                    <input
+                      className="input-checkbox"
+                      type="checkbox"
+                      id={color}
+                      name="filter-color"
+                      value={color}
+                    />
+                    {color}
+                  </label>
+                ))}
+              </fieldset>
+              <fieldset>
+                <legend>Model</legend>
+
+                {filterPanelProps.model.map((model) => (
+                  <label htmlFor={model} key={model}>
+                    <input
+                      className="input-checkbox"
+                      type="checkbox"
+                      id={model}
+                      name="filter-model"
+                      value={model}
+                    />
+                    {model}
+                  </label>
+                ))}
+              </fieldset>
+              <button type="submit" className="category-btn filter-btn">
+                Send
+              </button>
+            </form>
+          </details>
         </aside>
         <div className="catalog-products">
           <div className="catalog-sort">
@@ -163,13 +243,15 @@ function Catalog() {
               <option value={SortField.NameDesc}>Name (Z To A)</option>
             </select>
           </div>
-          {productCardProps.map((product) => (
-            <ProductCard
-              {...product}
-              key={product.id}
-              onClick={handlerProductChoose}
-            />
-          ))}
+          <div className="catalog-product">
+            {productCardProps.map((product) => (
+              <ProductCard
+                {...product}
+                key={product.id}
+                onClick={handlerProductChoose}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

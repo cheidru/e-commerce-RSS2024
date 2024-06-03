@@ -1,6 +1,7 @@
 import { getAccessToken } from './getCustomerToken';
-import { IProductResponseCategory } from './InterfaceProduct';
+import { IFilter, IProductResponseCategory } from './InterfaceProduct';
 import { ICategoriesResponse } from './InterfaceCategories';
+import { converterDigit } from '../../pages/catalog/formattedData';
 
 const urlProject = `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}`;
 export enum SortField {
@@ -88,4 +89,70 @@ export async function searchProducts(value: string) {
   const result = await answer.json();
 
   return result;
+}
+
+export async function filterProductsInfo() {
+  const sortParamPriceMin = 'price asc';
+  const sortParamPriceMax = 'price desc';
+  const priceArr: number[] = [];
+  const color: string[] = [];
+  const model: string[] = [];
+
+  const options = await requestOptions();
+
+  const urlMinPrice = new URL(
+    `${urlProject}/product-projections/search?price desc`
+  );
+  urlMinPrice.searchParams.append('sort', sortParamPriceMin);
+
+  const answerMinPrice = await fetch(urlMinPrice, options);
+  const resultMinPrice: IProductResponseCategory = await answerMinPrice.json();
+
+  const urlMaxPrice = new URL(
+    `${urlProject}/product-projections/search?price desc`
+  );
+  urlMaxPrice.searchParams.append('sort', sortParamPriceMax);
+
+  const answerMaxPrice = await fetch(urlMaxPrice, options);
+  const resultMaxPrice: IProductResponseCategory = await answerMaxPrice.json();
+
+  const result = resultMinPrice.results.concat(resultMaxPrice.results);
+
+  result.forEach((product) => {
+    const productPrice = product.masterVariant.prices[0].value.centAmount;
+    const { fractionDigits } = product.masterVariant.prices[0].value;
+    const price = productPrice / converterDigit(fractionDigits);
+    priceArr.push(price);
+
+    if (product.masterVariant.attributes[1]?.value) {
+      const productColor = product.masterVariant.attributes[1].value;
+      if (!color.includes(productColor)) {
+        color.push(productColor);
+        color.sort();
+      }
+    }
+
+    if (product.masterVariant.attributes[2]?.value) {
+      const productModel = product.masterVariant.attributes[2].value;
+      if (!model.includes(productModel)) {
+        model.push(productModel);
+        model.sort();
+      }
+    }
+  });
+  const priceMin: number = Math.min(...priceArr);
+  const priceMax: number = Math.max(...priceArr);
+
+  const filterProps: IFilter = {
+    priceMax,
+    priceMin,
+    color: color.slice(1, 6),
+    model: model.slice(1, 6),
+  };
+
+  // console.log(priceArr);
+  // console.log(color);
+  // console.log(model);
+
+  return filterProps;
 }

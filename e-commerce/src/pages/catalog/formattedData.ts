@@ -7,7 +7,7 @@ import { ProductCardProps } from '../../components/productCard/productCard';
 import { ICategoriesResponse } from '../../services/api/InterfaceCategories';
 import { CategoryProps } from '../../components/asideCatalogCategory/asideCatalogCategory';
 
-const converterDigit = (digit: number): number => {
+export const converterDigit = (digit: number): number => {
   switch (digit) {
     case 1:
       return 10;

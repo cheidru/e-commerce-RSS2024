@@ -177,3 +177,10 @@ export interface IProductPage {
   version: number;
   versionModifiedAt: string;
 }
+
+export interface IFilter {
+  priceMin: number;
+  priceMax: number;
+  model: string[];
+  color: string[];
+}
