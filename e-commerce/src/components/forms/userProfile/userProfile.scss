@@ -1,0 +1,70 @@
+.input-wrapper-header {
+  position: relative;
+  width: fit-content;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-wrapper-header .btn-show {
+  position: static;
+  margin-bottom: 20px;
+}
+
+.form__profile .profile-fieldset {
+  border: 1px solid rgb(221, 221, 221);
+  margin-bottom: 20px;
+}
+
+.fieldset .btn-show:not(.profile-fieldset .btn-show) {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  font-size: 2rem;
+}
+
+.profile-fieldset .btn-show {
+  position: static;
+}
+
+.btn-password-edit {
+  width: auto;
+  padding: 0 10px;
+}
+
+.fieldset .input-wrapper-address {
+  margin: 0;
+}
+
+.profile-fieldset {
+  border: none;
+}
+
+.textfield-component {
+  width: 100%;
+  display: block;
+  font-weight: bold;
+  color: #555;
+  font-size: 14px;
+}
+
+.textfield-title {
+  text-align: start;
+  // margin-bottom: 8px;
+  // font-weight: bold;
+  // color: #555;
+  // font-size: 14px;
+}
+
+.textfield-body {
+  text-align: start;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #8b8989;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+}

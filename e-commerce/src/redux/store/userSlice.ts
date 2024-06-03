@@ -6,7 +6,10 @@ export type User = {
   email: string;
   firstName: string;
   lastName: string;
+  dateOfBirth: string;
   addresses: [];
+  defaultShippingAddressId: string;
+  defaultBillingAddressId: string;
   shippingAddressIds: [];
   billingAddressIds: [];
 };
@@ -31,44 +34,31 @@ if (someToken) {
   savedToken = JSON.parse(someToken);
 }
 
-const initialState: UserState = {
-  user: {
-    id: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    addresses: [],
-    shippingAddressIds: [],
-    billingAddressIds: [],
-  },
-  authToken: savedToken || {
-    email: '',
-    access_token: '',
-    expires_in: 0,
-    token_type: '',
-    scope: '',
-    refresh_token: '',
-  },
+export const userInitial: User = {
+  id: '',
+  email: '',
+  firstName: '',
+  lastName: '',
+  dateOfBirth: '',
+  addresses: [],
+  defaultShippingAddressId: '',
+  defaultBillingAddressId: '',
+  shippingAddressIds: [],
+  billingAddressIds: [],
 };
 
-const EmptyState: UserState = {
-  user: {
-    id: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    addresses: [],
-    shippingAddressIds: [],
-    billingAddressIds: [],
-  },
-  authToken: {
-    email: '',
-    access_token: '',
-    expires_in: 0,
-    token_type: '',
-    scope: '',
-    refresh_token: '',
-  },
+const authTokenInitial: AuthToken = {
+  email: '',
+  access_token: '',
+  expires_in: 0,
+  token_type: '',
+  scope: '',
+  refresh_token: '',
+};
+
+const initialState: UserState = {
+  user: userInitial,
+  authToken: savedToken || authTokenInitial,
 };
 
 const userSlice = createSlice({
@@ -83,8 +73,8 @@ const userSlice = createSlice({
       localStorage.setItem('token', JSON.stringify(action.payload));
     },
     logout(state) {
-      state.user = EmptyState.user;
-      state.authToken = EmptyState.authToken;
+      state.user = userInitial;
+      state.authToken = authTokenInitial;
       localStorage.setItem('token', '');
     },
   },
