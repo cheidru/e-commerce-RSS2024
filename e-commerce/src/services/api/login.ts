@@ -1,4 +1,4 @@
-import { ILogin } from './Inreface';
+import { ILogin } from './Interface';
 
 export async function login(formData: ILogin) {
   const auth = btoa(
