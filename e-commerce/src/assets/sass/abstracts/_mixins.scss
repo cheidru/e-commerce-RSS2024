@@ -27,7 +27,7 @@
   cursor: pointer;
 }
 
-@mixin inputTextEmain($width: 240px, $height: 50px) {
+@mixin inputTextEmail($width: 240px, $height: 50px) {
   width: $White;
   height: $height;
   background: $Bg-input-text;
