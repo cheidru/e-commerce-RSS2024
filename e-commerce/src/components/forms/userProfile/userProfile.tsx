@@ -277,62 +277,65 @@ function UserProfile(): React.ReactElement {
         <legend>Profile</legend>
 
         <button
-          className="btn-show"
+          className="btn-show btn-password-edit"
           type="button"
-          onClick={() => {
-            setIsEditDisabled(!isEditDisabled);
-          }}
+          onClick={openModalPassword}
         >
-          {isEditDisabled ? 'Edit' : 'Cancel'}
+          {isEditDisabled ? 'Edit password' : 'Cancel edit'}
         </button>
-
-        <button className="btn-show" type="button" onClick={openModalPassword}>
-          {isEditDisabled ? 'Edit' : 'Cancel'}
-        </button>
-      </div>
-
-      <div className="form__profile profile-fieldset">
-        <div className="input-wrapper-line">
-          <TextField
-            classNameComponent="textfield-component"
-            classNameTitle="textfield-title"
-            classNameBody="textfield-body"
-            title="first Name"
-            value="first Name"
-          />
-
-          <TextField
-            classNameComponent="textfield-component"
-            classNameTitle="textfield-title"
-            classNameBody="textfield-body"
-            title="last Name"
-            value="last Name"
-          />
-
-          <TextField
-            classNameComponent="textfield-component"
-            classNameTitle="textfield-title"
-            classNameBody="textfield-body"
-            title="Date of Birth"
-            value="Date of Birth"
-          />
-
-          <TextField
-            classNameComponent="textfield-component"
-            classNameTitle="textfield-title"
-            classNameBody="textfield-body"
-            title="Email"
-            value="Email"
-          />
-
-          {/* <ButtonEdit
-                id="buttonEditPassword"
-                onClick={openModalPassword}
-              /> */}
-        </div>
       </div>
 
       <form className="form__profile form" onSubmit={handleSubmit(onSubmit)}>
+        <div className="form__profile profile-fieldset fieldset">
+          <div className="input-wrapper-line">
+            <TextField
+              classNameComponent="textfield-component"
+              classNameTitle="textfield-title"
+              classNameBody="textfield-body"
+              title="first Name"
+              value="first Name"
+            />
+
+            <TextField
+              classNameComponent="textfield-component"
+              classNameTitle="textfield-title"
+              classNameBody="textfield-body"
+              title="last Name"
+              value="last Name"
+            />
+
+            <TextField
+              classNameComponent="textfield-component"
+              classNameTitle="textfield-title"
+              classNameBody="textfield-body"
+              title="Date of Birth"
+              value="Date of Birth"
+            />
+
+            <TextField
+              classNameComponent="textfield-component"
+              classNameTitle="textfield-title"
+              classNameBody="textfield-body"
+              title="Email"
+              value="Email"
+            />
+
+            {/* <ButtonEdit
+                id="buttonEditPassword"
+                onClick={openModalPassword}
+              /> */}
+          </div>
+          <button
+            className="btn-show"
+            type="button"
+            onClick={() => {
+              setIsEditDisabled(!isEditDisabled);
+            }}
+          >
+            {isEditDisabled ? 'Edit' : 'Cancel'}
+          </button>
+        </div>
+
         <fieldset className="fieldset">
           Address for shipping*
           <CheckBox
