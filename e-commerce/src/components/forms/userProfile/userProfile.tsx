@@ -25,11 +25,11 @@ import {
 } from '../../../services/api/getCustomerToken';
 import store from '../../../redux/store/store';
 import Input from '../elements/input';
-import Password from '../elements/password';
 import Country from '../elements/country';
 import ButtonEdit from '../elements/buttonEdit';
 import CheckBox from '../elements/checkBox';
-import ChangePassword from '../floatForms/changePassword';
+// import ChangePassword from '../floatForms/changePassword';
+import UserMainData from '../floatForms/userMainData';
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 // import { boolean } from 'yup';
 
@@ -75,30 +75,55 @@ function UserProfile(): React.ReactElement {
     }
   };
 
-  const [modalPasswordIsOpen, setModalPasswordIsOpen] = useState(false);
+  // const [modalPasswordIsOpen, setModalPasswordIsOpen] = useState(false);
+  const [modalMainIsOpen, setModalMainIsOpen] = useState(false);
   // Modal.setAppElement('#root');
 
-  const openModalPassword = () => {
-    setModalPasswordIsOpen(true);
+  // const openModalPassword = () => {
+  //   setModalPasswordIsOpen(true);
+  // };
+
+  // const closeModalPassword = () => {
+  //   setModalPasswordIsOpen(false);
+  // };
+
+  const openModalMain = () => {
+    setModalMainIsOpen(true);
   };
 
-  const closeModalPassword = () => {
-    setModalPasswordIsOpen(false);
+  const closeModalMain = () => {
+    setModalMainIsOpen(false);
   };
 
-  const modalStyles = {
+  // const modalStyles = {
+  //   content: {
+  //     top: '20%',
+  //     left: '50%',
+  //     right: 'auto',
+  //     bottom: 'auto',
+  //     marginRight: '-50%',
+  //     transform: 'translate(-50%, -20%)',
+  //   },
+  // };
+
+  const modalStylesMain = {
     content: {
       top: '20%',
-      left: '50%',
+      left: '40%',
       right: 'auto',
       bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -20%)',
+      marginRight: '20%',
+      transform: 'translate(-30%, -20%)',
+      width: '80%',
     },
   };
 
-  const modalPasswordContent = (
-    <ChangePassword closeModal={closeModalPassword} showToast={showToast} />
+  // const modalPasswordContent = (
+  //   <ChangePassword closeModal={closeModalPassword} showToast={showToast} />
+  // );
+
+  const modalMainContent = (
+    <UserMainData closeModal={closeModalMain} showToast={showToast} />
   );
 
   useEffect(() => {
@@ -129,15 +154,15 @@ function UserProfile(): React.ReactElement {
     mode: 'all',
   });
 
-  function checkBoxSet(checkboxID: string, address: string, defaultID: string) {
-    const chkbox = document.getElementById(checkboxID);
-    if (address === defaultID) {
-      chkbox?.setAttribute('checked', '');
-    } else {
-      chkbox?.setAttribute('unchecked', '');
-    }
-    return true;
-  }
+  // function checkBoxSet(checkboxID: string, address: string, defaultID: string) {
+  //   const chkbox = document.getElementById(checkboxID);
+  //   if (address === defaultID) {
+  //     chkbox?.setAttribute('checked', '');
+  //   } else {
+  //     chkbox?.setAttribute('unchecked', '');
+  //   }
+  //   return true;
+  // }
 
   const getUserInfo = async () => {
     const userInfo = await getCustomerInfo();
@@ -148,36 +173,6 @@ function UserProfile(): React.ReactElement {
     } else {
       // There are here is a date about customer
       dispatch(setUserLogged(userInfo));
-      setValue('firstName', userInfo.firstName);
-      setValue('lastName', userInfo.lastName);
-      setValue('dateOfBirth', userInfo.dateOfBirth);
-      setValue('email', userInfo.email);
-      setValue('password', '********');
-
-      setValue(
-        'address.default',
-        checkBoxSet(
-          'address.default',
-          userInfo.addresses[0].id,
-          userInfo.defaultShippingAddressId
-        )
-      );
-      setValue('address.city', userInfo.addresses[0].city);
-      setValue('address.country', userInfo.addresses[0].country);
-      setValue('address.streetName', userInfo.addresses[0].streetName);
-      setValue('address.postalCode', userInfo.addresses[0].postalCode);
-      setValue(
-        'addressInvoice.default',
-        checkBoxSet(
-          'addressInvoice.default',
-          userInfo.addresses[1].id,
-          userInfo.defaultBillingAddressId
-        )
-      );
-      setValue('addressInvoice.city', userInfo.addresses[1].city);
-      setValue('addressInvoice.country', userInfo.addresses[1].country);
-      setValue('addressInvoice.streetName', userInfo.addresses[1].streetName);
-      setValue('addressInvoice.postalCode', userInfo.addresses[1].postalCode);
     }
   };
 
@@ -261,13 +256,23 @@ function UserProfile(): React.ReactElement {
   return (
     <>
       <Modal
+        isOpen={modalMainIsOpen}
+        onRequestClose={closeModalMain}
+        style={modalStylesMain}
+        ariaHideApp={false}
+      >
+        {modalMainContent}
+      </Modal>
+
+      <ButtonEdit id="buttonEditMain" onClick={openModalMain} />
+      {/* <Modal
         isOpen={modalPasswordIsOpen}
         onRequestClose={closeModalPassword}
         style={modalStyles}
         ariaHideApp={false}
       >
         {modalPasswordContent}
-      </Modal>
+      </Modal> */}
       <form className="form__profile form" onSubmit={handleSubmit(onSubmit)}>
         <div className="input-wrapper-header">
           <legend>Profile</legend>
@@ -282,9 +287,9 @@ function UserProfile(): React.ReactElement {
           </button>
         </div>
 
-        <fieldset
+        <div
           className="form__profile profile-fieldset"
-          disabled={isEditDisabled}
+          // disabled={isEditDisabled}
         >
           <div className="input-wrapper-line">
             <Input
@@ -327,20 +332,10 @@ function UserProfile(): React.ReactElement {
               disabled
             />
 
-            <Password
-              id="password"
-              title="Password"
-              isRequared
-              className="form__profile-password input-text"
-              errorMessage={errors.password?.message}
-              after={
-                <ButtonEdit
-                  id="buttonEditPassword"
-                  onClick={openModalPassword}
-                />
-              }
-              registerObject={register('password')}
-            />
+            {/* <ButtonEdit
+              id="buttonEditPassword"
+              onClick={openModalPassword}
+            /> */}
           </div>
 
           <fieldset className="fieldset">
@@ -499,7 +494,7 @@ function UserProfile(): React.ReactElement {
               Save
             </button>
           </div>
-        </fieldset>
+        </div>
       </form>
       <Toaster position="top-right" reverseOrder={false} />
     </>

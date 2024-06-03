@@ -13,6 +13,7 @@ type Props = {
   style?: CSSProperties;
   registerObject: UseFormRegisterReturn;
   disabled?: boolean;
+  value?: string;
 };
 
 function Input({
@@ -27,6 +28,7 @@ function Input({
   style,
   registerObject,
   disabled,
+  value,
 }: Props) {
   return (
     <div className={classNameComponent}>
@@ -43,6 +45,7 @@ function Input({
           }`}
           style={style}
           autoComplete="url"
+          value={value}
           {...registerObject}
         />
         {errorMessage && <div className="input-error">{errorMessage}</div>}
