@@ -79,11 +79,23 @@
   background-color: #f9f9f9;
 }
 .address-list-table {
+  display: block;
+  height: 50px;
   margin-top: 20px;
-  padding: 0 4px;
+  // padding: 0 4px;
   border: 1px solid #a0a0a0;
   border-radius: 8px;
+  border-collapse: collapse;
+  overflow-y: scroll;
 }
+
+thead {
+  position: sticky;
+  top: 0;
+  // height: 50px;
+  background-color: #f9f9f9;
+}
+
 .address-list-header {
   display: flex;
   justify-content: center;
@@ -117,14 +129,17 @@
   font-size: 14px;
   transition: color 0.3s;
 }
-// .address-list-table-head {
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-//   justify-content: space-between;
-// }
+
+.address-list-table-head {
+  position: sticky;
+  // display: flex;
+  // flex-direction: row;
+  // flex-wrap: wrap;
+  // justify-content: space-between;
+}
+
 .address-list-table-head-line-field {
-  width: 10%;
+  width: 9%;
   border-bottom: 1px solid #d0d0d0;
 }
 // .address-list-table-body {

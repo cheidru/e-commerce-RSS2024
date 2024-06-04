@@ -107,8 +107,16 @@ export function AddressesList({ onEditClick }: Props) {
             </tr>
           </thead>
           <tbody className="address-list-table-body">
-            {addresses.addresses?.map((address) => (
-              <tr className="address-list-table-body-line" key={address.id}>
+            {addresses.addresses?.map((address, index) => (
+              <tr
+                className="address-list-table-body-line"
+                key={address.id}
+                style={
+                  index % 2 === 0
+                    ? { backgroundColor: '#a0a0a0' }
+                    : { backgroundColor: 'unset' }
+                }
+              >
                 <td>{address.billing ? 'billing' : ''}</td>
                 <td>{address.shipping ? 'shipping' : ''}</td>
                 <td>{address.country}</td>
