@@ -1,17 +1,30 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export type Address = {
+  id?: string;
+  streetName: string;
+  postalCode: string;
+  city: string;
+  country: string;
+  represent?: string;
+  billing?: boolean;
+  shipping?: boolean;
+  billingDafault?: boolean;
+  shippingDafault?: boolean;
+};
+
 export type User = {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  addresses: [];
+  addresses: Array<Address>;
   defaultShippingAddressId: string;
   defaultBillingAddressId: string;
-  shippingAddressIds: [];
-  billingAddressIds: [];
+  shippingAddressIds: Array<string>;
+  billingAddressIds: Array<string>;
 };
 
 export type AuthToken = {
