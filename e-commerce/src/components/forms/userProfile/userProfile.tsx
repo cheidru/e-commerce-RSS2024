@@ -13,8 +13,9 @@ import store from '../../../redux/store/store';
 import TextField from '../elements/textField';
 import ChangePassword from '../floatForms/changePassword';
 import UserMainData from '../floatForms/userMainData';
+import { EditAddress } from '../floatForms/editAddress';
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
-// import { boolean } from 'yup';
+import { AddressesList } from './addressesList';
 
 function UserProfile(): React.ReactElement {
   const [userData, setUserData] = useState(userInitial);
@@ -59,12 +60,12 @@ function UserProfile(): React.ReactElement {
 
   const [modalPasswordIsOpen, setModalPasswordIsOpen] = useState(false);
   const [modalMainIsOpen, setModalMainIsOpen] = useState(false);
+  const [modalAddressIsOpen, setModalAddressIsOpen] = useState(false);
   // Modal.setAppElement('#root');
 
   const openModalPassword = () => {
     setModalPasswordIsOpen(true);
   };
-
   const closeModalPassword = () => {
     setModalPasswordIsOpen(false);
   };
@@ -72,9 +73,15 @@ function UserProfile(): React.ReactElement {
   const openModalMain = () => {
     setModalMainIsOpen(true);
   };
-
   const closeModalMain = () => {
     setModalMainIsOpen(false);
+  };
+
+  const openAddressEdit = () => {
+    setModalAddressIsOpen(true);
+  };
+  const closeAddressEdit = () => {
+    setModalAddressIsOpen(false);
   };
 
   const modalStyles = {
@@ -90,13 +97,10 @@ function UserProfile(): React.ReactElement {
 
   const modalStylesMain = {
     content: {
-      top: '20%',
-      left: '40%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '20%',
-      transform: 'translate(-30%, -20%)',
-      width: '80%',
+      top: '5%',
+      width: '80vw',
+      margin: '0 auto',
+      height: 'max-content',
     },
   };
 
@@ -106,6 +110,10 @@ function UserProfile(): React.ReactElement {
 
   const modalMainContent = (
     <UserMainData closeModal={closeModalMain} showToast={showToast} />
+  );
+
+  const modalAddressContent = (
+    <EditAddress closeModal={closeAddressEdit} showToast={showToast} />
   );
 
   useEffect(() => {
@@ -152,6 +160,16 @@ function UserProfile(): React.ReactElement {
       >
         {modalPasswordContent}
       </Modal>
+
+      <Modal
+        isOpen={modalAddressIsOpen}
+        onRequestClose={closeAddressEdit}
+        style={modalStylesMain}
+        ariaHideApp={false}
+      >
+        {modalAddressContent}
+      </Modal>
+
       <div className="input-wrapper-header">
         <legend>Profile</legend>
 
@@ -204,6 +222,7 @@ function UserProfile(): React.ReactElement {
           </button>
         </div>
       </div>
+      <AddressesList onEditClick={openAddressEdit} />
       <Toaster position="top-right" reverseOrder={false} />
     </>
   );
