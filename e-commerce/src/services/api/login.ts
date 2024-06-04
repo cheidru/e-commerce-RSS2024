@@ -1,4 +1,4 @@
-import { ILogin } from './Inreface';
+import { ILogin } from './Interface';
 
 export async function login(formData: ILogin) {
   const auth = btoa(
@@ -25,8 +25,8 @@ export async function login(formData: ILogin) {
     requestOptions
   ).then((response) => response.json());
   if (answer.expires_in) {
-    const currenDateValue = new Date().getTime() / 1000;
-    answer.expires_in = currenDateValue + answer.expires_in;
+    const currentDateValue = new Date().getTime() / 1000;
+    answer.expires_in = currentDateValue + answer.expires_in;
     answer.email = formData.email;
   }
 
