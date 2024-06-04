@@ -1,5 +1,5 @@
 import './catalog.scss';
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   getCategories,
@@ -101,7 +101,7 @@ function Catalog() {
   };
 
   // get products in filter
-  function getProductsFilter(data: IProductResponseCategory) {
+  const getProductsFilter = useCallback((data: IProductResponseCategory) => {
     if (!data.results[0]) {
       messageError = true;
     } else {
@@ -109,7 +109,7 @@ function Catalog() {
     }
     const productsProps = formattedDataForCardInCategory(data);
     setProductCardProps(productsProps);
-  }
+  }, []);
 
   useEffect(() => {
     const products = async () => {
@@ -155,7 +155,7 @@ function Catalog() {
               isCurrent={category.id === categoryId}
             />
           ))}
-          <FilterCatalog getProductsFilter={() => getProductsFilter()} />
+          <FilterCatalog getProductsFilter={getProductsFilter} />
         </aside>
         <div className="catalog-products">
           <div className="catalog-sort">
