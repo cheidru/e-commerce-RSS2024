@@ -5,7 +5,7 @@ import { IProductPage } from '../../services/api/InterfaceProduct';
 import { ProductCardProps } from '../../components/productCard/productCard';
 import { formattedDataForOneProduct } from '../catalog/formattedData';
 import spinner from '../../assets/img/gif/spinner.gif';
-import ProductSliderWithModal from '../../components/slider/slider';
+import ProductSlider from '../../components/slider/slider';
 
 function Product() {
   const productData: ProductCardProps = {
@@ -52,13 +52,17 @@ function Product() {
     return <div>{error}</div>;
   }
 
-  const productImages = productProps.imageUrl;
+  const productImages = productProps.imageUrl.map((src, index) => ({
+    src,
+    id: String(index),
+  }));
+
   return (
     <section className="product">
       <h2 className="product free-page">Product</h2>
       <div className="product-wrapper">
         <div className="product__img-box">
-          <ProductSliderWithModal images={productImages} />
+          <ProductSlider images={productImages} />
         </div>
         <div className="product__info">
           <div className="product__info-title">{productProps.title}</div>
