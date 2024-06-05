@@ -45,7 +45,7 @@ function ChangePassword({ closeModal, showToast }: Props) {
   const onSubmit = async (data: FormDataChangePassword) => {
     if (data.newPassword === data.currentPassword) {
       showToast({
-        message: 'The new password has not been changed',
+        message: 'No changes nothing to save',
         thisError: true,
       });
     } else {
