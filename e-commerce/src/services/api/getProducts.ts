@@ -161,7 +161,6 @@ export async function filterProducts(data: IFilter) {
   const url = new URL(
     `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/product-projections/search?`
   );
-  // url.searchParams.append('filter', 'variants.attributes.color:"Aged Bronze"')
   if (data.color.length > 0) {
     const param = data.color.map((elem) => `"${elem}"`).join(', ');
     url.searchParams.append('filter', `variants.attributes.color: ${param}`);

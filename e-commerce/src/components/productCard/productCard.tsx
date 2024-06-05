@@ -5,8 +5,8 @@ export type ProductCardProps = {
   hasGift?: boolean;
   title: string;
   description: string;
-  newPrice: number;
-  oldPrice: number;
+  newPrice: string;
+  oldPrice: string;
   currency: string;
   id: string;
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
