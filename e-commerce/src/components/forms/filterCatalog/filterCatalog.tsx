@@ -82,7 +82,7 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
     <details>
       <summary>Filter</summary>
       <form className="form-filter" onSubmit={onSubmitFilter}>
-        <fieldset>
+        <fieldset className="filter-price">
           <legend>Price</legend>
           <label htmlFor="priceMin">
             Min price
@@ -97,7 +97,6 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
             />
           </label>
           <label htmlFor="priceMax">
-            {' '}
             Max price
             <input
               className="input-text"
@@ -110,7 +109,7 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
             />
           </label>
         </fieldset>
-        <fieldset className="filter-model-fieldset">
+        <fieldset className="filter-fieldset filter-color">
           <legend>Color</legend>
           {filterPanelProps.color.map((color) => (
             <label htmlFor={color} key={color}>
@@ -126,7 +125,7 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
             </label>
           ))}
         </fieldset>
-        <fieldset className="filter-model-fieldset">
+        <fieldset className="filter-fieldset filter-model">
           <legend>Model</legend>
 
           {filterPanelProps.model.map((model) => (

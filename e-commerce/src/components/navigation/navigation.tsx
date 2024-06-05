@@ -21,9 +21,6 @@ function Navigation() {
           <NavLink to="/catalog">Catalog</NavLink>
         </li>
         <li className="navigation__list-item">
-          <NavLink to="/product">Product</NavLink>
-        </li>
-        <li className="navigation__list-item">
           <NavLink to="/about">About Us</NavLink>
         </li>
         <li className="navigation__list-item">

@@ -25,8 +25,6 @@ import {
 import FilterCatalog from '../../components/forms/filterCatalog/filterCatalog';
 import spinner from '../../assets/img/gif/spinner.gif';
 
-let messageError = false;
-
 function Catalog() {
   const productsAll: ProductCardProps[] = [];
   const categoriesAll: CategoryProps[] = [];
@@ -40,6 +38,7 @@ function Catalog() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState(searchQueryDefault);
+  const [messageError, setMessageError] = useState<boolean>(false);
 
   // render products for category
   const productsCategory = async (categoryIdClick: string) => {
@@ -70,13 +69,23 @@ function Catalog() {
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
+  // Message 'Not found'
+  const showMessageErrorSearch = () => {
+    setMessageError(true);
+    setTimeout(async () => {
+      setMessageError(false);
+      setCategoryId(categoryIdDefault);
+      const productsAllGet: IProductResponseCategory =
+        await getProductsSorted(categoryIdDefault);
+      const productsProps = formattedDataForCardInCategory(productsAllGet);
+      setProductCardProps(productsProps);
+    }, 3000);
+  };
   const handleSearchPanel: OnClickType['onClick'] = async () => {
     if (searchQuery.length > 1) {
       const searchResponse = await searchProducts(searchQuery);
       if (!searchResponse.total) {
-        messageError = true;
-      } else {
-        messageError = false;
+        showMessageErrorSearch();
       }
       const searchResponseProductProps =
         formattedDataForCardInCategory(searchResponse);
@@ -103,9 +112,7 @@ function Catalog() {
   // get products in filter
   const getProductsFilter = useCallback((data: IProductResponseCategory) => {
     if (!data.results[0]) {
-      messageError = true;
-    } else {
-      messageError = false;
+      showMessageErrorSearch();
     }
     const productsProps = formattedDataForCardInCategory(data);
     setProductCardProps(productsProps);
@@ -159,20 +166,29 @@ function Catalog() {
         </aside>
         <div className="catalog-products">
           <div className="catalog-sort">
-            <label htmlFor="site-search">
-              Search the site:
+            <label htmlFor="site-search" className="search-label">
               <input
                 type="search"
                 id="site-search"
                 name="search"
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={handleChangeInputSearch}
+                className="search-input"
               />
-              <button type="button" onClick={handleSearchPanel}>
+              <button
+                className="search-btn"
+                type="button"
+                onClick={handleSearchPanel}
+              >
                 Search
               </button>
             </label>
-            <select id="sorted-products" onChange={handleSortChange}>
+            <select
+              id="sorted-products"
+              onChange={handleSortChange}
+              className="select-input"
+            >
               <option value={SortField.Default}>Sort by</option>
               <option value={SortField.PriceAsc}>Lowest price</option>
               <option value={SortField.PriceDesc}>Highest price</option>
