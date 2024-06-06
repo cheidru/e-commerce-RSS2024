@@ -21,3 +21,31 @@
 .product__img-main:nth-child(1) {
   min-width: 300px;
 }
+.product__info-title {
+  font-weight: bold;
+  font-weight: 2.5rem;
+  text-align: start;
+  padding-bottom: 20px;
+}
+.product__info-text {
+  font-weight: 2.5rem;
+  text-align: start;
+  padding-bottom: 20px;
+}
+.product__info-price {
+  text-align: start;
+  padding-bottom: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  & span:nth-child(2) {
+    display: block;
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.8rem;
+    color: #a4a4a4;
+    text-decoration: line-through;
+    padding-right: 12px;
+  }
+}

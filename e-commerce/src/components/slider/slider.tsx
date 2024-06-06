@@ -23,37 +23,29 @@ function ProductSliderWithModal({
   };
 
   return (
-    <div style={{ display: 'flex' }}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginRight: '20px',
-        }}
-      >
+    <div className="slider">
+      <div className="slider-box">
         {images.map((image, index) => (
           <img
             key={image.id}
             src={image.src}
             alt={`Thumbnail ${index + 1}`}
-            style={{
-              width: '50px',
-              height: '50px',
-              cursor: 'pointer',
-              marginBottom: '10px',
-              border: selectedImageIndex === index ? '2px solid blue' : 'none',
-            }}
             onClick={() => setSelectedImageIndex(index)}
+            className={
+              selectedImageIndex === index
+                ? 'slider-images slider-images-active'
+                : 'slider-images'
+            }
             onKeyDown={(e) => e.key === 'Enter' && setSelectedImageIndex(index)}
             role="button"
             tabIndex={0}
           />
         ))}
       </div>
-      <div style={{ flex: 1 }}>
+      <div className="slider-main-box">
         <CarouselProvider
-          naturalSlideWidth={100}
-          naturalSlideHeight={125}
+          naturalSlideWidth={300}
+          naturalSlideHeight={325}
           totalSlides={images.length}
           visibleSlides={1}
           infinite
@@ -66,7 +58,7 @@ function ProductSliderWithModal({
                 <img
                   src={image.src}
                   alt={`Product ${index + 1}`}
-                  style={{ width: '100%', cursor: 'pointer' }}
+                  className="slider-main-img"
                   onClick={() => openModal(index)}
                   onKeyDown={(e) => e.key === 'Enter' && openModal(index)}
                   role="button"
@@ -75,33 +67,18 @@ function ProductSliderWithModal({
               </Slide>
             ))}
           </Slider>
-          <DotGroup
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginTop: '10px',
-            }}
-          />
+          <DotGroup className="slider-dots" />
         </CarouselProvider>
       </div>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Image Modal"
-        style={{
-          content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-          },
-        }}
+        className="modalContent"
       >
         <CarouselProvider
-          naturalSlideWidth={100}
-          naturalSlideHeight={125}
+          naturalSlideWidth={300}
+          naturalSlideHeight={325}
           totalSlides={images.length}
           visibleSlides={1}
           infinite
@@ -114,18 +91,12 @@ function ProductSliderWithModal({
                 <img
                   src={image.src}
                   alt={`Product ${index + 1}`}
-                  style={{ width: '100%' }}
+                  style={{ height: '100%', margin: '0px auto' }}
                 />
               </Slide>
             ))}
           </Slider>
-          <DotGroup
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginTop: '10px',
-            }}
-          />
+          <DotGroup className="slider-dots" />
         </CarouselProvider>
         <button
           onClick={closeModal}

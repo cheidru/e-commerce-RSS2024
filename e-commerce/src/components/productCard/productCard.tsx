@@ -10,6 +10,9 @@ export type ProductCardProps = {
   currency: string;
   id: string;
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  size?: string;
+  color?: string;
+  model?: string;
 };
 
 export function ProductCard({
@@ -24,6 +27,9 @@ export function ProductCard({
   currency,
   onClick,
   id,
+  size,
+  color,
+  model,
 }: ProductCardProps) {
   return (
     <div className="card" data-id={id} onClick={onClick} aria-hidden="true">
@@ -37,7 +43,9 @@ export function ProductCard({
       </div>
       <div className="card__info">
         <div className="card__info-title">{title}</div>
-        <div className="card__info-description">{description}</div>
+        <div className="card__info-description">
+          {description}/{model}/{size}/{color}
+        </div>
         <span className="price-new">
           {currency}
           {newPrice}

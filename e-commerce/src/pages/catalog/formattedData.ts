@@ -123,6 +123,9 @@ export function formattedDataForOneProduct(data: IProductPage) {
     data.masterData.staged.masterVariant.prices[0].value.currencyCode;
   const currency = currencyName === 'USD' ? '$' : '€';
   const { id } = data;
+  const size = data.masterData.current.masterVariant.attributes[0].value;
+  const color = data.masterData.current.masterVariant.attributes[1].value;
+  const model = data.masterData.current.masterVariant.attributes[2].value;
 
   const propsProductProps: ProductCardProps = {
     imageUrl,
@@ -133,6 +136,9 @@ export function formattedDataForOneProduct(data: IProductPage) {
     oldPrice,
     currency,
     id,
+    size,
+    color,
+    model,
   };
   return propsProductProps;
 }

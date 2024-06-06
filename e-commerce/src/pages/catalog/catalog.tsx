@@ -23,7 +23,7 @@ import {
   Category,
 } from '../../components/asideCatalogCategory/asideCatalogCategory';
 import FilterCatalog from '../../components/forms/filterCatalog/filterCatalog';
-import spinner from '../../assets/img/gif/spinner.gif';
+import Spinner from '../../components/spinner/Spinner';
 
 function Catalog() {
   const productsAll: ProductCardProps[] = [];
@@ -141,7 +141,7 @@ function Catalog() {
   }, []);
 
   if (loading) {
-    return <img src={spinner} alt="loading..." />;
+    return <Spinner />;
   }
 
   if (error) {

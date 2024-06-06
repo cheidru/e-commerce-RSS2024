@@ -4,7 +4,7 @@ import { getProduct } from '../../services/api/getProducts';
 import { IProductPage } from '../../services/api/InterfaceProduct';
 import { ProductCardProps } from '../../components/productCard/productCard';
 import { formattedDataForOneProduct } from '../catalog/formattedData';
-import spinner from '../../assets/img/gif/spinner.gif';
+import Spinner from '../../components/spinner/Spinner';
 import ProductSlider from '../../components/slider/slider';
 
 function Product() {
@@ -17,6 +17,9 @@ function Product() {
     oldPrice: '0',
     currency: '',
     id: '',
+    size: '',
+    color: '',
+    model: '',
   };
 
   const [productProps, setProductProps] =
@@ -33,7 +36,6 @@ function Product() {
         const oneProduct: IProductPage = await getProduct(idProduct);
         const oneProductProps: ProductCardProps =
           formattedDataForOneProduct(oneProduct);
-        // console.log(oneProduct);
         setProductProps(oneProductProps);
       } catch {
         setError('Failed to fetch products. Please try again later.');
@@ -45,7 +47,7 @@ function Product() {
   }, []);
 
   if (loading) {
-    return <img src={spinner} alt="loading..." />;
+    return <Spinner />;
   }
 
   if (error) {
@@ -66,9 +68,13 @@ function Product() {
         </div>
         <div className="product__info">
           <div className="product__info-title">{productProps.title}</div>
-          <div className="product__info-title">{productProps.description}</div>
+          <div className="product__info-text">
+            <b>Description:</b> {productProps.description}
+          </div>
           <div className="product__info-price">
             <span>
+              {' '}
+              <b>Price: </b>
               {productProps.currency}
               {productProps.newPrice}
             </span>
@@ -79,6 +85,24 @@ function Product() {
               </span>
             )}
           </div>
+          {productProps.size && (
+            <div className="label-in-stock">
+              <b>Size: </b>
+              {productProps.size}
+            </div>
+          )}
+          {productProps.color && (
+            <div className="label-in-stock">
+              <b>Color: </b>
+              {productProps.color}
+            </div>
+          )}
+          {productProps.model && (
+            <div className="label-in-stock">
+              <b>Model: </b>
+              {productProps.model}
+            </div>
+          )}
         </div>
       </div>
     </section>
