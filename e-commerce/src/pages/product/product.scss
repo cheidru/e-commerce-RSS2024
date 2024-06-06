@@ -4,6 +4,10 @@
   &-wrapper {
     display: flex;
     gap: 50px;
+    @media (max-width: 660px) {
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+    }
   }
   &__img-box {
     display: flex;

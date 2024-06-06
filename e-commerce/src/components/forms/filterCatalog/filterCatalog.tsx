@@ -77,6 +77,25 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
 
     getProductsFilter(result);
   };
+  // clear filter
+  // const handleClearFilters = async () => {
+  //   setPriceMin(filterPanelPropsDefault.priceMin);
+  //   setPriceMax(filterPanelPropsDefault.priceMax);
+  //   setFractionDigits(filterPanelPropsDefault.fractionDigits);
+  //   setSelectedColors([]);
+  //   setSelectedModels([]);
+  //   if (formRef.current) {
+  //     const form = formRef.current;
+  //     const inputs = form.querySelectorAll('input');
+  //     inputs.forEach(input => {
+  //       if (input.type === 'checkbox') {
+  //         input.checked = false;
+  //       } else {
+  //         input.value = '';
+  //       }
+  //     });
+  //   }
+  // };
 
   return (
     <details>
@@ -142,6 +161,9 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
             </label>
           ))}
         </fieldset>
+        {/* <button type="button" className="category-btn filter-btn" onClick={handleClearFilters}>
+          Clear Filters
+        </button> */}
         <button type="submit" className="category-btn filter-btn">
           Send
         </button>

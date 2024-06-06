@@ -8,7 +8,7 @@
     display: flex;
     gap: 30px;
     margin-bottom: 40px;
-    @media (max-width: 550px) {
+    @media (max-width: 660px) {
       flex-wrap: wrap;
       justify-content: space-evenly;
     }
@@ -32,6 +32,11 @@
 .catalog-sort {
   display: flex;
   justify-content: space-between;
+  gap: 20px;
+  @media (max-width: 680px) {
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
 }
 .catalog-product {
   display: flex;
