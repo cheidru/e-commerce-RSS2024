@@ -123,9 +123,18 @@ export function formattedDataForOneProduct(data: IProductPage) {
     data.masterData.staged.masterVariant.prices[0].value.currencyCode;
   const currency = currencyName === 'USD' ? '$' : '€';
   const { id } = data;
-  const size = data.masterData.current.masterVariant.attributes[0].value;
-  const color = data.masterData.current.masterVariant.attributes[1].value;
-  const model = data.masterData.current.masterVariant.attributes[2].value;
+  let color = '';
+  let model = '';
+  let size = '';
+  data.masterData.current.masterVariant.attributes.forEach((elem) => {
+    if (elem.name === 'color') {
+      color = elem.value;
+    } else if (elem.name === 'model') {
+      model = elem.value;
+    } else if (elem.name === 'size') {
+      size = elem.value;
+    }
+  });
 
   const propsProductProps: ProductCardProps = {
     imageUrl,
