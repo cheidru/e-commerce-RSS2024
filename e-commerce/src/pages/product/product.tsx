@@ -75,8 +75,12 @@ function Product() {
             <span>
               {' '}
               <b>Price: </b>
-              {productProps.currency}
-              {productProps.newPrice}
+              <b>
+                <em>
+                  {productProps.currency}
+                  {productProps.newPrice}
+                </em>
+              </b>
             </span>
             {productProps.onSale && (
               <span>
