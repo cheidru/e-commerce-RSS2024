@@ -38,6 +38,10 @@
   display: flex;
   gap: 20px;
   align-items: center;
+  & > span:nth-child(1) em {
+    color: red;
+    font-size: 2rem;
+  }
   & span:nth-child(2) {
     display: block;
     font-size: 1.8rem;
