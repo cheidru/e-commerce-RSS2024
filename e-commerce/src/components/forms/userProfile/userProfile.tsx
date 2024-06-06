@@ -8,18 +8,25 @@ import {
   logout,
   userInitial,
 } from '../../../redux/store/userSlice';
-/* API */
 import store from '../../../redux/store/store';
 import TextField from '../elements/textField';
 import ChangePassword from '../floatForms/changePassword';
 import UserMainData from '../floatForms/userMainData';
+import { EditAddress } from '../floatForms/editAddress';
+import { AddressesList } from './addressesList';
+/* API */
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
-// import { boolean } from 'yup';
+import { deleteAddress } from '../../../services/api/changeAddresses';
 
 function UserProfile(): React.ReactElement {
   const [userData, setUserData] = useState(userInitial);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  async function updatesetUserData() {
+    const user = await getCustomerInfo(true);
+    if (user) setUserData(user);
+  }
 
   const showToast = ({
     message,
@@ -28,6 +35,7 @@ function UserProfile(): React.ReactElement {
     message: string;
     thisError: boolean;
   }) => {
+    updatesetUserData();
     if (!thisError) {
       toast.success(message, {
         style: {
@@ -59,23 +67,9 @@ function UserProfile(): React.ReactElement {
 
   const [modalPasswordIsOpen, setModalPasswordIsOpen] = useState(false);
   const [modalMainIsOpen, setModalMainIsOpen] = useState(false);
+  const [modalAddressIsOpen, setModalAddressIsOpen] = useState(false);
+  const [modalAddressID, setModalAddressID] = useState('');
   // Modal.setAppElement('#root');
-
-  const openModalPassword = () => {
-    setModalPasswordIsOpen(true);
-  };
-
-  const closeModalPassword = () => {
-    setModalPasswordIsOpen(false);
-  };
-
-  const openModalMain = () => {
-    setModalMainIsOpen(true);
-  };
-
-  const closeModalMain = () => {
-    setModalMainIsOpen(false);
-  };
 
   const modalStyles = {
     content: {
@@ -90,23 +84,67 @@ function UserProfile(): React.ReactElement {
 
   const modalStylesMain = {
     content: {
-      top: '20%',
-      left: '40%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '20%',
-      transform: 'translate(-30%, -20%)',
-      width: '80%',
+      top: '5%',
+      width: '80vw',
+      margin: '0 auto',
+      height: 'max-content',
     },
   };
 
+  const closeModalPassword = () => {
+    setModalPasswordIsOpen(false);
+  };
   const modalPasswordContent = (
     <ChangePassword closeModal={closeModalPassword} showToast={showToast} />
   );
 
+  const closeModalMain = () => {
+    setModalMainIsOpen(false);
+  };
   const modalMainContent = (
     <UserMainData closeModal={closeModalMain} showToast={showToast} />
   );
+
+  const closeAddressEdit = () => {
+    setModalAddressIsOpen(false);
+  };
+
+  const openModalPassword = () => {
+    setModalPasswordIsOpen(true);
+  };
+
+  const openModalMain = () => {
+    setModalMainIsOpen(true);
+  };
+
+  const modalAddressContent = (
+    <EditAddress
+      closeModal={closeAddressEdit}
+      showToast={showToast}
+      addressID={modalAddressID}
+    />
+  );
+  const openAddressEdit = (addressID = '') => {
+    setModalAddressID(addressID);
+    setModalAddressIsOpen(true);
+  };
+
+  const clickDeleteAddress = async (addressID: string) => {
+    const result = await deleteAddress(addressID);
+    if (result.statusCode || !result.addresses) {
+      const { message } = result;
+      showToast({ message, thisError: true });
+      return;
+    }
+    const userInfo = await getCustomerInfo(true);
+    if (userInfo) {
+      dispatch(setUserLogged(userInfo));
+    }
+    showToast({
+      message: 'Address deleted',
+      thisError: false,
+    });
+  };
 
   useEffect(() => {
     const appTokenStore = store.getState().userSlice.authToken.access_token;
@@ -152,6 +190,16 @@ function UserProfile(): React.ReactElement {
       >
         {modalPasswordContent}
       </Modal>
+
+      <Modal
+        isOpen={modalAddressIsOpen}
+        onRequestClose={closeAddressEdit}
+        style={modalStylesMain}
+        ariaHideApp={false}
+      >
+        {modalAddressContent}
+      </Modal>
+
       <div className="input-wrapper-header">
         <legend>Profile</legend>
 
@@ -204,6 +252,11 @@ function UserProfile(): React.ReactElement {
           </button>
         </div>
       </div>
+      <AddressesList
+        onEditClick={openAddressEdit}
+        onDeleteClick={clickDeleteAddress}
+        userInfoProp={userData}
+      />
       <Toaster position="top-right" reverseOrder={false} />
     </>
   );

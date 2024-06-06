@@ -36,9 +36,12 @@ function formattedDataAddress(data: IAddress): IAddressSend {
   return result;
 }
 
-function dateToStringForServerZone(date: Date): string {
+export function dateToStringForServerZone(date: Date): string {
   // 2010-10-23
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  const year = `${date.getFullYear()}`;
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 export function formattedDataRegister(data: FormDataRegister): IRegisterSend {
