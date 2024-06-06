@@ -1,7 +1,7 @@
 import { dateToStringForServerZone } from './register';
 import { getCustomerInfo } from './getCustomerInfo';
 import { getUserToken } from './getUserToken';
-import { User } from '../../redux/store/userSlice';
+import { User, Address } from '../../redux/store/userSlice';
 
 export type ChangeUserMainData = {
   email: string;
@@ -10,15 +10,18 @@ export type ChangeUserMainData = {
   dateOfBirth: Date;
 };
 
-type UpdateAction = {
+export type UpdateAction = {
   action?: string;
   email?: string;
   firstName?: string;
   lastName?: string;
   dateOfBirth?: string;
+  addAddress?: Address;
+  addressId?: string;
+  address?: Address;
 };
 
-type BodyUpdateAction = {
+export type BodyUpdateAction = {
   version: string;
   actions: UpdateAction[];
 };

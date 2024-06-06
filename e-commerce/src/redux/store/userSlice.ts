@@ -10,8 +10,8 @@ export type Address = {
   represent?: string;
   billing?: boolean;
   shipping?: boolean;
-  billingDafault?: boolean;
-  shippingDafault?: boolean;
+  billingDefault?: boolean;
+  shippingDefault?: boolean;
 };
 
 export type User = {

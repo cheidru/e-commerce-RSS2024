@@ -5,14 +5,22 @@ import {
   ValidationSchemaAddress,
   ValidationAddressType,
 } from './editAddressValidation';
-import { Address } from '../../../redux/store/userSlice';
-/* API */
+import { useAppDispatch } from '../../../redux/hooks';
+import { setUserLogged, Address } from '../../../redux/store/userSlice';
+import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 import Input from '../elements/input';
 import Country from '../elements/country';
 import ButtonClose from '../elements/buttonClose';
-// import { UserAddresses } from '../../../services/api/changeAddresses';
+import CheckBox from '../elements/checkBox';
+/* API */
+import {
+  extractAddressesFromUser,
+  addAddress,
+  changeAddress,
+} from '../../../services/api/changeAddresses';
 
 type Props = {
+  addressID?: string;
   closeModal: () => void;
   showToast: ({
     message,
@@ -23,18 +31,34 @@ type Props = {
   }) => void;
 };
 
-export function EditAddress({ closeModal, showToast }: Props) {
+export function EditAddress({ addressID, closeModal, showToast }: Props) {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isValid, isDirty },
   } = useForm<ValidationAddressType>({
     resolver: yupResolver(ValidationSchemaAddress),
     mode: 'all',
   });
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const userInfo = await getCustomerInfo();
+      if (!userInfo) return;
+      const userAddresses = extractAddressesFromUser(userInfo).addresses;
+      if (!userAddresses) return;
+      if (userAddresses.length === 0) return;
+      const address = userAddresses.find((addr) => addr.id === addressID);
+      if (!address) return;
+      reset({ address });
+    };
+    if (addressID) getUserInfo();
+  }, [reset, addressID]);
 
   // Disable button submit
   useEffect(() => {
@@ -42,8 +66,36 @@ export function EditAddress({ closeModal, showToast }: Props) {
   }, [isValid, isDirty]);
 
   const onSubmit = async (data: { address: Address }) => {
+    let newAddressId = addressID;
+    if (!addressID) {
+      const result = await addAddress(data.address);
+      if (result.statusCode || !result.addresses) {
+        const { message } = result;
+        showToast({ message, thisError: true });
+        closeModal();
+        return;
+      }
+      const userInfo = await getCustomerInfo(true);
+      if (userInfo) {
+        dispatch(setUserLogged(userInfo));
+      }
+      newAddressId = result.addresses[result.addresses.length - 1].id;
+    }
+    const newAddress: Address = { ...data.address };
+    newAddress.id = newAddressId;
+    const changeAnswer = await changeAddress(newAddress);
+    if (changeAnswer.statusCode || !changeAnswer.addresses) {
+      const { message } = changeAnswer;
+      showToast({ message, thisError: true });
+      closeModal();
+      return;
+    }
+    const userInfo = await getCustomerInfo(true);
+    if (userInfo) {
+      dispatch(setUserLogged(userInfo));
+    }
     showToast({
-      message: `${data}`,
+      message: 'Changes saved',
       thisError: false,
     });
     closeModal();
@@ -57,6 +109,31 @@ export function EditAddress({ closeModal, showToast }: Props) {
         <legend>Address</legend>
       </div>
       <form className="form__profile form" onSubmit={handleSubmit(onSubmit)}>
+        <div className="input-wrapper-line">
+          <CheckBox
+            id="addressForShipping"
+            title="Use as shipping"
+            registerObject={register('address.shipping')}
+          />
+          <CheckBox
+            id="shippingDefault"
+            title="Use as default"
+            registerObject={register('address.shippingDefault')}
+          />
+        </div>
+        <div className="input-wrapper-line">
+          <CheckBox
+            id="addressForBilling"
+            title="Use as billing"
+            registerObject={register('address.billing')}
+          />
+          <CheckBox
+            id="billingDefault"
+            title="Use as default"
+            registerObject={register('address.billingDefault')}
+          />
+        </div>
+
         <div className="input-wrapper-line">
           <div className="registration-adress">
             <Input

@@ -80,7 +80,8 @@
 }
 .address-list-table {
   display: block;
-  height: 50px;
+  min-height: 50px;
+  max-height: 250px;
   margin-top: 20px;
   // padding: 0 4px;
   border: 1px solid #a0a0a0;
@@ -89,11 +90,11 @@
   overflow-y: scroll;
 }
 
-thead {
+.address-list-table-head {
   position: sticky;
   top: 0;
   // height: 50px;
-  background-color: #f9f9f9;
+  background-color: #bbbbbb;
 }
 
 .address-list-header {
@@ -110,10 +111,8 @@ thead {
 }
 .address-list-table-legend {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  margin-top: 40px;
-  font-size: 2.5rem;
 }
 .address-list-button-new {
   display: flex;
@@ -128,14 +127,6 @@ thead {
   cursor: pointer;
   font-size: 14px;
   transition: color 0.3s;
-}
-
-.address-list-table-head {
-  position: sticky;
-  // display: flex;
-  // flex-direction: row;
-  // flex-wrap: wrap;
-  // justify-content: space-between;
 }
 
 .address-list-table-head-line-field {

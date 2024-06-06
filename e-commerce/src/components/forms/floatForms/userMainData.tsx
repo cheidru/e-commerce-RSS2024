@@ -42,7 +42,7 @@ function UserMainData({ closeModal, showToast }: Props) {
     mode: 'all',
   });
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
 
   useEffect(() => {
     const getUserInfo = async () => {

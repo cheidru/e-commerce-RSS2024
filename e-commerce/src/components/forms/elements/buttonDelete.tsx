@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { GrEdit } from 'react-icons/gr';
+import { LuDelete } from 'react-icons/lu';
 
 type Props = {
   id?: string;
@@ -9,11 +9,11 @@ type Props = {
   onClick: () => void;
 };
 
-function ButtonEdit({
+function ButtonDelete({
   id,
   style = {},
   classNameButton = 'formComponents-buttonEdit-position-absolute',
-  size = '18',
+  size = '22',
   onClick,
 }: Props) {
   const buttonStyles = {
@@ -34,9 +34,9 @@ function ButtonEdit({
       style={{ ...buttonStyles, ...style }}
       onClick={() => onClick()}
     >
-      <GrEdit style={svgStyles} />
+      <LuDelete style={svgStyles} />
     </button>
   );
 }
 
-export default ButtonEdit;
+export default ButtonDelete;

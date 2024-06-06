@@ -77,6 +77,10 @@ const validationAddress = yup.object({
       ['BY', 'GE', 'RU', 'UA'], // e-commerce - setting project - area
       'Country is required'
     ),
+  shipping: yup.boolean(),
+  billing: yup.boolean(),
+  shippingDefault: yup.boolean(),
+  billingDefault: yup.boolean(),
 });
 
 export const ValidationSchemaAddress = yup
