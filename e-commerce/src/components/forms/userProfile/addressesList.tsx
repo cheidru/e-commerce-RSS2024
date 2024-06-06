@@ -1,9 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect } from 'react';
-import { useAppDispatch } from '../../../redux/hooks';
-import { setUserLogged, User } from '../../../redux/store/userSlice';
+import { User } from '../../../redux/store/userSlice';
 /* API */
-import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 import {
   UserAddresses,
   extractAddressesFromUser,
@@ -13,25 +11,24 @@ import ButtonDelete from '../elements/buttonDelete';
 
 type Props = {
   onEditClick: (addressID?: string) => void;
+  onDeleteClick: (addressID: string) => void;
+  userInfoProp: User;
 };
 
-export function AddressesList({ onEditClick }: Props) {
+export function AddressesList({
+  onEditClick,
+  onDeleteClick,
+  userInfoProp,
+}: Props) {
   const userAddressesEmpty: UserAddresses = {};
   const [addresses, setAddresses] = useState(userAddressesEmpty);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const getUserInfo = async () => {
-      const userInfo: User = await getCustomerInfo();
-
-      if (userInfo.addresses) {
-        dispatch(setUserLogged(userInfo));
-        const userAddresses = extractAddressesFromUser(userInfo);
-        setAddresses(userAddresses);
-      }
-    };
-    getUserInfo();
-  }, [dispatch]);
+    if (userInfoProp.addresses) {
+      const userAddresses = extractAddressesFromUser(userInfoProp);
+      setAddresses(userAddresses);
+    }
+  }, [setAddresses, userInfoProp]);
 
   return (
     <>
@@ -99,7 +96,7 @@ export function AddressesList({ onEditClick }: Props) {
                   />
                   <ButtonDelete
                     style={{ position: 'inherit' }}
-                    onClick={() => onEditClick(`${address.id}`)}
+                    onClick={() => onDeleteClick(`${address.id}`)}
                   />
                 </td>
               </tr>

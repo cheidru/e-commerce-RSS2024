@@ -145,6 +145,30 @@ export async function addAddress(formData: Address) {
   return answer;
 }
 
+export async function deleteAddress(addressID: string) {
+  const user = await getCustomerInfo();
+  if (!user) return { statusCode: 'err', message: 'save failed' };
+
+  const userToken = await getUserToken();
+  if (!userToken) return { statusCode: 'err', message: 'save failed' };
+
+  const updateActions = [
+    {
+      action: 'removeAddress',
+      addressId: addressID,
+    },
+  ];
+
+  const body = {
+    version: user.version,
+    actions: updateActions,
+  };
+
+  const answer = sendActions(body, userToken.access_token);
+
+  return answer;
+}
+
 export async function changeAddress(formData: Address) {
   const user = await getCustomerInfo();
   if (!user) return { statusCode: 'err', message: 'save failed' };

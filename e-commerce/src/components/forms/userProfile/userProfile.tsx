@@ -16,7 +16,7 @@ import { EditAddress } from '../floatForms/editAddress';
 import { AddressesList } from './addressesList';
 /* API */
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
-// import { deleteAddress } from '../../../services/api/changeAddresses';
+import { deleteAddress } from '../../../services/api/changeAddresses';
 
 function UserProfile(): React.ReactElement {
   const [userData, setUserData] = useState(userInitial);
@@ -129,22 +129,22 @@ function UserProfile(): React.ReactElement {
     setModalAddressIsOpen(true);
   };
 
-  // const clickDeleteAddress = async (addressID = '') => {
-  //   const result = await deleteAddress(addressID);
-  //   if (result.statusCode || !result.addresses) {
-  //     const { message } = result;
-  //     showToast({ message, thisError: true });
-  //     return;
-  //   }
-  //   const userInfo = await getCustomerInfo(true);
-  //   if (userInfo) {
-  //     dispatch(setUserLogged(userInfo));
-  //   }
-  //   showToast({
-  //     message: 'Address deleted',
-  //     thisError: false,
-  //   });
-  // };
+  const clickDeleteAddress = async (addressID: string) => {
+    const result = await deleteAddress(addressID);
+    if (result.statusCode || !result.addresses) {
+      const { message } = result;
+      showToast({ message, thisError: true });
+      return;
+    }
+    const userInfo = await getCustomerInfo(true);
+    if (userInfo) {
+      dispatch(setUserLogged(userInfo));
+    }
+    showToast({
+      message: 'Address deleted',
+      thisError: false,
+    });
+  };
 
   useEffect(() => {
     const appTokenStore = store.getState().userSlice.authToken.access_token;
@@ -252,7 +252,11 @@ function UserProfile(): React.ReactElement {
           </button>
         </div>
       </div>
-      <AddressesList onEditClick={openAddressEdit} />
+      <AddressesList
+        onEditClick={openAddressEdit}
+        onDeleteClick={clickDeleteAddress}
+        userInfoProp={userData}
+      />
       <Toaster position="top-right" reverseOrder={false} />
     </>
   );
