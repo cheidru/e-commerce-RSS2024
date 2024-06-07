@@ -82,16 +82,16 @@ function Catalog() {
     }
   };
   // Open product page
-  const openProduct = async (id: string) => {
+  const openProduct = (id: string) => {
     if (id) {
       navigate(`/product/${id}`);
     }
   };
   // Handle Clicked product
-  const handlerProductChoose: MouseEventHandler = async (event) => {
+  const handlerProductChoose: MouseEventHandler = (event) => {
     const productChoiceClick = event.currentTarget.getAttribute('data-id');
     if (productChoiceClick) {
-      await openProduct(productChoiceClick);
+      openProduct(productChoiceClick);
     }
   };
 
