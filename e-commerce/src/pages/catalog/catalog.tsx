@@ -81,20 +81,6 @@ function Catalog() {
       setSearchQuery('');
     }
   };
-  // Open product page
-  const openProduct = (id: string) => {
-    if (id) {
-      navigate(`/product/${id}`);
-    }
-  };
-  // Handle Clicked product
-  const handlerProductChoose: MouseEventHandler = (event) => {
-    const productChoiceClick = event.currentTarget.getAttribute('data-id');
-    if (productChoiceClick) {
-      openProduct(productChoiceClick);
-    }
-  };
-
   // get products in filter
   const getProductsFilter = useCallback(
     (data: IProductResponseCategory) => {
@@ -193,7 +179,7 @@ function Catalog() {
                   <ProductCard
                     {...product}
                     key={product.id}
-                    onClick={handlerProductChoose}
+                    onClick={() => navigate(`/product/${product.id}`)}
                   />
                 ))}
           </div>
