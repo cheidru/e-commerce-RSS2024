@@ -17,6 +17,15 @@ export const converterDigit = (digit: number): number => {
       return 1;
   }
 };
+export const converterPrice = (
+  price: number,
+  fractionDigits: number
+): string => {
+  const formatted = (price / converterDigit(fractionDigits)).toFixed(
+    fractionDigits
+  );
+  return formatted;
+};
 
 export function formattedDataForCategory(
   array: ICategoriesResponse
@@ -56,12 +65,16 @@ export function formattedDataForCardInCategory(
     const imageUrl: string[] = [product.masterVariant.images[0].url];
     let onSale: boolean = false;
     const { fractionDigits } = product.masterVariant.prices[0].value;
-    let oldPrice: number = product.masterVariant.prices[0].value.centAmount;
-    oldPrice /= converterDigit(fractionDigits);
-    let newPrice: number = oldPrice;
+    const oldPrice = converterPrice(
+      product.masterVariant.prices[0].value.centAmount,
+      fractionDigits
+    );
+    let newPrice = oldPrice;
     if (product.masterVariant.prices[0].discounted) {
-      newPrice = product.masterVariant.prices[0].discounted.value.centAmount;
-      newPrice /= converterDigit(fractionDigits);
+      newPrice = converterPrice(
+        product.masterVariant.prices[0].discounted.value.centAmount,
+        fractionDigits
+      );
       onSale = true;
     }
     const { id } = product;
@@ -90,23 +103,38 @@ export function formattedDataForOneProduct(data: IProductPage) {
   });
   const { fractionDigits } =
     data.masterData.staged.masterVariant.prices[0].value;
-  const oldPrice =
-    data.masterData.staged.masterVariant.prices[0].value.centAmount /
-    converterDigit(fractionDigits);
+  const oldPrice = converterPrice(
+    data.masterData.staged.masterVariant.prices[0].value.centAmount,
+    fractionDigits
+  );
   const onSale = !!data.masterData.staged.masterVariant.prices[0].discounted;
   let newPrice = oldPrice;
   if (
     onSale &&
     data.masterData.staged.masterVariant.prices[0].discounted?.value.centAmount
   ) {
-    newPrice =
+    newPrice = converterPrice(
       data.masterData.staged.masterVariant.prices[0].discounted.value
-        .centAmount / converterDigit(fractionDigits);
+        .centAmount,
+      fractionDigits
+    );
   }
   const currencyName =
     data.masterData.staged.masterVariant.prices[0].value.currencyCode;
   const currency = currencyName === 'USD' ? '$' : '€';
   const { id } = data;
+  let color = '';
+  let model = '';
+  let size = '';
+  data.masterData.current.masterVariant.attributes.forEach((elem) => {
+    if (elem.name === 'color') {
+      color = elem.value;
+    } else if (elem.name === 'model') {
+      model = elem.value;
+    } else if (elem.name === 'size') {
+      size = elem.value;
+    }
+  });
 
   const propsProductProps: ProductCardProps = {
     imageUrl,
@@ -117,7 +145,9 @@ export function formattedDataForOneProduct(data: IProductPage) {
     oldPrice,
     currency,
     id,
+    size,
+    color,
+    model,
   };
-  // console.log(propsProductProps);
   return propsProductProps;
 }

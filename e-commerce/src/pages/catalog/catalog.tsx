@@ -1,17 +1,13 @@
 import './catalog.scss';
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   getCategories,
   getProductsSorted,
   SortField,
   searchProducts,
-  filterProductsInfo,
 } from '../../services/api/getProducts';
-import {
-  IFilter,
-  IProductResponseCategory,
-} from '../../services/api/InterfaceProduct';
+import { IProductResponseCategory } from '../../services/api/InterfaceProduct';
 import { ICategoriesResponse } from '../../services/api/InterfaceCategories';
 import {
   formattedDataForCategory,
@@ -26,7 +22,8 @@ import {
   CategoryProps,
   Category,
 } from '../../components/asideCatalogCategory/asideCatalogCategory';
-import spinner from '../../assets/img/gif/spinner.gif';
+import FilterCatalog from '../../components/forms/filterCatalog/filterCatalog';
+import Spinner from '../../components/spinner/Spinner';
 
 function Catalog() {
   const productsAll: ProductCardProps[] = [];
@@ -34,12 +31,6 @@ function Catalog() {
   const categoryIdDefault: string = 'exists';
   const navigate = useNavigate();
   const searchQueryDefault: string = '';
-  const filterPanelPropsDefault: IFilter = {
-    priceMax: 0,
-    priceMin: 0,
-    color: [],
-    model: [],
-  };
 
   const [productCardProps, setProductCardProps] = useState(productsAll);
   const [categoryProps, setCategoryProps] = useState(categoriesAll);
@@ -47,7 +38,7 @@ function Catalog() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState(searchQueryDefault);
-  const [filterPanelProps, setFilterPanel] = useState(filterPanelPropsDefault);
+  const [messageError, setMessageError] = useState<boolean>(false);
 
   // render products for category
   const productsCategory = async (categoryIdClick: string) => {
@@ -78,9 +69,24 @@ function Catalog() {
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
+  // Message 'Not found'
+  const showMessageErrorSearch = () => {
+    setMessageError(true);
+    setTimeout(async () => {
+      setMessageError(false);
+      setCategoryId(categoryIdDefault);
+      const productsAllGet: IProductResponseCategory =
+        await getProductsSorted(categoryIdDefault);
+      const productsProps = formattedDataForCardInCategory(productsAllGet);
+      setProductCardProps(productsProps);
+    }, 3000);
+  };
   const handleSearchPanel: OnClickType['onClick'] = async () => {
     if (searchQuery.length > 1) {
       const searchResponse = await searchProducts(searchQuery);
+      if (!searchResponse.total) {
+        showMessageErrorSearch();
+      }
       const searchResponseProductProps =
         formattedDataForCardInCategory(searchResponse);
       setProductCardProps(searchResponseProductProps);
@@ -103,6 +109,15 @@ function Catalog() {
     }
   };
 
+  // get products in filter
+  const getProductsFilter = useCallback((data: IProductResponseCategory) => {
+    if (!data.results[0]) {
+      showMessageErrorSearch();
+    }
+    const productsProps = formattedDataForCardInCategory(data);
+    setProductCardProps(productsProps);
+  }, []);
+
   useEffect(() => {
     const products = async () => {
       try {
@@ -121,18 +136,12 @@ function Catalog() {
       const categoriesAllData = formattedDataForCategory(categoriesAllGet);
       setCategoryProps(categoriesAllData);
     };
-    const filterInfo = async () => {
-      const filterInfoResponse = await filterProductsInfo();
-      setFilterPanel(filterInfoResponse);
-    };
-
     products();
     categories();
-    filterInfo();
   }, []);
 
   if (loading) {
-    return <img src={spinner} alt="loading..." />;
+    return <Spinner />;
   }
 
   if (error) {
@@ -153,88 +162,33 @@ function Catalog() {
               isCurrent={category.id === categoryId}
             />
           ))}
-          <details>
-            <summary>Filter</summary>
-            <form className="form-filter">
-              <fieldset>
-                <legend>Price</legend>
-                <label htmlFor="priceMin">
-                  Min price
-                  <input
-                    className="input-text"
-                    type="number"
-                    id="priceMin"
-                    placeholder={`${filterPanelProps.priceMin}`}
-                    min={filterPanelProps.priceMin}
-                    max={filterPanelProps.priceMax}
-                  />
-                </label>
-                <label htmlFor="priceMax">
-                  {' '}
-                  Max price
-                  <input
-                    className="input-text"
-                    type="number"
-                    id="priceMax"
-                    placeholder={`${filterPanelProps.priceMax}`}
-                    min={filterPanelProps.priceMin}
-                    max={filterPanelProps.priceMax}
-                  />
-                </label>
-              </fieldset>
-              <fieldset>
-                <legend>Color</legend>
-                {filterPanelProps.color.map((color) => (
-                  <label htmlFor={color} key={color}>
-                    <input
-                      className="input-checkbox"
-                      type="checkbox"
-                      id={color}
-                      name="filter-color"
-                      value={color}
-                    />
-                    {color}
-                  </label>
-                ))}
-              </fieldset>
-              <fieldset>
-                <legend>Model</legend>
-
-                {filterPanelProps.model.map((model) => (
-                  <label htmlFor={model} key={model}>
-                    <input
-                      className="input-checkbox"
-                      type="checkbox"
-                      id={model}
-                      name="filter-model"
-                      value={model}
-                    />
-                    {model}
-                  </label>
-                ))}
-              </fieldset>
-              <button type="submit" className="category-btn filter-btn">
-                Send
-              </button>
-            </form>
-          </details>
+          <FilterCatalog getProductsFilter={getProductsFilter} />
         </aside>
         <div className="catalog-products">
           <div className="catalog-sort">
-            <label htmlFor="site-search">
-              Search the site:
+            <label htmlFor="site-search" className="search-label">
               <input
                 type="search"
                 id="site-search"
                 name="search"
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={handleChangeInputSearch}
+                className="search-input"
               />
-              <button type="button" onClick={handleSearchPanel}>
+              <button
+                className="search-btn"
+                type="button"
+                onClick={handleSearchPanel}
+              >
                 Search
               </button>
             </label>
-            <select id="sorted-products" onChange={handleSortChange}>
+            <select
+              id="sorted-products"
+              onChange={handleSortChange}
+              className="select-input"
+            >
               <option value={SortField.Default}>Sort by</option>
               <option value={SortField.PriceAsc}>Lowest price</option>
               <option value={SortField.PriceDesc}>Highest price</option>
@@ -243,14 +197,16 @@ function Catalog() {
               <option value={SortField.NameDesc}>Name (Z To A)</option>
             </select>
           </div>
-          <div className="catalog-product">
-            {productCardProps.map((product) => (
-              <ProductCard
-                {...product}
-                key={product.id}
-                onClick={handlerProductChoose}
-              />
-            ))}
+          <div className="catalog-product" id="catalog-product">
+            {messageError
+              ? 'Product not found'
+              : productCardProps.map((product) => (
+                  <ProductCard
+                    {...product}
+                    key={product.id}
+                    onClick={handlerProductChoose}
+                  />
+                ))}
           </div>
         </div>
       </div>

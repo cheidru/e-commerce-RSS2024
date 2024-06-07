@@ -21,16 +21,15 @@ function Navigation() {
           <NavLink to="/catalog">Catalog</NavLink>
         </li>
         <li className="navigation__list-item">
-          <NavLink to="/product">Product</NavLink>
-        </li>
-        <li className="navigation__list-item">
           <NavLink to="/about">About Us</NavLink>
         </li>
         <li className="navigation__list-item">
           <NavLink to="/basket">Basket</NavLink>
         </li>
         <li className="navigation__list-item">
-          <NavLink to="/profile">Profile</NavLink>
+          <NavLink to="/profile" className={!isUserLogged ? 'none' : 'red'}>
+            Profile
+          </NavLink>
         </li>
         <li className="navigation__list-item">
           <NavLink to="/registration" className={isUserLogged ? 'none' : 'red'}>

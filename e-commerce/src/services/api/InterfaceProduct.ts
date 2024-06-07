@@ -183,4 +183,5 @@ export interface IFilter {
   priceMax: number;
   model: string[];
   color: string[];
+  fractionDigits: number;
 }

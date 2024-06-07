@@ -5,10 +5,16 @@ import {
   validationSchemaMain,
   ValidationSchemaCall,
 } from './userMainDataValidation';
+import { useAppDispatch } from '../../../redux/hooks';
 /* API */
-import { ChangeUserMainData } from '../../../services/api/changeUserData';
 import Input from '../elements/input';
 import ButtonClose from '../elements/buttonClose';
+import store from '../../../redux/store/store';
+import { setUserLogged, setAuthToken } from '../../../redux/store/userSlice';
+import {
+  ChangeUserMainData,
+  changeUserMainData,
+} from '../../../services/api/changeUserData';
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 
 type Props = {
@@ -24,27 +30,33 @@ type Props = {
 
 function UserMainData({ closeModal, showToast }: Props) {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
-    setValue,
+    reset,
     formState: { errors, isValid, isDirty },
   } = useForm<ValidationSchemaCall>({
     resolver: yupResolver(validationSchemaMain),
     mode: 'all',
   });
 
+  // useEffect(() => {}, []);
+
   useEffect(() => {
     const getUserInfo = async () => {
       const userInfo = await getCustomerInfo();
-      setValue('firstName', userInfo.firstName);
-      setValue('lastName', userInfo.lastName);
-      setValue('dateOfBirth', userInfo.dateOfBirth);
-      setValue('email', userInfo.email);
+      const defaultValues: ChangeUserMainData = {
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        dateOfBirth: userInfo.dateOfBirth,
+        email: userInfo.email,
+      };
+      reset({ ...defaultValues });
     };
     getUserInfo();
-  });
+  }, [reset]);
 
   // Disable button submit
   useEffect(() => {
@@ -52,12 +64,24 @@ function UserMainData({ closeModal, showToast }: Props) {
   }, [isValid, isDirty]);
 
   const onSubmit = async (data: ChangeUserMainData) => {
-    showToast({
-      message: `${data}`,
-      thisError: false,
-    });
+    const result = await changeUserMainData(data);
+    if (result.statusCode) {
+      const { message } = result;
+      showToast({ message, thisError: true });
+    } else {
+      const token = { ...store.getState().userSlice.authToken };
+      token.email = data.email;
+      dispatch(setAuthToken(token));
+      const userInfo = await getCustomerInfo(true);
+      if (userInfo) {
+        dispatch(setUserLogged(userInfo));
+      }
+      showToast({
+        message: 'Changes saved',
+        thisError: false,
+      });
+    }
     closeModal();
-    // return data;
   };
 
   return (

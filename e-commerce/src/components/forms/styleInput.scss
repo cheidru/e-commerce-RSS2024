@@ -228,3 +228,49 @@ label {
   right: 5px;
   cursor: pointer;
 }
+/* CATALOG */
+/* Input Search */
+.search-label {
+  position: relative;
+}
+.search-input {
+  border: 1px solid $Light-grey;
+  border-radius: 3px;
+  width: 250px;
+  padding-left: 10px;
+  &:focus-visible,
+  &:active {
+    border: 1px solid $Grey-primary;
+    outline-color: $Grey-primary;
+  }
+}
+.search-btn {
+  @include btnBlue;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 70px;
+  font-size: 1.5rem;
+  border-radius: 3px;
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.select-input {
+  width: 130px;
+  font-size: 1.5rem;
+  height: 2.5rem;
+  border: 1px solid $Light-grey;
+  border-radius: 3px;
+  &:focus-visible,
+  &:active {
+    border: 1px solid $Grey-primary;
+    outline-color: $Grey-primary;
+  }
+  & > option {
+    border: 1px solid $Light-grey;
+    border-radius: 0px;
+  }
+}

@@ -92,6 +92,7 @@ export async function searchProducts(value: string) {
 }
 
 export async function filterProductsInfo() {
+  let fractionDigits = 0;
   const sortParamPriceMin = 'price asc';
   const sortParamPriceMax = 'price desc';
   const priceArr: number[] = [];
@@ -120,11 +121,12 @@ export async function filterProductsInfo() {
 
   result.forEach((product) => {
     const productPrice = product.masterVariant.prices[0].value.centAmount;
-    const { fractionDigits } = product.masterVariant.prices[0].value;
+    fractionDigits = product.masterVariant.prices[0].value.fractionDigits;
     const price = productPrice / converterDigit(fractionDigits);
     priceArr.push(price);
 
     if (product.masterVariant.attributes[1]?.value) {
+      // console.log('color', product.variants)
       const productColor = product.masterVariant.attributes[1].value;
       if (!color.includes(productColor)) {
         color.push(productColor);
@@ -146,13 +148,35 @@ export async function filterProductsInfo() {
   const filterProps: IFilter = {
     priceMax,
     priceMin,
-    color: color.slice(1, 6),
-    model: model.slice(1, 6),
+    color,
+    model,
+    fractionDigits,
   };
 
-  // console.log(priceArr);
-  // console.log(color);
-  // console.log(model);
-
   return filterProps;
+}
+
+export async function filterProducts(data: IFilter) {
+  const options = await requestOptions();
+  const url = new URL(
+    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/product-projections/search?`
+  );
+  if (data.color.length > 0) {
+    const param = data.color.map((elem) => `"${elem}"`).join(', ');
+    url.searchParams.append('filter', `variants.attributes.color: ${param}`);
+  }
+  if (data.model.length > 0) {
+    const param = data.model.map((elem) => `"${elem}"`).join(', ');
+    url.searchParams.append('filter', `variants.attributes.model:${param}`);
+  }
+
+  if (data.priceMax && data.priceMin) {
+    const minPrice = data.priceMin * converterDigit(data.fractionDigits);
+    const maxPrice = data.priceMax * converterDigit(data.fractionDigits);
+    const filterPrice = `variants.price.centAmount:range (${minPrice} to ${maxPrice})`;
+    url.searchParams.append('filter', filterPrice);
+  }
+  const answer = await fetch(url, options);
+  const result: IProductResponseCategory = await answer.json();
+  return result;
 }

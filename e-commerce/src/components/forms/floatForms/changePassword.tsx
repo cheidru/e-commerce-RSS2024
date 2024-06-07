@@ -2,9 +2,14 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch } from '../../../redux/hooks';
-import { setUserLogged } from '../../../redux/store/userSlice';
+import {
+  setUserLogged,
+  setAuthToken,
+  AuthToken,
+} from '../../../redux/store/userSlice';
 import { changePassword } from '../../../services/api/changePassword';
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
+import { login } from '../../../services/api/login';
 import {
   validationSchema,
   FormDataChangePassword,
@@ -27,7 +32,9 @@ type Props = {
 function ChangePassword({ closeModal, showToast }: Props) {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const dispatch = useAppDispatch();
-
+  const setAuthUserToken = (tokenNew: AuthToken) => {
+    dispatch(setAuthToken(tokenNew));
+  };
   const {
     register,
     handleSubmit,
@@ -45,7 +52,7 @@ function ChangePassword({ closeModal, showToast }: Props) {
   const onSubmit = async (data: FormDataChangePassword) => {
     if (data.newPassword === data.currentPassword) {
       showToast({
-        message: 'The new password has not been changed',
+        message: 'No changes nothing to save',
         thisError: true,
       });
     } else {
@@ -58,6 +65,15 @@ function ChangePassword({ closeModal, showToast }: Props) {
         if (userInfo) {
           dispatch(setUserLogged(userInfo));
         }
+        const credential = {
+          email: userInfo.email,
+          password: data.newPassword,
+        };
+        const tokenNew = await login(credential);
+        if (!tokenNew.statusCode) {
+          setAuthUserToken(tokenNew);
+        }
+
         showToast({
           message: 'Password changed successfully',
           thisError: false,
