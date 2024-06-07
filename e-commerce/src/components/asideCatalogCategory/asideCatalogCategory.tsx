@@ -1,12 +1,9 @@
-import React from 'react';
+import { MouseEventHandler } from 'react';
 
-export type OnClickType = {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-};
 export interface CategoryProps {
   name: string;
   id: string;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: MouseEventHandler;
   isCurrent: boolean;
 }
 

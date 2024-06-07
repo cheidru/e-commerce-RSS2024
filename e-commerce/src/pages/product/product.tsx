@@ -1,7 +1,7 @@
 import './product.scss';
 import { useEffect, useState } from 'react';
 import { getProduct } from '../../services/api/getProducts';
-import { IProductPage } from '../../services/api/InterfaceProduct';
+import { IProductPage } from '../../types/Product/InterfaceProduct';
 import { ProductCardProps } from '../../components/productCard/productCard';
 import { formattedDataForOneProduct } from '../catalog/formattedData';
 import Spinner from '../../components/spinner/Spinner';

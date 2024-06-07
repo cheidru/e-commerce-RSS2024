@@ -1,6 +1,9 @@
 import { getAccessToken } from './getCustomerToken';
-import { IFilter, IProductResponseCategory } from './InterfaceProduct';
-import { ICategoriesResponse } from './InterfaceCategories';
+import {
+  IFilter,
+  IProductResponseCategory,
+} from '../../types/Product/InterfaceProduct';
+import { ICategoriesResponse } from '../../types/Product/InterfaceCategories';
 import { converterDigit } from '../../pages/catalog/formattedData';
 
 const urlProject = `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}`;
@@ -65,10 +68,9 @@ export async function getProductsSorted(
   const url = new URL(
     `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/product-projections/search?`
   );
-  const filterCategory =
-    categoryId === 'exists'
-      ? `categories:exists`
-      : `categories.id:"${categoryId}"`;
+  const filterCategory = categoryId
+    ? `categories.id:"${categoryId}"`
+    : `categories:exists`;
   url.searchParams.append('filter', filterCategory);
   url.searchParams.append('sort', sortFieldGet);
   url.searchParams.append('priceCurrency', 'USD');

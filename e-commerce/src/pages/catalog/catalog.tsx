@@ -1,5 +1,11 @@
 import './catalog.scss';
-import { useEffect, useState, useCallback, ChangeEvent } from 'react';
+import {
+  useEffect,
+  useState,
+  useCallback,
+  ChangeEvent,
+  MouseEventHandler,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   getCategories,
@@ -7,8 +13,8 @@ import {
   SortField,
   searchProducts,
 } from '../../services/api/getProducts';
-import { IProductResponseCategory } from '../../services/api/InterfaceProduct';
-import { ICategoriesResponse } from '../../services/api/InterfaceCategories';
+import { IProductResponseCategory } from '../../types/Product/InterfaceProduct';
+import { ICategoriesResponse } from '../../types/Product/InterfaceCategories';
 import {
   formattedDataForCategory,
   formattedDataForCardInCategory,
@@ -18,7 +24,6 @@ import {
   ProductCardProps,
 } from '../../components/productCard/productCard';
 import {
-  OnClickType,
   CategoryProps,
   Category,
 } from '../../components/asideCatalogCategory/asideCatalogCategory';
@@ -26,36 +31,19 @@ import FilterCatalog from '../../components/forms/filterCatalog/filterCatalog';
 import Spinner from '../../components/spinner/Spinner';
 
 function Catalog() {
-  const productsAll: ProductCardProps[] = [];
   const categoriesAll: CategoryProps[] = [];
-  const categoryIdDefault: string = 'exists';
   const navigate = useNavigate();
-  const searchQueryDefault: string = '';
 
-  const [productCardProps, setProductCardProps] = useState(productsAll);
+  const [productCardProps, setProductCardProps] = useState<ProductCardProps[]>(
+    []
+  );
   const [categoryProps, setCategoryProps] = useState(categoriesAll);
-  const [categoryId, setCategoryId] = useState(categoryIdDefault);
+  const [categoryId, setCategoryId] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [searchQuery, setSearchQuery] = useState(searchQueryDefault);
-  const [messageError, setMessageError] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [messageError, setMessageError] = useState(false);
 
-  // render products for category
-  const productsCategory = async (categoryIdClick: string) => {
-    const products: IProductResponseCategory =
-      await getProductsSorted(categoryIdClick);
-    const productsProps = formattedDataForCardInCategory(products);
-    setProductCardProps(productsProps);
-  };
-
-  // Handle Clicked category
-  const handlerCategoryChoose: OnClickType['onClick'] = async (event) => {
-    const categoryChoiceIdClick = event.currentTarget.getAttribute('data-id');
-    if (categoryChoiceIdClick) {
-      setCategoryId(categoryChoiceIdClick);
-      await productsCategory(categoryChoiceIdClick);
-    }
-  };
   // Handle category sorted
   const handleSortChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -70,18 +58,18 @@ function Catalog() {
     setSearchQuery(event.target.value);
   };
   // Message 'Not found'
-  const showMessageErrorSearch = () => {
+  const showMessageErrorSearch = useCallback(() => {
     setMessageError(true);
     setTimeout(async () => {
       setMessageError(false);
-      setCategoryId(categoryIdDefault);
+      setCategoryId(categoryId);
       const productsAllGet: IProductResponseCategory =
-        await getProductsSorted(categoryIdDefault);
+        await getProductsSorted(categoryId);
       const productsProps = formattedDataForCardInCategory(productsAllGet);
       setProductCardProps(productsProps);
     }, 3000);
-  };
-  const handleSearchPanel: OnClickType['onClick'] = async () => {
+  }, [categoryId, setMessageError, setCategoryId, setProductCardProps]);
+  const handleSearchPanel: MouseEventHandler = async () => {
     if (searchQuery.length > 1) {
       const searchResponse = await searchProducts(searchQuery);
       if (!searchResponse.total) {
@@ -93,36 +81,23 @@ function Catalog() {
       setSearchQuery('');
     }
   };
-  // Open product page
-  const openProduct = async (id: string) => {
-    if (id) {
-      navigate(`/product/${id}`);
-    }
-  };
-  // Handle Clicked product
-  const handlerProductChoose: (
-    event: React.MouseEvent<HTMLDivElement>
-  ) => void = async (event) => {
-    const productChoiceClick = event.currentTarget.getAttribute('data-id');
-    if (productChoiceClick) {
-      await openProduct(productChoiceClick);
-    }
-  };
-
   // get products in filter
-  const getProductsFilter = useCallback((data: IProductResponseCategory) => {
-    if (!data.results[0]) {
-      showMessageErrorSearch();
-    }
-    const productsProps = formattedDataForCardInCategory(data);
-    setProductCardProps(productsProps);
-  }, []);
+  const getProductsFilter = useCallback(
+    (data: IProductResponseCategory) => {
+      if (!data.results[0]) {
+        showMessageErrorSearch();
+      }
+      const productsProps = formattedDataForCardInCategory(data);
+      setProductCardProps(productsProps);
+    },
+    [showMessageErrorSearch]
+  ); // sort. filter
 
   useEffect(() => {
     const products = async () => {
       try {
         const productsAllGet: IProductResponseCategory =
-          await getProductsSorted(categoryIdDefault);
+          await getProductsSorted(categoryId);
         const productsProps = formattedDataForCardInCategory(productsAllGet);
         setProductCardProps(productsProps);
       } catch {
@@ -138,7 +113,7 @@ function Catalog() {
     };
     products();
     categories();
-  }, []);
+  }, [categoryId]); // sort. filter
 
   if (loading) {
     return <Spinner />;
@@ -158,7 +133,7 @@ function Catalog() {
               key={category.id}
               name={category.name}
               id={category.id}
-              onClick={handlerCategoryChoose}
+              onClick={() => setCategoryId(category.id)}
               isCurrent={category.id === categoryId}
             />
           ))}
@@ -204,7 +179,7 @@ function Catalog() {
                   <ProductCard
                     {...product}
                     key={product.id}
-                    onClick={handlerProductChoose}
+                    onClick={() => navigate(`/product/${product.id}`)}
                   />
                 ))}
           </div>

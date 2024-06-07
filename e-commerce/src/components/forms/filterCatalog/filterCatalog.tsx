@@ -2,7 +2,7 @@ import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
 import {
   IFilter,
   IProductResponseCategory,
-} from '../../../services/api/InterfaceProduct';
+} from '../../../types/Product/InterfaceProduct';
 import {
   filterProductsInfo,
   filterProducts,

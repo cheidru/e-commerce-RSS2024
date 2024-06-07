@@ -1,4 +1,8 @@
-import { IAddress, IAddressSend, IRegisterSend } from './Interface';
+import {
+  IAddress,
+  IAddressSend,
+  IRegisterSend,
+} from '../../types/User/Interface';
 import { FormDataRegister } from '../../components/forms/validationRulesInput';
 import { getAppToken } from './getAppToken';
 

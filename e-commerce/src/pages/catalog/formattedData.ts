@@ -2,9 +2,9 @@ import {
   IProductResponseCategory,
   Image,
   IProductPage,
-} from '../../services/api/InterfaceProduct';
+} from '../../types/Product/InterfaceProduct';
 import { ProductCardProps } from '../../components/productCard/productCard';
-import { ICategoriesResponse } from '../../services/api/InterfaceCategories';
+import { ICategoriesResponse } from '../../types/Product/InterfaceCategories';
 import { CategoryProps } from '../../components/asideCatalogCategory/asideCatalogCategory';
 
 export const converterDigit = (digit: number): number => {
@@ -33,7 +33,7 @@ export function formattedDataForCategory(
   const categories: CategoryProps[] = [];
   const categoryDefault: CategoryProps = {
     name: 'All',
-    id: 'exists',
+    id: '',
     isCurrent: true,
   };
   categories.push(categoryDefault);
