@@ -4,7 +4,7 @@ import {
   ILogin,
   IAddressSend,
   IRegisterSend,
-} from './Interface';
+} from '../../types/User/Interface';
 import {
   FormDataLogin,
   FormDataRegister,
@@ -31,8 +31,8 @@ interface AccessTokenResponse {
 
 function formattedAppTokenNew(token: AppToken): AppToken {
   const result = { ...token };
-  const currenDateValue = new Date().getTime() / 1000;
-  result.expires_in = currenDateValue + token.expires_in;
+  const currentDateValue = new Date().getTime() / 1000;
+  result.expires_in = currentDateValue + token.expires_in;
   return result;
 }
 

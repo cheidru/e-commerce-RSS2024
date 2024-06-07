@@ -1,6 +1,9 @@
 import { getAccessToken } from './getCustomerToken';
-import { IFilter, IProductResponseCategory } from './InterfaceProduct';
-import { ICategoriesResponse } from './InterfaceCategories';
+import {
+  IFilter,
+  IProductResponseCategory,
+} from '../../types/Product/InterfaceProduct';
+import { ICategoriesResponse } from '../../types/Product/InterfaceCategories';
 import { converterDigit } from '../../pages/catalog/formattedData';
 
 const urlProject = `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}`;

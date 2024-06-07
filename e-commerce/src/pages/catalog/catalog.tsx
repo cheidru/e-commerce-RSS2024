@@ -13,8 +13,8 @@ import {
   SortField,
   searchProducts,
 } from '../../services/api/getProducts';
-import { IProductResponseCategory } from '../../services/api/InterfaceProduct';
-import { ICategoriesResponse } from '../../services/api/InterfaceCategories';
+import { IProductResponseCategory } from '../../types/Product/InterfaceProduct';
+import { ICategoriesResponse } from '../../types/Product/InterfaceCategories';
 import {
   formattedDataForCategory,
   formattedDataForCardInCategory,
@@ -113,7 +113,7 @@ function Catalog() {
     };
     products();
     categories();
-  }, [categoryId]); // sort. filtr
+  }, [categoryId]); // sort. filter
 
   if (loading) {
     return <Spinner />;
