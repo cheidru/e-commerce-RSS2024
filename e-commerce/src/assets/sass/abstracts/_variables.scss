@@ -32,7 +32,7 @@ $Bg-overlay: rgba(22, 28, 36, 0.3);
 $Border-card: 1px solid var(--Stroke, #eaeaea);
 $Border-slaider-projects: 1px solid var(--Light-grey, #c4cdd5);
 
-/* box-shadowv */
+/* box-shadow */
 $B-shadow-header: 0px -1px 0px 0px #c4cdd5 inset;
 $B-shadow-service:
   -1px 0px 0px 0px #c4cdd5 inset,
@@ -41,6 +41,6 @@ $B-shadow-card: rgba(0, 0, 0, 0.02);
 $B-shadow-label-gift: 0px 2px 5px 0px rgba(0, 0, 0, 0.03);
 
 /* Width */
-$width-desctop: 1440px;
+$width-desktop: 1440px;
 $width-tablet: 768px; /*?*/
 $width-mobile: 390px;

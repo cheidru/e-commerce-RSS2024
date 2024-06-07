@@ -36,5 +36,8 @@ module.exports = {
       // "react-refresh/only-export-components": ['warn', { allowConstantExport: true }],
     'react/react-in-jsx-scope': 0,
     "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    // slider
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
   }
 }

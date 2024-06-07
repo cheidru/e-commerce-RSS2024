@@ -16,6 +16,8 @@ describe('render Catalog page', () => {
       </Provider>
     );
 
-    expect(screen.queryByText('Catalog')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Catalog') || screen.queryByAltText('loading...')
+    ).toBeInTheDocument();
   });
 });

@@ -1,14 +1,30 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export type Address = {
+  id?: string;
+  streetName: string;
+  postalCode: string;
+  city: string;
+  country: string;
+  represent?: string;
+  billing?: boolean;
+  shipping?: boolean;
+  billingDefault?: boolean;
+  shippingDefault?: boolean;
+};
+
 export type User = {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
-  addresses: [];
-  shippingAddressIds: [];
-  billingAddressIds: [];
+  dateOfBirth: string;
+  addresses: Array<Address>;
+  defaultShippingAddressId: string;
+  defaultBillingAddressId: string;
+  shippingAddressIds: Array<string>;
+  billingAddressIds: Array<string>;
 };
 
 export type AuthToken = {
@@ -31,44 +47,31 @@ if (someToken) {
   savedToken = JSON.parse(someToken);
 }
 
-const initialState: UserState = {
-  user: {
-    id: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    addresses: [],
-    shippingAddressIds: [],
-    billingAddressIds: [],
-  },
-  authToken: savedToken || {
-    email: '',
-    access_token: '',
-    expires_in: 0,
-    token_type: '',
-    scope: '',
-    refresh_token: '',
-  },
+export const userInitial: User = {
+  id: '',
+  email: '',
+  firstName: '',
+  lastName: '',
+  dateOfBirth: '',
+  addresses: [],
+  defaultShippingAddressId: '',
+  defaultBillingAddressId: '',
+  shippingAddressIds: [],
+  billingAddressIds: [],
 };
 
-const EmptyState: UserState = {
-  user: {
-    id: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    addresses: [],
-    shippingAddressIds: [],
-    billingAddressIds: [],
-  },
-  authToken: {
-    email: '',
-    access_token: '',
-    expires_in: 0,
-    token_type: '',
-    scope: '',
-    refresh_token: '',
-  },
+const authTokenInitial: AuthToken = {
+  email: '',
+  access_token: '',
+  expires_in: 0,
+  token_type: '',
+  scope: '',
+  refresh_token: '',
+};
+
+const initialState: UserState = {
+  user: userInitial,
+  authToken: savedToken || authTokenInitial,
 };
 
 const userSlice = createSlice({
@@ -83,8 +86,8 @@ const userSlice = createSlice({
       localStorage.setItem('token', JSON.stringify(action.payload));
     },
     logout(state) {
-      state.user = EmptyState.user;
-      state.authToken = EmptyState.authToken;
+      state.user = userInitial;
+      state.authToken = authTokenInitial;
       localStorage.setItem('token', '');
     },
   },

@@ -1,12 +1,11 @@
 import './profile.scss';
-import UnderConstruction from '../../components/stubs/underconstruction';
+import UserProfile from '../../components/forms/userProfile/userProfile';
 
 function Profile() {
   return (
-    <>
-      <h2 className="profile free-page">Profile</h2>
-      <UnderConstruction />
-    </>
+    <section>
+      <UserProfile />
+    </section>
   );
 }
 

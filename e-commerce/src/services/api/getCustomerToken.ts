@@ -4,7 +4,7 @@ import {
   ILogin,
   IAddressSend,
   IRegisterSend,
-} from './Inreface';
+} from '../../types/User/Interface';
 import {
   FormDataLogin,
   FormDataRegister,
@@ -25,10 +25,14 @@ export const authURL = 'https://auth.us-central1.gcp.commercetools.com';
 // https://docs.commercetools.com/api/authorization#password-flow
 // https://docs.commercetools.com/getting-started/make-first-api-call#get-your-access-token
 
+interface AccessTokenResponse {
+  access_token: string;
+}
+
 function formattedAppTokenNew(token: AppToken): AppToken {
   const result = { ...token };
-  const currenDateValue = new Date().getTime() / 1000;
-  result.expires_in = currenDateValue + token.expires_in;
+  const currentDateValue = new Date().getTime() / 1000;
+  result.expires_in = currentDateValue + token.expires_in;
   return result;
 }
 
@@ -49,9 +53,9 @@ export async function createAccessToken() {
   return answerJSON;
 }
 
-export async function getAccessToken() {
+export async function getAccessToken(): Promise<AccessTokenResponse> {
   const appTokenStore = store.getState().appSlice.authToken;
-  if (appTokenStore) {
+  if (appTokenStore.expires_in) {
     return appTokenStore;
   }
 

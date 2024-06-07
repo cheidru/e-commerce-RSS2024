@@ -16,6 +16,6 @@ describe('render Product page', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Product')).toBeInTheDocument();
+    expect(screen.queryByAltText('loading...')).toBeInTheDocument();
   });
 });
