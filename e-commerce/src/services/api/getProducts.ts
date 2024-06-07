@@ -65,10 +65,9 @@ export async function getProductsSorted(
   const url = new URL(
     `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/product-projections/search?`
   );
-  const filterCategory =
-    categoryId === 'exists'
-      ? `categories:exists`
-      : `categories.id:"${categoryId}"`;
+  const filterCategory = categoryId
+    ? `categories.id:"${categoryId}"`
+    : `categories:exists`;
   url.searchParams.append('filter', filterCategory);
   url.searchParams.append('sort', sortFieldGet);
   url.searchParams.append('priceCurrency', 'USD');

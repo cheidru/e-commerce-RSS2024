@@ -33,7 +33,7 @@ export function formattedDataForCategory(
   const categories: CategoryProps[] = [];
   const categoryDefault: CategoryProps = {
     name: 'All',
-    id: 'exists',
+    id: '',
     isCurrent: true,
   };
   categories.push(categoryDefault);
