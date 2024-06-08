@@ -9,8 +9,8 @@ import * as Pages from '../pages/pages';
 /* Style */
 import './app.scss';
 import { useAppDispatch } from '../redux/hooks';
-import { setAppToken } from '../redux/store/appSlice';
-import { logout, setUserLogged } from '../redux/store/userSlice';
+// import { setAppToken } from '../redux/store/appSlice';
+import { logout } from '../redux/store/userSlice';
 import { getAppToken } from '../services/api/getAppToken';
 // import { getAnonymousToken } from '../services/api/getAnonymousToken';
 import { getCustomerInfo } from '../services/api/getCustomerInfo';
@@ -27,11 +27,10 @@ function App() {
   }
   const dispatch = useAppDispatch();
   const getInitialData = async () => {
-    const appToken = await getAppToken();
-    dispatch(setAppToken(appToken));
-    const userInfo = await getCustomerInfo();
-    if (!userInfo) dispatch(logout());
-    else dispatch(setUserLogged(userInfo));
+    getAppToken(dispatch);
+
+    const userInfo = await getCustomerInfo(dispatch);
+    if (userInfo.isError) dispatch(logout());
 
     // const anonymousToken = await getAnonymousToken();
     // dispatch(setAnonymousToken(anonymousToken));

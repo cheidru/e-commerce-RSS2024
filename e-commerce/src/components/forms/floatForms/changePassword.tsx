@@ -2,11 +2,6 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch } from '../../../redux/hooks';
-import {
-  setUserLogged,
-  setAuthToken,
-  AuthToken,
-} from '../../../redux/store/userSlice';
 import { changePassword } from '../../../services/api/changePassword';
 import { getCustomerInfo } from '../../../services/api/getCustomerInfo';
 import { login } from '../../../services/api/login';
@@ -32,9 +27,7 @@ type Props = {
 function ChangePassword({ closeModal, showToast }: Props) {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const dispatch = useAppDispatch();
-  const setAuthUserToken = (tokenNew: AuthToken) => {
-    dispatch(setAuthToken(tokenNew));
-  };
+
   const {
     register,
     handleSubmit,
@@ -57,22 +50,16 @@ function ChangePassword({ closeModal, showToast }: Props) {
       });
     } else {
       const result = await changePassword(data);
-      if (result.statusCode) {
+      if (result.errors) {
         const { message } = result;
         showToast({ message, thisError: true });
       } else {
-        const userInfo = await getCustomerInfo(true);
-        if (userInfo) {
-          dispatch(setUserLogged(userInfo));
-        }
+        const userInfo = await getCustomerInfo(dispatch, true);
         const credential = {
-          email: userInfo.email,
+          email: userInfo.thing!.email,
           password: data.newPassword,
         };
-        const tokenNew = await login(credential);
-        if (!tokenNew.statusCode) {
-          setAuthUserToken(tokenNew);
-        }
+        await login(credential, dispatch);
 
         showToast({
           message: 'Password changed successfully',

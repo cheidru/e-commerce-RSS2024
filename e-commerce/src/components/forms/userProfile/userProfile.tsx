@@ -3,11 +3,7 @@ import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useAppDispatch } from '../../../redux/hooks';
-import {
-  setUserLogged,
-  logout,
-  userInitial,
-} from '../../../redux/store/userSlice';
+import { logout, userInitial } from '../../../redux/store/userSlice';
 import store from '../../../redux/store/store';
 import TextField from '../elements/textField';
 import ChangePassword from '../floatForms/changePassword';
@@ -24,8 +20,8 @@ function UserProfile(): React.ReactElement {
   const dispatch = useAppDispatch();
 
   async function updatesetUserData() {
-    const user = await getCustomerInfo(true);
-    if (user) setUserData(user);
+    const user = await getCustomerInfo(dispatch, true);
+    if (!user.isError) setUserData(user.thing!);
   }
 
   const showToast = ({
@@ -136,10 +132,7 @@ function UserProfile(): React.ReactElement {
       showToast({ message, thisError: true });
       return;
     }
-    const userInfo = await getCustomerInfo(true);
-    if (userInfo) {
-      dispatch(setUserLogged(userInfo));
-    }
+    await getCustomerInfo(dispatch, true);
     showToast({
       message: 'Address deleted',
       thisError: false,
@@ -155,16 +148,19 @@ function UserProfile(): React.ReactElement {
   });
 
   const getUserInfo = async () => {
-    const userInfo = await getCustomerInfo();
+    const userInfo = await getCustomerInfo(dispatch);
 
     if (!userInfo) {
       dispatch(logout());
       navigate(`/login`);
     } else {
-      // There are here is a date about customer
-      dispatch(setUserLogged(userInfo));
-      setUserData(userInfo);
+      setUserData(userInfo.thing!);
     }
+  };
+
+  const dateToString = (date: string) => {
+    const dateParts = date.split('-');
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
   };
 
   useEffect(() => {
@@ -236,7 +232,7 @@ function UserProfile(): React.ReactElement {
               classNameTitle="textfield-title"
               classNameBody="textfield-body"
               title="Date of Birth"
-              value={userData.dateOfBirth}
+              value={dateToString(userData.dateOfBirth)}
             />
 
             <TextField
