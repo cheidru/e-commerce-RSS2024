@@ -10,15 +10,19 @@ export type AppToken = {
 
 type AppState = {
   authToken: AppToken;
+  anonymousToken: AppToken;
+};
+
+const initialToken: AppToken = {
+  access_token: '',
+  token_type: '',
+  expires_in: 0,
+  scope: '',
 };
 
 const initialState: AppState = {
-  authToken: {
-    access_token: '',
-    token_type: '',
-    expires_in: 0,
-    scope: '',
-  },
+  authToken: { ...initialToken },
+  anonymousToken: { ...initialToken },
 };
 
 const appSlice = createSlice({
@@ -31,9 +35,13 @@ const appSlice = createSlice({
     setAppAccessToken(state, action: PayloadAction<string>) {
       state.authToken.access_token = action.payload;
     },
+    setAnonymousToken(state, action: PayloadAction<AppToken>) {
+      state.authToken = action.payload;
+    },
   },
 });
 
-export const { setAppToken, setAppAccessToken } = appSlice.actions;
+export const { setAppToken, setAppAccessToken, setAnonymousToken } =
+  appSlice.actions;
 
 export default appSlice.reducer;

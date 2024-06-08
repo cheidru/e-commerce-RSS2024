@@ -1,7 +1,7 @@
 import store from '../../redux/store/store';
 import { AppToken } from '../../redux/store/appSlice';
 
-function formattedAppTokenNew(token: AppToken): AppToken {
+export function formattedAppTokenNew(token: AppToken): AppToken {
   const result = { ...token };
   const currenDateValue = new Date().getTime() / 1000;
   result.expires_in = currenDateValue + token.expires_in;
