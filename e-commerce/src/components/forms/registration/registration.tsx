@@ -121,7 +121,7 @@ function RegistrationForm(): React.ReactElement {
         }
       } else {
         // tokenNew.email = dataUser.email;
-        setUserLogIn(userNew);
+        if (userNew.customer) setUserLogIn(userNew.customer);
         setAuthUserToken(tokenNew);
         navigate(`/`);
       }

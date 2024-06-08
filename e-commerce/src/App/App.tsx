@@ -9,10 +9,10 @@ import * as Pages from '../pages/pages';
 /* Style */
 import './app.scss';
 import { useAppDispatch } from '../redux/hooks';
-import { setAppToken, setAnonymousToken } from '../redux/store/appSlice';
+import { setAppToken } from '../redux/store/appSlice';
 import { logout, setUserLogged } from '../redux/store/userSlice';
 import { getAppToken } from '../services/api/getAppToken';
-import { getAnonymousToken } from '../services/api/getAnonymousToken';
+// import { getAnonymousToken } from '../services/api/getAnonymousToken';
 import { getCustomerInfo } from '../services/api/getCustomerInfo';
 
 function App() {
@@ -33,8 +33,8 @@ function App() {
     if (!userInfo) dispatch(logout());
     else dispatch(setUserLogged(userInfo));
 
-    const anonymousToken = await getAnonymousToken();
-    dispatch(setAnonymousToken(anonymousToken));
+    // const anonymousToken = await getAnonymousToken();
+    // dispatch(setAnonymousToken(anonymousToken));
     // console.log('anonymousToken', anonymousToken);
 
     if (navigateTo) {
