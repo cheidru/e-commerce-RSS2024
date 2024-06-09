@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  padding: 3rem 0;
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .about {
@@ -15,31 +15,31 @@
 .about-wrapper__top {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 10vw;
   padding: 2rem 0;
 }
 
 .rss-logo {
-  width: 30vw;
+  width: 12vw;
   height: auto;
   cursor: pointer;
 }
 
 .asinc-title {
-  font-size: 6rem;
+  font-size: 5rem;
 }
 
 .about-wrapper__middle {
-  width: 80vw;
-  font-size: 3rem;
-  line-height: 4rem;
+  width: 60%;
+  font-size: 2rem;
+  line-height: 2.5rem;
   text-align: justify;
 }
 
 .about-wrapper__middle p:not(:first-child) {
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 
 .about-wrapper__bottom {
@@ -47,11 +47,11 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .about-wrapper__bottom .avatar {
-  width: 25vw;
+  width: 18vw;
   height: auto;
   border-radius: 2rem;
 }
