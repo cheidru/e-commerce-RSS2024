@@ -9,21 +9,31 @@ import Baby from '../../assets/img/images/asinc-baby.jpg';
 function About() {
   return (
     <>
-      <h2 className="about free-page">About Us</h2>
       {/* <WeWorking /> */}
       <div className="about-wrapper">
+        <h2 className="about free-page">About Us</h2>
+
         <div className="about-wrapper__top">
-          <img className="rss-logo" src={RsschoolLogo} alt="rsschool-logo" />
+          <a href="https://rs.school/">
+            <img className="rss-logo" src={RsschoolLogo} alt="rsschool-logo" />
+          </a>
+
           <div className="asinc-title">ASInc Team</div>
         </div>
         <div className="about-wrapper__middle">
-          We live in different countries. We differ in age and gender. We have
-          never met before. And yet we are here together - in one team - to make
-          our dream come true, to be a proficient frontend developer.
+          <p>
+            We live in different countries. We differ in age and gender. We have
+            never met before. And yet we are here together - in one team - to
+            make our dream come true, to be a proficient frontend developer.
+          </p>
+          <p>
+            We are ASInc Team. ASInc stands for Anzhelika, Sergey and Igor
+            incorporated
+          </p>
         </div>
         <div className="about-wrapper__bottom">
-          <img className="avatar" src={BikeGirl} alt="asinc-girl-avatar" />
           <img className="avatar" src={Rocket} alt="asinc-rocket-avatar" />
+          <img className="avatar" src={BikeGirl} alt="asinc-girl-avatar" />
           <img className="avatar" src={Baby} alt="asinc-baby-avatar" />
         </div>
       </div>
