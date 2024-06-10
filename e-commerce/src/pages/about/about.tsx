@@ -3,6 +3,8 @@ import RsschoolLogo from '../../assets/img/icons/rs_school_js.svg';
 import BikeGirl from '../../assets/img/images/asinc-biker-girl.jpg';
 import Rocket from '../../assets/img/images/asinc-rocket.jpg';
 import Baby from '../../assets/img/images/asinc-baby.jpg';
+import Discord from '../../assets/img/images/discord.jpg';
+import Trello from '../../assets/img/images/trello.jpg';
 
 // import WeWorking from '../../components/stubs/weworking';
 
@@ -30,6 +32,22 @@ function About() {
             We are ASInc Team. ASInc stands for Anzhelika, Sergey and Igor
             incorporated
           </p>
+          <div className="discord-channel">
+            <p>
+            We engaged Discord functionality and our Mentor experience 
+            to arrange a team channel with voice, work-status and 
+            project-info subchennels.
+            </p>
+            <img className="discord-screen" src={Discord} alt="discord-channel" />
+          </div>
+          <div className="trello">
+          <p>
+            We selected Trello as a tool for distribution of sprint tasks 
+            between the team members and for tracking progtress in tack 
+            completion.
+            </p>
+            <img className="trello-screen" src={Trello} alt="trallo" />
+          </div>
         </div>
         <div className="about-wrapper__bottom">
           <img className="avatar" src={Rocket} alt="asinc-rocket-avatar" />
