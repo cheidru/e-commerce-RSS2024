@@ -2,6 +2,7 @@ import { NavLink, Link } from 'react-router-dom';
 /* Redux */
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { logout } from '../../redux/store/userSlice';
+import { clearCart } from '../../redux/store/cartSlice';
 
 function Navigation() {
   const isUserLogged =
@@ -10,6 +11,7 @@ function Navigation() {
   const dispatch = useAppDispatch();
   const userLogout = () => {
     dispatch(logout());
+    dispatch(clearCart());
   };
   return (
     <nav className="navigation">

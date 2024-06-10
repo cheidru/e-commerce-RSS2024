@@ -4,10 +4,7 @@ import store, { AppDispatch } from '../../redux/store/store';
 import { AuthToken } from '../../redux/store/userSlice';
 import { Cart, setCart } from '../../redux/store/cartSlice';
 
-export async function createCart(
-  dispatch: AppDispatch,
-  token: AppMessage<AuthToken>
-) {
+export async function createCart(token: AppMessage<AuthToken>) {
   const body = {
     currency: 'USD',
   };
@@ -17,7 +14,7 @@ export async function createCart(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.thing?.access_token}`,
       },
       body: JSON.stringify(body),
     }
@@ -59,7 +56,7 @@ export async function getUserCart(
     };
     return result;
   }
-  const newCart = await createCart(dispatch, token);
+  const newCart = await createCart(token);
   if (!newCart.isError) {
     dispatch(setCart(newCart.thing!));
   }
