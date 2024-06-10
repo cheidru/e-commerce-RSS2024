@@ -3,7 +3,7 @@ import RsschoolLogo from '../../assets/img/icons/rs_school_js.svg';
 import BikeGirl from '../../assets/img/images/asinc-biker-girl.jpg';
 import Rocket from '../../assets/img/images/asinc-rocket.jpg';
 import Baby from '../../assets/img/images/asinc-baby.jpg';
-import Discord from '../../assets/img/images/discord.jpg';
+import Discord from '../../assets/img/images/discord-channel.jpg';
 import Trello from '../../assets/img/images/trello.jpg';
 
 // import WeWorking from '../../components/stubs/weworking';
@@ -24,6 +24,12 @@ function About() {
         </div>
         <div className="about-wrapper__middle">
           <p>
+            Meet our team, an eclectic group of student developers diving into
+            the world of the E-commerstools API with gusto and a good sense of
+            humor!
+          </p>
+
+          <p>
             We live in different countries. We differ in age and gender. We have
             never met before. And yet we are here together - in one team - to
             make our dream come true, to be a proficient frontend developer.
@@ -34,19 +40,19 @@ function About() {
           </p>
           <div className="discord-channel">
             <p>
-            We engaged Discord functionality and our Mentor experience 
-            to arrange a team channel with voice, work-status and 
-            project-info subchennels.
+              We engaged Discord functionality and our Mentor experience to
+              arrange a team channel with voice, work-status and project-info
+              sub-channels. We use it regularly, if not daily.
             </p>
-            <img className="discord-screen" src={Discord} alt="discord-channel" />
+            <img className="screen-shot" src={Discord} alt="discord-channel" />
           </div>
           <div className="trello">
-          <p>
-            We selected Trello as a tool for distribution of sprint tasks 
-            between the team members and for tracking progtress in tack 
-            completion.
+            <img className="screen-shot" src={Trello} alt="trallo" />
+            <p>
+              We selected Trello as a tool for distribution of sprint tasks
+              between the team members and for tracking progtress in tack
+              completion.
             </p>
-            <img className="trello-screen" src={Trello} alt="trallo" />
           </div>
         </div>
         <div className="about-wrapper__bottom">

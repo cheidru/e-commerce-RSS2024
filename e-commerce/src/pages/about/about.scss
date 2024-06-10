@@ -33,13 +33,30 @@
 
 .about-wrapper__middle {
   width: 60%;
-  font-size: 2rem;
+  font-size: 1.5rem;
   line-height: 2.5rem;
   text-align: justify;
+  padding-bottom: 2rem;
 }
 
-.about-wrapper__middle p:not(:first-child) {
+.about-wrapper__middle > p:not(:first-child) {
   padding: 1rem 0;
+}
+
+.discord-channel,
+.trello {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  gap: 4rem;
+  padding: 1rem 0;
+}
+
+.screen-shot {
+  width: 20%;
+  height: auto;
+  cursor: pointer;
 }
 
 .about-wrapper__bottom {
