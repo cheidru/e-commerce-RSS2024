@@ -31,7 +31,7 @@ export function ProductCard({
   size,
   color,
   model,
-  inBasket = false,
+  inBasket = true,
 }: ProductCardProps) {
   return (
     <div className="card" data-id={id} onClick={onClick} aria-hidden="true">

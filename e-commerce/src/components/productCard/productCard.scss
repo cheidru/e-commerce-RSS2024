@@ -129,5 +129,9 @@
     background: $Blue-dark;
   }
 }
-.basketIn-btn {
+.basketIn-btn:disabled {
+  background: $Light-blue;
+  width: 130px;
+  cursor: auto;
+  color: $Grey;
 }
