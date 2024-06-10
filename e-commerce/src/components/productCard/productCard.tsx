@@ -13,6 +13,7 @@ export type ProductCardProps = {
   size?: string;
   color?: string;
   model?: string;
+  inBasket?: boolean;
 };
 
 export function ProductCard({
@@ -30,6 +31,7 @@ export function ProductCard({
   size,
   color,
   model,
+  inBasket = false,
 }: ProductCardProps) {
   return (
     <div className="card" data-id={id} onClick={onClick} aria-hidden="true">
@@ -57,6 +59,15 @@ export function ProductCard({
           </span>
         )}
       </div>
+      {!inBasket ? (
+        <button type="submit" className="basketAdd-btn">
+          Add to Cart
+        </button>
+      ) : (
+        <button type="submit" className="basketIn-btn" disabled>
+          In the basket
+        </button>
+      )}
     </div>
   );
 }
