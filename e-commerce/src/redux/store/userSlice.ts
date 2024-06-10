@@ -62,7 +62,7 @@ export const userInitial: User = {
   billingAddressIds: [],
 };
 
-const authTokenInitial: AuthToken = {
+export const authTokenInitial: AuthToken = {
   email: '',
   access_token: '',
   expires_in: 0,
