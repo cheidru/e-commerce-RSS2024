@@ -2,6 +2,7 @@ import { ILogin } from '../../types/User/Interface';
 import { AppMessage } from './getAppToken';
 import { AppDispatch } from '../../redux/store/store';
 import { AuthToken, setAuthToken } from '../../redux/store/userSlice';
+import { getCart } from './cart';
 
 export async function login(formData: ILogin, dispatch: AppDispatch) {
   const auth = btoa(
@@ -54,7 +55,10 @@ export async function login(formData: ILogin, dispatch: AppDispatch) {
       return result;
     });
 
-  if (!answer.isError && answer.thing) dispatch(setAuthToken(answer.thing));
+  if (!answer.isError && answer.thing) {
+    dispatch(setAuthToken(answer.thing));
+    getCart(dispatch);
+  }
 
   return answer;
 }
