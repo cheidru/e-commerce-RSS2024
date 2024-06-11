@@ -140,17 +140,11 @@ export async function getCart(dispatch: AppDispatch) {
   // }
 }
 
-function creatingActionAdd(productId: string) {
-  const updateActions = {
-    action: 'addLineItem',
-    productId,
-  };
-  return updateActions;
-}
-
 export type UpdateAction = {
   action: string;
-  productId: string;
+  productId?: string;
+  lineItemId?: string;
+  quantity?: number;
 };
 
 export type BodyUpdateAction = {
@@ -158,7 +152,10 @@ export type BodyUpdateAction = {
   actions: UpdateAction[];
 };
 
-export async function addLineToCart(dispatch: AppDispatch, productId: string) {
+export async function changeLineInCart(
+  dispatch: AppDispatch,
+  updateActions: UpdateAction[]
+) {
   let userToken = await getUserToken();
   if (userToken.isError) {
     userToken = await getAnonymousToken(dispatch);
@@ -168,9 +165,6 @@ export async function addLineToCart(dispatch: AppDispatch, productId: string) {
   }
   const existCart = await getCart(dispatch);
   if (existCart.isError) return { statusCode: 'err', message: 'Action failed' };
-
-  const updateActions = new Array<UpdateAction>();
-  updateActions.push(creatingActionAdd(productId));
 
   const body = {
     version: existCart.thing!.version,
@@ -214,6 +208,47 @@ export async function addLineToCart(dispatch: AppDispatch, productId: string) {
   if (!answer.isError) dispatch(setCart(answer.thing!));
 
   return answer;
+}
+
+export async function addLineToCart(dispatch: AppDispatch, productId: string) {
+  const updateActions = new Array<UpdateAction>();
+  const action = {
+    action: 'addLineItem',
+    productId,
+    quantity: 1,
+  };
+  updateActions.push(action);
+  const result = await changeLineInCart(dispatch, updateActions);
+  return result;
+}
+
+export async function substLineFromCart(
+  dispatch: AppDispatch,
+  lineItemId: string
+) {
+  const updateActions = new Array<UpdateAction>();
+  const action = {
+    action: 'removeLineItem',
+    lineItemId,
+    quantity: 1,
+  };
+  updateActions.push(action);
+  const result = await changeLineInCart(dispatch, updateActions);
+  return result;
+}
+
+export async function removeLineFromCart(
+  dispatch: AppDispatch,
+  lineItemId: string
+) {
+  const updateActions = new Array<UpdateAction>();
+  const action = {
+    action: 'removeLineItem',
+    lineItemId,
+  };
+  updateActions.push(action);
+  const result = await changeLineInCart(dispatch, updateActions);
+  return result;
 }
 
 export default getCart;

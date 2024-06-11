@@ -3,3 +3,135 @@
   display: flex;
   flex-direction: column;
 }
+.basket-catalog {
+  display: flex;
+  flex-direction: column;
+  &-title {
+    margin-bottom: 10px;
+  }
+}
+.basket-catalog-wrapper {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media (max-width: 660px) {
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+}
+.basket-catalog___total_____price {
+  margin: 20px 0;
+  font-size: 3rem;
+  font-style: normal;
+  font-weight: 600;
+  color: #222222;
+}
+.catalog-products {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: flex-start;
+  width: 100%;
+}
+.catalog-product {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-evenly;
+}
+.basket-card {
+  width: 250px;
+  height: 426px;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  // cursor: pointer;
+}
+.basket-card__header {
+  position: absolute;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  width: 249px;
+}
+.basket-card__img {
+  padding: 0;
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 240px;
+  height: 240px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-start;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.basket-card__info-description {
+  font-size: 1.3rem;
+  line-height: 1.5rem;
+  margin-bottom: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -moz-box;
+  display: -webkit-box;
+  line-clamp: 2;
+  box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.basket-price-new {
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.4rem;
+  padding-right: 12px;
+  background: inherit;
+}
+.basket-price-old {
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 1.8rem;
+  color: #a4a4a4;
+  text-decoration: line-through;
+  padding-right: 12px;
+}
+.basket-card__info-quantity {
+  margin: 10px 0;
+  font-weight: bold;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.basket-card_buttons {
+  display: flex;
+  gap: 4px;
+  margin: 0 10px;
+}
+.basket-card-btn {
+  color: #fff;
+  background: #4295e4;
+  width: 20px;
+  height: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2rem;
+}
+.basket-card-btn-remove {
+  width: 40px;
+  height: 40px;
+  font-size: 1.8rem;
+}
