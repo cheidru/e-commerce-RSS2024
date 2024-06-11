@@ -1,8 +1,68 @@
 import { ILogin } from '../../types/User/Interface';
 import { AppMessage } from './getAppToken';
-import { AppDispatch } from '../../redux/store/store';
-import { AuthToken, setAuthToken } from '../../redux/store/userSlice';
+import store, { AppDispatch } from '../../redux/store/store';
+import {
+  AuthToken,
+  setAuthToken,
+  logout as userLogout,
+} from '../../redux/store/userSlice';
+import { logout as anonymousLogout } from '../../redux/store/anonymousSlice';
+import { Cart, setCart, clearCart } from '../../redux/store/cartSlice';
 import { getCart } from './cart';
+
+export async function mergeCart(
+  formData: ILogin,
+  cartID: string,
+  accessToken: string
+) {
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Authorization', `Bearer ${accessToken}`);
+
+  const requestData = {
+    email: formData.email.toLowerCase(),
+    password: formData.password,
+    anonymousCart: {
+      id: cartID,
+      typeId: 'cart',
+    },
+  };
+
+  const requestOptions = {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(requestData),
+  };
+
+  const answer = await fetch(
+    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/me/login`,
+    requestOptions
+  )
+    .then((response) => response.json())
+    .then((response) => {
+      if (response.errors) {
+        const result: AppMessage<Cart> = {
+          isError: true,
+          message: response.message,
+        };
+        return result;
+      }
+      const result: AppMessage<Cart> = {
+        isError: false,
+        thing: response.cart,
+      };
+      return result;
+    })
+    .catch((reason: Error) => {
+      const result: AppMessage<Cart> = {
+        isError: true,
+        message: reason.message,
+      };
+      return result;
+    });
+
+  return answer;
+}
 
 export async function login(formData: ILogin, dispatch: AppDispatch) {
   const auth = btoa(
@@ -55,12 +115,38 @@ export async function login(formData: ILogin, dispatch: AppDispatch) {
       return result;
     });
 
-  if (!answer.isError && answer.thing) {
-    dispatch(setAuthToken(answer.thing));
-    getCart(dispatch);
+  if (!answer.isError) {
+    let mergeFull = false;
+    dispatch(setAuthToken(answer.thing!));
+    const anonymousCart = store.getState().cartSlice.cart;
+    if (anonymousCart.id) {
+      const anonymousToken = store.getState().anonymousSlice.authToken;
+      if (anonymousToken.access_token) {
+        const merged = await mergeCart(
+          formData,
+          anonymousCart.id,
+          anonymousToken.access_token
+        );
+        if (!merged.isError) {
+          mergeFull = true;
+          dispatch(setCart(merged.thing!));
+        }
+      }
+    }
+    dispatch(anonymousLogout());
+    if (!mergeFull) {
+      dispatch(clearCart());
+      getCart(dispatch);
+    }
   }
 
   return answer;
+}
+
+export function logout(dispatch: AppDispatch) {
+  dispatch(clearCart());
+  dispatch(userLogout());
+  dispatch(anonymousLogout());
 }
 
 export default login;

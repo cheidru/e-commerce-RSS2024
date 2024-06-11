@@ -1,5 +1,7 @@
-import store from '../../redux/store/store';
-import { formattedAppTokenNew } from './getAppToken';
+import store, { AppDispatch } from '../../redux/store/store';
+import { AppMessage } from './getAppToken';
+import { AuthToken } from '../../redux/store/userSlice';
+import { setAuthToken } from '../../redux/store/anonymousSlice';
 
 export async function createAnonymousToken() {
   const scope = import.meta.env.VITE_USR_SCOPES;
@@ -18,17 +20,58 @@ export async function createAnonymousToken() {
   );
   const answerJSON = await answer
     .json()
-    .then((tokenNew) => formattedAppTokenNew(tokenNew));
+    .then((tokenNew) => {
+      if (tokenNew.errors) {
+        const result: AppMessage<AuthToken> = {
+          isError: true,
+          message: tokenNew.message,
+        };
+        return result;
+      }
+      const newToken = { ...tokenNew };
+      const currentDateValue = new Date().getTime() / 1000;
+      newToken.expires_in = currentDateValue + tokenNew.expires_in;
+
+      const result: AppMessage<AuthToken> = {
+        isError: false,
+        thing: newToken,
+      };
+      return result;
+    })
+    .catch((reason: Error) => {
+      const result: AppMessage<AuthToken> = {
+        isError: true,
+        message: reason.message,
+      };
+      return result;
+    });
   return answerJSON;
 }
 
-export async function getAnonymousToken() {
+export async function getAnonymousToken(
+  dispatch: AppDispatch,
+  noCreate = false
+) {
   const currentDateValue = new Date().getTime() / 1000;
-  const tokenStore = store.getState().appSlice.anonymousToken;
+  const tokenStore = store.getState().anonymousSlice.authToken;
   if (tokenStore.access_token && tokenStore.expires_in > currentDateValue) {
-    return tokenStore;
+    const result: AppMessage<AuthToken> = {
+      isError: false,
+      thing: tokenStore,
+    };
+    return result;
   }
 
+  if (noCreate) {
+    const result: AppMessage<AuthToken> = {
+      isError: true,
+      message: 'Token not found',
+    };
+    return result;
+  }
   const newToken = await createAnonymousToken();
+  if (!newToken.isError && newToken.thing) {
+    dispatch(setAuthToken(newToken.thing));
+  }
   return newToken;
 }

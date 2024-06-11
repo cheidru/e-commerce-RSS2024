@@ -12,8 +12,9 @@ import { useAppDispatch } from '../redux/hooks';
 // import { setAppToken } from '../redux/store/appSlice';
 import { logout } from '../redux/store/userSlice';
 import { getAppToken } from '../services/api/getAppToken';
-// import { getAnonymousToken } from '../services/api/getAnonymousToken';
+import { getAnonymousToken } from '../services/api/getAnonymousToken';
 import { getCustomerInfo } from '../services/api/getCustomerInfo';
+import { getCart } from '../services/api/cart';
 
 function App() {
   const navigate = useNavigate();
@@ -30,12 +31,15 @@ function App() {
     getAppToken(dispatch);
 
     const userInfo = await getCustomerInfo(dispatch);
-    if (userInfo.isError) dispatch(logout());
-
-    // const anonymousToken = await getAnonymousToken();
-    // dispatch(setAnonymousToken(anonymousToken));
-    // console.log('anonymousToken', anonymousToken);
-
+    if (userInfo.isError) {
+      dispatch(logout());
+      const anonymousToken = await getAnonymousToken(dispatch, true);
+      if (!anonymousToken.isError) {
+        getCart(dispatch);
+      }
+    } else {
+      getCart(dispatch);
+    }
     if (navigateTo) {
       navigate(`/${navigateTo}`);
     }

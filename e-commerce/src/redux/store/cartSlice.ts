@@ -1,15 +1,24 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type LineItem = {
+export type Variant = {
   id: string;
-  productId: string;
-  name: string;
-  productType: string;
-  variant: string;
-  quantity: number;
-  totalPrice: number;
-  discountedPricePerQuantity: number;
+  sku: string;
+  images: { url: string }[];
+  attributes: { name: string; value: string }[];
+};
+
+export type Price = {
+  value: {
+    centAmount: number;
+    currencyCode: string;
+  };
+  discounted: {
+    value: {
+      centAmount: number;
+      currencyCode: string;
+    };
+  };
 };
 
 export type TotalPrice = {
@@ -17,6 +26,18 @@ export type TotalPrice = {
   currencyCode: string;
   centAmount: number;
   fractionDigits: number;
+};
+
+export type LineItem = {
+  id: string;
+  productId: string;
+  name: { en: string };
+  productType: string;
+  variant: Variant;
+  price: Price;
+  quantity: number;
+  totalPrice: TotalPrice;
+  discountedPricePerQuantity: number;
 };
 
 export type Cart = {
@@ -66,10 +87,10 @@ const cartSlice = createSlice({
   reducers: {
     setCart(state, action: PayloadAction<Cart>) {
       state.cart = action.payload;
-      localStorage.setItem('tokenCart', JSON.stringify(action.payload.id));
+      // localStorage.setItem('tokenCart', JSON.stringify(action.payload.id));
     },
     clearCart(state) {
-      localStorage.setItem('tokenCart', '');
+      // localStorage.setItem('tokenCart', '');
       state.cart = { ...cartInitial };
     },
   },

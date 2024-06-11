@@ -19,7 +19,7 @@ function UserProfile(): React.ReactElement {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  async function updatesetUserData() {
+  async function updateUserData() {
     const user = await getCustomerInfo(dispatch, true);
     if (!user.isError) setUserData(user.thing!);
   }
@@ -31,7 +31,7 @@ function UserProfile(): React.ReactElement {
     message: string;
     thisError: boolean;
   }) => {
-    updatesetUserData();
+    updateUserData();
     if (!thisError) {
       toast.success(message, {
         style: {

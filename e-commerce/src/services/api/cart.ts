@@ -1,9 +1,10 @@
 import { AppMessage } from './getAppToken';
 import { getUserToken } from './getUserToken';
+import { getAnonymousToken } from './getAnonymousToken';
 import store, { AppDispatch } from '../../redux/store/store';
 import { AuthToken } from '../../redux/store/userSlice';
 import { Cart, setCart } from '../../redux/store/cartSlice';
-import { ProductCardProps } from '../../components/productCard/productCard';
+// import { ProductCardProps } from '../../components/productCard/productCard';
 
 export async function createCart(token: AppMessage<AuthToken>) {
   const body = {
@@ -121,16 +122,28 @@ export async function getUserCart(
 }
 
 export async function getCart(dispatch: AppDispatch) {
-  const userToken = await getUserToken();
-  // if (!userToken.isError) {
-  return getUserCart(dispatch, userToken);
+  let userToken = await getUserToken();
+  if (userToken.isError) {
+    userToken = await getAnonymousToken(dispatch);
+  }
+  if (userToken.isError) {
+    const result: AppMessage<Cart> = {
+      isError: true,
+      message: userToken.message,
+    };
+    return result;
+  }
+
+  const existCart = getUserCart(dispatch, userToken);
+
+  return existCart;
   // }
 }
 
-function creatingActionAdd(product: ProductCardProps) {
+function creatingActionAdd(productId: string) {
   const updateActions = {
     action: 'addLineItem',
-    productId: product.id,
+    productId,
   };
   return updateActions;
 }
@@ -145,39 +158,19 @@ export type BodyUpdateAction = {
   actions: UpdateAction[];
 };
 
-export async function sendActions(
-  dispatch: AppDispatch,
-  body: BodyUpdateAction,
-  token: string
-) {
-  const existCart = await getCart(dispatch);
-
-  const answer = await fetch(
-    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/me/carts/${existCart.thing?.id}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
+export async function addLineToCart(dispatch: AppDispatch, productId: string) {
+  let userToken = await getUserToken();
+  if (userToken.isError) {
+    userToken = await getAnonymousToken(dispatch);
+    if (userToken.isError) {
+      return { statusCode: 'err', message: 'Action failed' };
     }
-  );
-  const answerJSON = await answer.json();
-  return answerJSON;
-}
-
-export async function addLineToCart(
-  dispatch: AppDispatch,
-  product: ProductCardProps
-) {
-  const userToken = await getUserToken();
-  if (userToken.isError) return { statusCode: 'err', message: 'Action failed' };
+  }
   const existCart = await getCart(dispatch);
   if (existCart.isError) return { statusCode: 'err', message: 'Action failed' };
 
   const updateActions = new Array<UpdateAction>();
-  updateActions.push(creatingActionAdd(product));
+  updateActions.push(creatingActionAdd(productId));
 
   const body = {
     version: existCart.thing!.version,
@@ -198,25 +191,27 @@ export async function addLineToCart(
     .then((response) => response.json())
     .then((response) => {
       if (response.errors) {
-        const result: AppMessage<undefined> = {
+        const result: AppMessage<Cart> = {
           isError: true,
           message: response.message,
         };
         return result;
       }
-      const result: AppMessage<undefined> = {
+      const result: AppMessage<Cart> = {
         isError: false,
-        message: 'Success',
+        thing: response,
       };
       return result;
     })
     .catch((reason: Error) => {
-      const result: AppMessage<undefined> = {
+      const result: AppMessage<Cart> = {
         isError: true,
         message: reason.message,
       };
       return result;
     });
+
+  if (!answer.isError) dispatch(setCart(answer.thing!));
 
   return answer;
 }
