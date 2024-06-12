@@ -87,6 +87,7 @@ function Catalog() {
         setOffset(0);
         showMessageErrorSearch();
       }
+      setMessageError(false);
       const productsProps = formattedDataForCardInCategory(data);
       setProductCardProps(checkProductsInCart(productsProps));
       getCountPagination(data.total);
@@ -127,15 +128,17 @@ function Catalog() {
           offset,
           sortKey
         );
+
         if (!searchResponse.total) {
-          getCountPagination(searchResponse.total.total);
           showMessageErrorSearch();
+          getCountPagination(0);
+        } else {
+          setMessageError(false);
+          const searchResponseProductProps =
+            formattedDataForCardInCategory(searchResponse);
+          setProductCardProps(checkProductsInCart(searchResponseProductProps));
+          getCountPagination(searchResponse.total);
         }
-        setMessageError(false);
-        const searchResponseProductProps =
-          formattedDataForCardInCategory(searchResponse);
-        setProductCardProps(checkProductsInCart(searchResponseProductProps));
-        getCountPagination(searchResponse.total);
       }
     };
     searchProductsQuery();
@@ -164,7 +167,11 @@ function Catalog() {
               isCurrent={category.id === categoryId}
             />
           ))}
-          <FilterCatalog getProductsFilter={getProductsFilter} />
+          <FilterCatalog
+            getProductsFilter={getProductsFilter}
+            offset={offset}
+            sort={sortKey}
+          />
         </aside>
         <div className="catalog-products">
           <div className="catalog-sort">

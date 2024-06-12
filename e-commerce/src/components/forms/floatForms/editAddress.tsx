@@ -129,13 +129,13 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
         </div>
 
         <div className="input-wrapper-line">
-          <div className="registration-adress">
+          <div className="registration-address">
             <Input
               id="streetName"
               classNameComponent="input-wrapper-address"
               title="Street"
-              isRequared
-              className="form__profile-adress input-text"
+              isRequired
+              className="form__profile-address input-text"
               errorMessage={errors.address?.streetName?.message}
               registerObject={register('address.streetName')}
             />
@@ -144,8 +144,8 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
               id="city"
               classNameComponent="input-wrapper-address"
               title="City"
-              isRequared
-              className="form__profile-adress input-text"
+              isRequired
+              className="form__profile-address input-text"
               errorMessage={errors.address?.city?.message}
               registerObject={register('address.city')}
             />
@@ -153,8 +153,8 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
             <Country
               id="country"
               classNameComponent="input-wrapper-address"
-              isRequared
-              className="form__profile-adress input-text"
+              isRequired
+              className="form__profile-address input-text"
               errorMessage={errors.address?.country?.message}
               registerObject={register('address.country')}
               onChangeHandler={() =>
@@ -169,8 +169,8 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
               id="postalCode"
               classNameComponent="input-wrapper-address"
               title="POST Code"
-              isRequared
-              className="form__profile-adress input-text"
+              isRequired
+              className="form__profile-address input-text"
               errorMessage={errors.address?.postalCode?.message}
               registerObject={register('address.postalCode')}
             />
