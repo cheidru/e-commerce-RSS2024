@@ -1,5 +1,74 @@
+.about-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
 .about {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+}
+
+.about-wrapper__top {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10vw;
+  padding: 2rem 0;
+}
+
+.rss-logo {
+  width: 12vw;
+  height: auto;
+  cursor: pointer;
+}
+
+.asinc-title {
+  font-size: 5rem;
+}
+
+.about-wrapper__middle {
+  width: 60%;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  text-align: justify;
+  padding-bottom: 2rem;
+}
+
+.about-wrapper__middle > p:not(:first-child) {
+  padding: 1rem 0;
+}
+
+.discord-channel,
+.trello {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  gap: 4rem;
+  padding: 1rem 0;
+}
+
+.screen-shot {
+  width: 20%;
+  height: auto;
+  cursor: pointer;
+}
+
+.about-wrapper__bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.about-wrapper__bottom .avatar {
+  width: 18vw;
+  height: auto;
+  border-radius: 2rem;
 }
