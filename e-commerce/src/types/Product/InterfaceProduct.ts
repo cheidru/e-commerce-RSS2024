@@ -157,6 +157,7 @@ export interface IProductResponseCategory {
   facets: object;
   limit: number;
   offset: number;
+  total: number;
   results: ProductCategoryProducts[];
 }
 

@@ -11,6 +11,8 @@ import {
 } from '../../pages/catalog/formattedData';
 
 const urlProject = `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}`;
+const urlProductSearch = `${urlProject}/product-projections/search?`;
+const limitProduct = '8';
 
 export enum SortField {
   PriceAsc = 'priceAsc',
@@ -20,8 +22,6 @@ export enum SortField {
   NameDesc = 'nameDesc',
   Default = 'createdAtAsc',
 }
-
-// const limitProduct = 8;
 
 // Header for all request
 async function requestOptions(): Promise<RequestInit> {
@@ -33,6 +33,7 @@ async function requestOptions(): Promise<RequestInit> {
     method: 'GET',
     headers: myHeaders,
   };
+
   return options;
 }
 
@@ -58,6 +59,7 @@ export async function getCategories(): Promise<ICategoriesResponse> {
 
 export async function getProductsSorted(
   categoryId: string,
+  offset: number,
   sortFieldKey: SortField = SortField.Default
 ): Promise<IProductResponseCategory> {
   const options = await requestOptions();
@@ -72,17 +74,20 @@ export async function getProductsSorted(
   };
   const sortFieldGet = sortFieldOptional[sortFieldKey];
 
-  const url = new URL(`${urlProject}/product-projections/search?`);
+  const url = new URL(urlProductSearch);
   const filterCategory = categoryId
     ? `categories.id:"${categoryId}"`
     : `categories:exists`;
   url.searchParams.append('filter', filterCategory);
   url.searchParams.append('sort', sortFieldGet);
   url.searchParams.append('priceCurrency', 'USD');
+  url.searchParams.append('limit', limitProduct);
+  url.searchParams.append('offset', `${offset}`);
 
   const answer = await fetch(url.toString(), options);
 
   const categoryProducts = await answer.json();
+
   return categoryProducts;
 }
 
@@ -90,7 +95,11 @@ export async function searchProducts(value: string) {
   const options = await requestOptions();
   const language = 'en';
   const fuzzy = true;
-  const url = `${urlProject}/product-projections/search?text.${language}=${value}&fuzzy=${fuzzy}`;
+  const url = new URL(urlProductSearch);
+  url.searchParams.append(`text.${language}`, `"${value}"`);
+  url.searchParams.append('fuzzy', `${fuzzy}`);
+  url.searchParams.append('limit', limitProduct);
+  url.searchParams.append('offset', '0');
 
   const answer = await fetch(url, options);
   const result = await answer.json();
@@ -101,17 +110,17 @@ export async function searchProducts(value: string) {
 export async function filterProductsInfo() {
   const options = await requestOptions();
   const url = `${urlProject}/products?limit=100`;
+
   const requestData = await fetch(url, options);
   const responseData: IProductResponse = await requestData.json();
 
   const filterProps: IFilter = formattedDataForFilter(responseData.results);
-
   return filterProps;
 }
 
 export async function filterProducts(data: IFilter) {
   const options = await requestOptions();
-  const url = new URL(`${urlProject}/product-projections/search?`);
+  const url = new URL(urlProductSearch);
   if (data.color.length > 0) {
     const param = data.color.map((elem) => `"${elem}"`).join(', ');
     url.searchParams.append('filter', `variants.attributes.color: ${param}`);
@@ -127,7 +136,9 @@ export async function filterProducts(data: IFilter) {
     const filterPrice = `variants.price.centAmount:range (${minPrice} to ${maxPrice})`;
     url.searchParams.append('filter', filterPrice);
   }
+
   const answer = await fetch(url, options);
   const result: IProductResponseCategory = await answer.json();
+
   return result;
 }
