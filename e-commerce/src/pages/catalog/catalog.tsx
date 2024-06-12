@@ -23,6 +23,9 @@ import {
 import FilterCatalog from '../../components/forms/filterCatalog/filterCatalog';
 import Spinner from '../../components/spinner/Spinner';
 import Pagination from '../../components/pagination/pagination';
+// Basket
+import { checkProductsInCart } from '../../services/api/cart';
+// import { useAppSelector } from '../../redux/hooks';
 
 function Catalog() {
   const limit = 8;
@@ -41,6 +44,9 @@ function Catalog() {
   const [messageError, setMessageError] = useState(false);
   const [offset, setOffset] = useState(0);
   const [countPages, setCountPages] = useState(0);
+
+  // Basket
+  // const cart = useAppSelector((state) => state.cartSlice.cart);
 
   // Handle category sortedSelect
   const handleSortChange = async (
@@ -82,7 +88,7 @@ function Catalog() {
         showMessageErrorSearch();
       }
       const productsProps = formattedDataForCardInCategory(data);
-      setProductCardProps(productsProps);
+      setProductCardProps(checkProductsInCart(productsProps));
       getCountPagination(data.total);
     },
     [showMessageErrorSearch]
@@ -95,7 +101,7 @@ function Catalog() {
           await getProductsSorted(categoryId, offset, sortKey);
         getCountPagination(productsAllGet.total);
         const productsProps = formattedDataForCardInCategory(productsAllGet);
-        setProductCardProps(productsProps);
+        setProductCardProps(checkProductsInCart(productsProps));
       } catch {
         setError('Failed to fetch products. Please try again later.');
       } finally {
@@ -128,7 +134,7 @@ function Catalog() {
         setMessageError(false);
         const searchResponseProductProps =
           formattedDataForCardInCategory(searchResponse);
-        setProductCardProps(searchResponseProductProps);
+        setProductCardProps(checkProductsInCart(searchResponseProductProps));
         getCountPagination(searchResponse.total);
       }
     };

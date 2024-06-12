@@ -4,7 +4,8 @@ import { getAnonymousToken } from './getAnonymousToken';
 import store, { AppDispatch } from '../../redux/store/store';
 import { AuthToken } from '../../redux/store/userSlice';
 import { Cart, setCart } from '../../redux/store/cartSlice';
-// import { ProductCardProps } from '../../components/productCard/productCard';
+// eslint-disable-next-line import/no-cycle
+import { ProductCardProps } from '../../components/productCard/productCard';
 
 export async function createCart(token: AppMessage<AuthToken>) {
   const body = {
@@ -160,11 +161,11 @@ export async function changeLineInCart(
   if (userToken.isError) {
     userToken = await getAnonymousToken(dispatch);
     if (userToken.isError) {
-      return { statusCode: 'err', message: 'Action failed' };
+      return { isError: true, message: 'Action failed' };
     }
   }
   const existCart = await getCart(dispatch);
-  if (existCart.isError) return { statusCode: 'err', message: 'Action failed' };
+  if (existCart.isError) return { isError: true, message: 'Action failed' };
 
   const body = {
     version: existCart.thing!.version,
@@ -249,6 +250,21 @@ export async function removeLineFromCart(
   updateActions.push(action);
   const result = await changeLineInCart(dispatch, updateActions);
   return result;
+}
+
+export function checkProductsInCart(products: ProductCardProps[]) {
+  const newProducts = products;
+  const userCart = store.getState().cartSlice.cart;
+  if (!userCart.id) {
+    return newProducts;
+  }
+  newProducts.forEach((item, index) => {
+    const itemInCart = userCart.lineItems.find(
+      (line) => line.productId === item.id
+    )?.quantity;
+    if (itemInCart) newProducts[index].inBasket = true;
+  });
+  return newProducts;
 }
 
 export default getCart;

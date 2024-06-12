@@ -1,3 +1,5 @@
+import { useState } from 'react';
+// eslint-disable-next-line import/no-cycle
 import { addLineToCart } from '../../services/api/cart';
 import { useAppDispatch } from '../../redux/hooks';
 
@@ -37,6 +39,12 @@ export function ProductCard({
   inBasket = false,
 }: ProductCardProps) {
   const dispatch = useAppDispatch();
+
+  const [productInBasket, setProductInBasket] = useState(inBasket);
+  const handleToBasketClick = async (productId: string) => {
+    const answer = await addLineToCart(dispatch, productId);
+    if (!answer.isError) setProductInBasket(true);
+  };
   return (
     <div className="card" data-id={id} onClick={onClick} aria-hidden="true">
       <div
@@ -63,13 +71,14 @@ export function ProductCard({
           </span>
         )}
       </div>
-      {!inBasket ? (
+      {!productInBasket ? (
         <button
           type="button"
           className="basketAdd-btn"
           onClick={(e) => {
             e.stopPropagation();
-            addLineToCart(dispatch, id);
+            // addLineToCart(dispatch, id);
+            handleToBasketClick(id);
           }}
         >
           Add to Cart
