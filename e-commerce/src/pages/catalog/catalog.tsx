@@ -61,7 +61,13 @@ function Catalog() {
     const sortedProductsProps = formattedDataForCardInCategory(sortedProducts);
     setProductCardProps(sortedProductsProps);
   };
-
+  // Pagination
+  const getCountPagination = (count: number) => {
+    const getCountPages = Math.ceil(count / limit);
+    const countPagination = getCountPages > 1 ? getCountPages : 0;
+    setCountPages(countPagination);
+    return countPagination;
+  };
   // Handle Search Panel
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -86,12 +92,16 @@ function Catalog() {
     if (searchQuery.length > 1) {
       const searchResponse = await searchProducts(searchQuery);
       if (!searchResponse.total) {
+        getCountPagination(searchResponse.total.total);
         showMessageErrorSearch();
       }
       const searchResponseProductProps =
         formattedDataForCardInCategory(searchResponse);
       setProductCardProps(searchResponseProductProps);
-      setSearchQuery('');
+      getCountPagination(searchResponse.total.total);
+      setTimeout(() => {
+        setSearchQuery('');
+      }, 5000);
     }
   };
 
@@ -100,20 +110,14 @@ function Catalog() {
     (data: IProductResponseCategory) => {
       if (!data.results[0]) {
         showMessageErrorSearch();
+        getCountPagination(data.total);
       }
       const productsProps = formattedDataForCardInCategory(data);
       setProductCardProps(productsProps);
+      getCountPagination(data.total);
     },
     [showMessageErrorSearch]
   ); // sort. filter
-
-  // Pagination
-  const getCountPagination = (count: number) => {
-    const getCountPages = Math.ceil(count / limit);
-    const countPagination = getCountPages > 1 ? getCountPages : 0;
-    setCountPages(countPagination);
-    return countPagination;
-  };
 
   useEffect(() => {
     const products = async () => {
@@ -211,9 +215,9 @@ function Catalog() {
           <div className="pagination">
             {Array.from({ length: countPages }).map((_, i) => (
               <Pagination
+                isCurrent={offset / limit === i}
                 key={`pagination-btn-${i + 1}`}
                 id={i}
-                isCurrent={offset === i}
                 onClick={() => setOffset(i * limit)}
               />
             ))}
