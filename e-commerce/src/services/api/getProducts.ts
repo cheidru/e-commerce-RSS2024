@@ -14,15 +14,6 @@ const urlProject = `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_C
 const urlProductSearch = `${urlProject}/product-projections/search?`;
 const limitProduct = '8';
 
-export enum SortField {
-  PriceAsc = 'priceAsc',
-  PriceDesc = 'priceDesc',
-  CreatedAt = 'createdAtDesc',
-  NameAsc = 'nameAsc',
-  NameDesc = 'nameDesc',
-  Default = 'createdAtAsc',
-}
-
 // Header for all request
 async function requestOptions(): Promise<RequestInit> {
   const myHeaders = new Headers();
@@ -82,7 +73,11 @@ export async function getProductsSorted(
   return categoryProducts;
 }
 
-export async function searchProducts(value: string) {
+export async function searchProducts(
+  value: string,
+  offset: number,
+  sortFieldKey: string = 'createdAt asc'
+) {
   const options = await requestOptions();
   const language = 'en';
   const fuzzy = true;
@@ -90,7 +85,8 @@ export async function searchProducts(value: string) {
   url.searchParams.append(`text.${language}`, `"${value}"`);
   url.searchParams.append('fuzzy', `${fuzzy}`);
   url.searchParams.append('limit', limitProduct);
-  url.searchParams.append('offset', '0');
+  url.searchParams.append('offset', `${offset}`);
+  url.searchParams.append('sort', sortFieldKey);
 
   const answer = await fetch(url, options);
   const result = await answer.json();
