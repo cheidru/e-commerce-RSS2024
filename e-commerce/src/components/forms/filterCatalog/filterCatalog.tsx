@@ -1,4 +1,4 @@
-import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
+import { useEffect, useState, FormEvent, ChangeEvent, useRef } from 'react';
 import {
   IFilter,
   IProductResponseCategory,
@@ -20,6 +20,7 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
     model: [],
     fractionDigits: 0,
   };
+  const formRefFilter = useRef<HTMLFormElement>(null);
 
   const [filterPanelProps, setFilterPanel] = useState(filterPanelPropsDefault);
   const [priceMin, setPriceMin] = useState(filterPanelPropsDefault.priceMin);
@@ -78,29 +79,36 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
     getProductsFilter(result);
   };
   // clear filter
-  // const handleClearFilters = async () => {
-  //   setPriceMin(filterPanelPropsDefault.priceMin);
-  //   setPriceMax(filterPanelPropsDefault.priceMax);
-  //   setFractionDigits(filterPanelPropsDefault.fractionDigits);
-  //   setSelectedColors([]);
-  //   setSelectedModels([]);
-  //   if (formRef.current) {
-  //     const form = formRef.current;
-  //     const inputs = form.querySelectorAll('input');
-  //     inputs.forEach(input => {
-  //       if (input.type === 'checkbox') {
-  //         input.checked = false;
-  //       } else {
-  //         input.value = '';
-  //       }
-  //     });
-  //   }
-  // };
+  const handleClearFilters = async () => {
+    setPriceMin(filterPanelPropsDefault.priceMin);
+    setPriceMax(filterPanelPropsDefault.priceMax);
+    setFractionDigits(filterPanelPropsDefault.fractionDigits);
+    setSelectedColors(filterPanelPropsDefault.color);
+    setSelectedModels(filterPanelPropsDefault.model);
+
+    if (formRefFilter.current) {
+      const form = formRefFilter.current;
+      const inputs = form.querySelectorAll('input');
+      inputs.forEach((input: HTMLInputElement) => {
+        if (input.type === 'checkbox') {
+          const checkbox = input as HTMLInputElement;
+          checkbox.checked = false;
+        } else {
+          const inputText = input as HTMLInputElement;
+          inputText.value = '';
+        }
+      });
+    }
+  };
 
   return (
     <details>
       <summary>Filter</summary>
-      <form className="form-filter" onSubmit={onSubmitFilter}>
+      <form
+        ref={formRefFilter}
+        className="form-filter"
+        onSubmit={onSubmitFilter}
+      >
         <fieldset className="filter-price">
           <legend>Price</legend>
           <label htmlFor="priceMin">
@@ -157,12 +165,18 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
             </label>
           ))}
         </fieldset>
-        {/* <button type="button" className="category-btn filter-btn" onClick={handleClearFilters}>
-          Clear Filters
-        </button> */}
-        <button type="submit" className="category-btn filter-btn">
-          Send
-        </button>
+        <div className="filter-box-btn">
+          <button
+            type="button"
+            className="filter-btn"
+            onClick={handleClearFilters}
+          >
+            Clear
+          </button>
+          <button type="submit" className="filter-btn">
+            Send
+          </button>
+        </div>
       </form>
     </details>
   );

@@ -96,7 +96,7 @@ function ChangePassword({ closeModal, showToast }: Props) {
           <Password
             id="currentPassword"
             title="Current password"
-            isRequared
+            isRequired
             className="form__registration-password input-text"
             errorMessage={errors.currentPassword?.message}
             registerObject={register('currentPassword')}
@@ -105,7 +105,7 @@ function ChangePassword({ closeModal, showToast }: Props) {
           <Password
             id="newPassword"
             title="New password"
-            isRequared
+            isRequired
             className="form__registration-password input-text"
             errorMessage={errors.newPassword?.message}
             registerObject={register('newPassword')}

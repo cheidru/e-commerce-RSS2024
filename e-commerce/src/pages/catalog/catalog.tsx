@@ -81,6 +81,7 @@ function Catalog() {
         setOffset(0);
         showMessageErrorSearch();
       }
+      setMessageError(false);
       const productsProps = formattedDataForCardInCategory(data);
       setProductCardProps(productsProps);
       getCountPagination(data.total);
@@ -121,15 +122,17 @@ function Catalog() {
           offset,
           sortKey
         );
+
         if (!searchResponse.total) {
-          getCountPagination(searchResponse.total.total);
           showMessageErrorSearch();
+          getCountPagination(0);
+        } else {
+          setMessageError(false);
+          const searchResponseProductProps =
+            formattedDataForCardInCategory(searchResponse);
+          setProductCardProps(searchResponseProductProps);
+          getCountPagination(searchResponse.total);
         }
-        setMessageError(false);
-        const searchResponseProductProps =
-          formattedDataForCardInCategory(searchResponse);
-        setProductCardProps(searchResponseProductProps);
-        getCountPagination(searchResponse.total);
       }
     };
     searchProductsQuery();

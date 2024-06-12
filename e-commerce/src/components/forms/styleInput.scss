@@ -198,7 +198,7 @@ label {
     max-width: 150px;
   }
 }
-.registration-adress {
+.registration-address {
   display: flex;
   & > input-error {
     position: absolute;
@@ -268,8 +268,9 @@ label {
   border-radius: 3px;
   background: inherit;
   border: none;
+  cursor: pointer;
   &:hover {
-    background-color: #0056b3;
+    background-color: $Grey-dark-pagination;
   }
   &:disabled {
     background-color: inherit;
