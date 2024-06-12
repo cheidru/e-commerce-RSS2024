@@ -10,9 +10,15 @@ import {
 
 type Props = {
   getProductsFilter: (data: IProductResponseCategory) => void;
+  offset: number;
+  sort: string;
 };
 
-function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
+function FilterCatalog({
+  getProductsFilter,
+  offset,
+  sort,
+}: Props): React.ReactElement {
   const filterPanelPropsDefault: IFilter = {
     priceMax: 0,
     priceMin: 0,
@@ -74,7 +80,7 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
       model: selectedModels,
       fractionDigits,
     };
-    const result = await filterProducts(formData);
+    const result = await filterProducts(formData, offset, sort);
 
     getProductsFilter(result);
   };

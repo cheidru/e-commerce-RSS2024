@@ -161,7 +161,11 @@ function Catalog() {
               isCurrent={category.id === categoryId}
             />
           ))}
-          <FilterCatalog getProductsFilter={getProductsFilter} />
+          <FilterCatalog
+            getProductsFilter={getProductsFilter}
+            offset={offset}
+            sort={sortKey}
+          />
         </aside>
         <div className="catalog-products">
           <div className="catalog-sort">

@@ -105,7 +105,11 @@ export async function filterProductsInfo() {
   return filterProps;
 }
 
-export async function filterProducts(data: IFilter) {
+export async function filterProducts(
+  data: IFilter,
+  offset: number,
+  sort: string
+) {
   const options = await requestOptions();
   const url = new URL(urlProductSearch);
   if (data.color.length > 0) {
@@ -123,6 +127,10 @@ export async function filterProducts(data: IFilter) {
     const filterPrice = `variants.price.centAmount:range (${minPrice} to ${maxPrice})`;
     url.searchParams.append('filter', filterPrice);
   }
+
+  url.searchParams.append('sort', sort);
+  url.searchParams.append('offset', `${offset}`);
+  url.searchParams.append('limit', limitProduct);
 
   const answer = await fetch(url, options);
   const result: IProductResponseCategory = await answer.json();
