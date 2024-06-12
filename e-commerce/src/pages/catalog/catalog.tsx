@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import {
   getCategories,
   getProductsSorted,
-  SortField,
   searchProducts,
 } from '../../services/api/getProducts';
 import { IProductResponseCategory } from '../../types/Product/InterfaceProduct';
@@ -41,6 +40,7 @@ function Catalog() {
   );
   const [categoryProps, setCategoryProps] = useState(categoriesAll);
   const [categoryId, setCategoryId] = useState('');
+  const [sortKey, setSortKey] = useState('createdAt asc');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,15 +52,10 @@ function Catalog() {
   const handleSortChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const sortFieldKey = event.target.value as SortField;
-    const sortedProducts = await getProductsSorted(
-      categoryId,
-      offset,
-      sortFieldKey
-    );
-    const sortedProductsProps = formattedDataForCardInCategory(sortedProducts);
-    setProductCardProps(sortedProductsProps);
+    const sortFieldKey = event.target.value;
+    setSortKey(sortFieldKey);
   };
+
   // Pagination
   const getCountPagination = (count: number) => {
     const getCountPages = Math.ceil(count / limit);
@@ -123,9 +118,8 @@ function Catalog() {
     const products = async () => {
       try {
         const productsAllGet: IProductResponseCategory =
-          await getProductsSorted(categoryId, offset);
+          await getProductsSorted(categoryId, offset, sortKey);
         getCountPagination(productsAllGet.total);
-
         const productsProps = formattedDataForCardInCategory(productsAllGet);
         setProductCardProps(productsProps);
       } catch {
@@ -141,7 +135,7 @@ function Catalog() {
     };
     products();
     categories();
-  }, [categoryId, offset]);
+  }, [categoryId, offset, sortKey]);
 
   if (loading) {
     return <Spinner />;
@@ -193,12 +187,12 @@ function Catalog() {
               onChange={handleSortChange}
               className="select-input"
             >
-              <option value={SortField.Default}>Sort by</option>
-              <option value={SortField.PriceAsc}>Lowest price</option>
-              <option value={SortField.PriceDesc}>Highest price</option>
-              <option value={SortField.CreatedAt}>What&apos;s New</option>
-              <option value={SortField.NameAsc}>Name (A To Z)</option>
-              <option value={SortField.NameDesc}>Name (Z To A)</option>
+              <option value="createdAt asc">Sort by</option>
+              <option value="price asc">Lowest price</option>
+              <option value="price desc">Highest price</option>
+              <option value="createdAt desc">What&apos;s New</option>
+              <option value="name.en asc">Name (A To Z)</option>
+              <option value="name.en desc">Name (Z To A)</option>
             </select>
           </div>
           <div className="catalog-product" id="catalog-product">

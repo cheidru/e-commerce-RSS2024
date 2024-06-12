@@ -60,19 +60,11 @@ export async function getCategories(): Promise<ICategoriesResponse> {
 export async function getProductsSorted(
   categoryId: string,
   offset: number,
-  sortFieldKey: SortField = SortField.Default
+  sortFieldKey: string = 'createdAt asc'
 ): Promise<IProductResponseCategory> {
   const options = await requestOptions();
 
-  const sortFieldOptional: Record<SortField, string> = {
-    [SortField.PriceAsc]: 'price asc',
-    [SortField.PriceDesc]: 'price desc',
-    [SortField.CreatedAt]: 'createdAt desc',
-    [SortField.NameAsc]: 'name.en asc',
-    [SortField.NameDesc]: 'name.en desc',
-    [SortField.Default]: 'createdAt asc',
-  };
-  const sortFieldGet = sortFieldOptional[sortFieldKey];
+  const sortFieldGet = sortFieldKey;
 
   const url = new URL(urlProductSearch);
   const filterCategory = categoryId
@@ -87,7 +79,6 @@ export async function getProductsSorted(
   const answer = await fetch(url.toString(), options);
 
   const categoryProducts = await answer.json();
-
   return categoryProducts;
 }
 
