@@ -110,8 +110,6 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
               type="number"
               id="priceMin"
               placeholder={`${filterPanelProps.priceMin}`}
-              // min={filterPanelProps.priceMin}
-              // max={filterPanelProps.priceMax}
               onChange={(e) => setPriceMin(Number(e.target.value))}
             />
           </label>
@@ -122,8 +120,6 @@ function FilterCatalog({ getProductsFilter }: Props): React.ReactElement {
               type="number"
               id="priceMax"
               placeholder={`${filterPanelProps.priceMax}`}
-              // min={filterPanelProps.priceMin}
-              // max={filterPanelProps.priceMax}
               onChange={(e) => setPriceMax(Number(e.target.value))}
             />
           </label>
