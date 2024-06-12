@@ -43,7 +43,7 @@ function Catalog() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageError, setMessageError] = useState(false);
-
+  // const [offset, setOffset] = useState(0)
   // Handle category sorted
   const handleSortChange = async (
     event: React.ChangeEvent<HTMLSelectElement>

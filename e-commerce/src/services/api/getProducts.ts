@@ -2,11 +2,16 @@ import { getAccessToken } from './getCustomerToken';
 import {
   IFilter,
   IProductResponseCategory,
+  IProductResponse,
 } from '../../types/Product/InterfaceProduct';
 import { ICategoriesResponse } from '../../types/Product/InterfaceCategories';
-import { converterDigit } from '../../pages/catalog/formattedData';
+import {
+  converterDigit,
+  formattedDataForFilter,
+} from '../../pages/catalog/formattedData';
 
 const urlProject = `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}`;
+
 export enum SortField {
   PriceAsc = 'priceAsc',
   PriceDesc = 'priceDesc',
@@ -15,6 +20,8 @@ export enum SortField {
   NameDesc = 'nameDesc',
   Default = 'createdAtAsc',
 }
+
+// const limitProduct = 8;
 
 // Header for all request
 async function requestOptions(): Promise<RequestInit> {
@@ -65,9 +72,7 @@ export async function getProductsSorted(
   };
   const sortFieldGet = sortFieldOptional[sortFieldKey];
 
-  const url = new URL(
-    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/product-projections/search?`
-  );
+  const url = new URL(`${urlProject}/product-projections/search?`);
   const filterCategory = categoryId
     ? `categories.id:"${categoryId}"`
     : `categories:exists`;
@@ -94,75 +99,19 @@ export async function searchProducts(value: string) {
 }
 
 export async function filterProductsInfo() {
-  let fractionDigits = 0;
-  const sortParamPriceMin = 'price asc';
-  const sortParamPriceMax = 'price desc';
-  const priceArr: number[] = [];
-  const color: string[] = [];
-  const model: string[] = [];
-
   const options = await requestOptions();
+  const url = `${urlProject}/products?limit=100`;
+  const requestData = await fetch(url, options);
+  const responseData: IProductResponse = await requestData.json();
 
-  const urlMinPrice = new URL(
-    `${urlProject}/product-projections/search?price desc`
-  );
-  urlMinPrice.searchParams.append('sort', sortParamPriceMin);
-
-  const answerMinPrice = await fetch(urlMinPrice, options);
-  const resultMinPrice: IProductResponseCategory = await answerMinPrice.json();
-
-  const urlMaxPrice = new URL(
-    `${urlProject}/product-projections/search?price desc`
-  );
-  urlMaxPrice.searchParams.append('sort', sortParamPriceMax);
-
-  const answerMaxPrice = await fetch(urlMaxPrice, options);
-  const resultMaxPrice: IProductResponseCategory = await answerMaxPrice.json();
-
-  const result = resultMinPrice.results.concat(resultMaxPrice.results);
-
-  result.forEach((product) => {
-    const productPrice = product.masterVariant.prices[0].value.centAmount;
-    fractionDigits = product.masterVariant.prices[0].value.fractionDigits;
-    const price = productPrice / converterDigit(fractionDigits);
-    priceArr.push(price);
-
-    if (product.masterVariant.attributes[1]?.value) {
-      // console.log('color', product.variants)
-      const productColor = product.masterVariant.attributes[1].value;
-      if (!color.includes(productColor)) {
-        color.push(productColor);
-        color.sort();
-      }
-    }
-
-    if (product.masterVariant.attributes[2]?.value) {
-      const productModel = product.masterVariant.attributes[2].value;
-      if (!model.includes(productModel)) {
-        model.push(productModel);
-        model.sort();
-      }
-    }
-  });
-  const priceMin: number = Math.min(...priceArr);
-  const priceMax: number = Math.max(...priceArr);
-
-  const filterProps: IFilter = {
-    priceMax,
-    priceMin,
-    color,
-    model,
-    fractionDigits,
-  };
+  const filterProps: IFilter = formattedDataForFilter(responseData.results);
 
   return filterProps;
 }
 
 export async function filterProducts(data: IFilter) {
   const options = await requestOptions();
-  const url = new URL(
-    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/product-projections/search?`
-  );
+  const url = new URL(`${urlProject}/product-projections/search?`);
   if (data.color.length > 0) {
     const param = data.color.map((elem) => `"${elem}"`).join(', ');
     url.searchParams.append('filter', `variants.attributes.color: ${param}`);
