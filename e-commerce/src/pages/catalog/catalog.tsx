@@ -1,11 +1,5 @@
 import './catalog.scss';
-import {
-  useEffect,
-  useState,
-  useCallback,
-  ChangeEvent,
-  MouseEventHandler,
-} from 'react';
+import { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   getCategories,
@@ -48,12 +42,13 @@ function Catalog() {
   const [offset, setOffset] = useState(0);
   const [countPages, setCountPages] = useState(0);
 
-  // Handle category sorted
+  // Handle category sortedSelect
   const handleSortChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const sortFieldKey = event.target.value;
     setSortKey(sortFieldKey);
+    setOffset(0);
   };
 
   // Pagination
@@ -63,56 +58,35 @@ function Catalog() {
     setCountPages(countPagination);
     return countPagination;
   };
+
   // Handle Search Panel
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
-
-  // Message 'Not found'
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setMessageError(false);
+  };
+  // Message 'Not found' search/filter
   const showMessageErrorSearch = useCallback(() => {
     setMessageError(true);
-    setTimeout(async () => {
-      setMessageError(false);
-      setCategoryId(categoryId);
-      const productsAllGet: IProductResponseCategory = await getProductsSorted(
-        categoryId,
-        offset
-      );
-      const productsProps = formattedDataForCardInCategory(productsAllGet);
-      setProductCardProps(productsProps);
-    }, 3000);
-  }, [categoryId, setMessageError, setCategoryId, setProductCardProps, offset]);
-
-  const handleSearchPanel: MouseEventHandler = async () => {
-    if (searchQuery.length > 1) {
-      const searchResponse = await searchProducts(searchQuery);
-      if (!searchResponse.total) {
-        getCountPagination(searchResponse.total.total);
-        showMessageErrorSearch();
-      }
-      const searchResponseProductProps =
-        formattedDataForCardInCategory(searchResponse);
-      setProductCardProps(searchResponseProductProps);
-      getCountPagination(searchResponse.total.total);
-      setTimeout(() => {
-        setSearchQuery('');
-      }, 5000);
-    }
-  };
+    setOffset(0);
+  }, [setMessageError]);
 
   // Get products in filter
   const getProductsFilter = useCallback(
     (data: IProductResponseCategory) => {
       if (!data.results[0]) {
-        showMessageErrorSearch();
         getCountPagination(data.total);
+        setOffset(0);
+        showMessageErrorSearch();
       }
       const productsProps = formattedDataForCardInCategory(data);
       setProductCardProps(productsProps);
       getCountPagination(data.total);
     },
     [showMessageErrorSearch]
-  ); // sort. filter
+  );
 
   useEffect(() => {
     const products = async () => {
@@ -133,9 +107,33 @@ function Catalog() {
       const categoriesAllData = formattedDataForCategory(categoriesAllGet);
       setCategoryProps(categoriesAllData);
     };
-    products();
+    if (!searchQuery) {
+      products();
+    }
     categories();
-  }, [categoryId, offset, sortKey]);
+  }, [categoryId, offset, sortKey, searchQuery]);
+
+  useEffect(() => {
+    const searchProductsQuery = async () => {
+      if (searchQuery.length > 1) {
+        const searchResponse = await searchProducts(
+          searchQuery,
+          offset,
+          sortKey
+        );
+        if (!searchResponse.total) {
+          getCountPagination(searchResponse.total.total);
+          showMessageErrorSearch();
+        }
+        setMessageError(false);
+        const searchResponseProductProps =
+          formattedDataForCardInCategory(searchResponse);
+        setProductCardProps(searchResponseProductProps);
+        getCountPagination(searchResponse.total);
+      }
+    };
+    searchProductsQuery();
+  }, [searchQuery, showMessageErrorSearch, offset, sortKey]);
 
   if (loading) {
     return <Spinner />;
@@ -177,9 +175,18 @@ function Catalog() {
               <button
                 className="search-btn"
                 type="button"
-                onClick={handleSearchPanel}
+                onClick={() => setSearchQuery(searchQuery)}
+                disabled={!searchQuery}
               >
                 Search
+              </button>
+              <button
+                className="clear-btn"
+                type="button"
+                onClick={handleClearSearch}
+                disabled={!searchQuery}
+              >
+                x
               </button>
             </label>
             <select
