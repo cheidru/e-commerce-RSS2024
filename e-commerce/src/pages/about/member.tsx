@@ -14,7 +14,6 @@ type Props = {
   teamSay: string;
 };
 
-// export default function Avatar({ firstName, avatar, avatarName, photo, role, title, shortBio, gitHub, country, city, teamSay } :Props ) {
 export default function Avatar({
   firstName,
   avatar,
@@ -33,20 +32,6 @@ export default function Avatar({
     setModalMemberCardIsOpen(true);
   };
 
-  const modalMemberCardStyles = {
-    content: {
-      top: '0',
-      left: '0',
-      width: '60vw',
-      margin: '0 auto',
-      height: '90vh',
-      // height: 'max-content',
-      backgroundColor: 'gray',
-      transform: 'translateY(5%)',
-      borderRadius: '10px',
-    },
-  };
-
   const closeModalMemberCard = () => {
     setModalMemberCardIsOpen(false);
   };
@@ -56,7 +41,8 @@ export default function Avatar({
       <Modal
         isOpen={modalMemberCardIsOpen}
         onRequestClose={closeModalMemberCard}
-        style={modalMemberCardStyles}
+        className="modal-member"
+        overlayClassName="modal-overlay"
         ariaHideApp={false}
         bodyOpenClassName="modal-body"
       >

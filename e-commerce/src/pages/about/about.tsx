@@ -6,8 +6,6 @@ import asyncMember from './memberData';
 import Avatar from './member';
 import ScreenShot from './screenShot';
 
-// import WeWorking from '../../components/stubs/weworking';
-
 function About() {
   return (
     <div className="about-wrapper">
