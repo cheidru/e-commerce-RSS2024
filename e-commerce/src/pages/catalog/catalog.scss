@@ -26,7 +26,7 @@
   flex-direction: column;
   flex-wrap: wrap;
   gap: 30px;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 100%;
 }
 .catalog-sort {
@@ -43,12 +43,7 @@
   flex-wrap: wrap;
   gap: 30px;
   justify-content: space-evenly;
-}
-/* */
-.filter-btn {
-  margin-top: 30px;
-  width: 150px;
-  height: 100px;
+  margin-bottom: auto;
 }
 /* form */
 .form-filter {
