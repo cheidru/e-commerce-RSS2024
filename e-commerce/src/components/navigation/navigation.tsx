@@ -1,7 +1,7 @@
 import { NavLink, Link } from 'react-router-dom';
 /* Redux */
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { logout } from '../../redux/store/userSlice';
+import { logout } from '../../services/api/login';
 
 function Navigation() {
   const isUserLogged =
@@ -9,7 +9,7 @@ function Navigation() {
     0;
   const dispatch = useAppDispatch();
   const userLogout = () => {
-    dispatch(logout());
+    logout(dispatch);
   };
   return (
     <nav className="navigation">

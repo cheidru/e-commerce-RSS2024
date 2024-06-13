@@ -4,22 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks';
 import {
-  setUserLogged,
-  User,
-  setAuthToken,
-  AuthToken,
-} from '../../../redux/store/userSlice';
-import {
   validationSchemaRegister,
   FormDataRegister,
   placeholder,
 } from '../validationRulesInput';
 /* API */
-import {
-  registerNewCustomer,
-  formattedDataRegister,
-} from '../../../services/api/register';
-import { login } from '../../../services/api/login';
+import { registerNewCustomer } from '../../../services/api/register';
 import store from '../../../redux/store/store';
 import Input from '../elements/input';
 import CheckBox from '../elements/checkBox';
@@ -28,23 +18,15 @@ import Country from '../elements/country';
 
 function RegistrationForm(): React.ReactElement {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
     const appTokenStore = store.getState().userSlice.authToken.access_token;
     if (appTokenStore.length > 0) {
       navigate(`/`);
     }
   });
-
-  const dispatch = useAppDispatch();
-  const setUserLogIn = (userNew: User) => {
-    dispatch(setUserLogged(userNew));
-  };
-
-  const setAuthUserToken = (tokenNew: AuthToken) => {
-    dispatch(setAuthToken(tokenNew));
-  };
 
   const {
     register,
@@ -95,37 +77,18 @@ function RegistrationForm(): React.ReactElement {
   ]);
 
   const onSubmit = async (data: FormDataRegister) => {
-    const dataUser = formattedDataRegister(data);
+    const userNew = await registerNewCustomer(data, dispatch);
 
-    const userNew = await registerNewCustomer(dataUser);
-    if (userNew.statusCode) {
-      const { message } = userNew;
+    if (userNew.isError) {
       const errorsBlock = document.getElementById('errorsAnswer');
-      if (message && errorsBlock) {
-        errorsBlock.innerText = message;
+      if (userNew.message && errorsBlock) {
+        errorsBlock.innerText = userNew.message;
         setTimeout(() => {
           errorsBlock.innerText = '';
         }, 5000);
       }
     } else {
-      const tokenNew = await login(dataUser);
-
-      if (tokenNew.statusCode) {
-        const { message } = tokenNew;
-        const errorsBlock = document.getElementById('errorsAnswer');
-        if (message && errorsBlock) {
-          errorsBlock.innerText = message;
-          setTimeout(() => {
-            errorsBlock.innerText = '';
-          }, 5000);
-        }
-      } else {
-        // tokenNew.email = dataUser.email;
-        setUserLogIn(userNew);
-        setAuthUserToken(tokenNew);
-        navigate(`/`);
-      }
-      return data;
+      navigate(`/`);
     }
     return data;
   };

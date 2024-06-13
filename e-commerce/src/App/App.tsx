@@ -9,11 +9,12 @@ import * as Pages from '../pages/pages';
 /* Style */
 import './app.scss';
 import { useAppDispatch } from '../redux/hooks';
-import { setAppToken, setAppAccessToken } from '../redux/store/appSlice';
-import { logout, setUserLogged } from '../redux/store/userSlice';
-import { createAccessToken } from '../services/api/getAppToken';
+// import { setAppToken } from '../redux/store/appSlice';
+import { logout } from '../redux/store/userSlice';
+import { getAppToken } from '../services/api/getAppToken';
+import { getAnonymousToken } from '../services/api/getAnonymousToken';
 import { getCustomerInfo } from '../services/api/getCustomerInfo';
-import store from '../redux/store/store';
+import { getCart } from '../services/api/cart';
 
 function App() {
   const navigate = useNavigate();
@@ -26,26 +27,25 @@ function App() {
     }
   }
   const dispatch = useAppDispatch();
-  const getInitialDate = async () => {
-    const appTokenStore = store.getState().appSlice.authToken;
-    const currenDateValue = new Date().getTime() / 1000;
-    if (
-      appTokenStore.expires_in < currenDateValue &&
-      appTokenStore.access_token === ''
-    ) {
-      dispatch(setAppAccessToken('fetching'));
-      const appToken = await createAccessToken();
-      dispatch(setAppToken(appToken));
+  const getInitialData = async () => {
+    getAppToken(dispatch);
+
+    const userInfo = await getCustomerInfo(dispatch);
+    if (userInfo.isError) {
+      dispatch(logout());
+      const anonymousToken = await getAnonymousToken(dispatch, true);
+      if (!anonymousToken.isError) {
+        getCart(dispatch);
+      }
+    } else {
+      getCart(dispatch);
     }
-    const userInfo = await getCustomerInfo();
-    if (!userInfo) dispatch(logout());
-    else dispatch(setUserLogged(userInfo));
     if (navigateTo) {
       navigate(`/${navigateTo}`);
     }
   };
   useEffect(() => {
-    getInitialDate();
+    getInitialData();
   });
 
   return (

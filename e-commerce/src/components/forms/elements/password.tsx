@@ -44,6 +44,7 @@ function Password({
             errorMessage ? 'error-background-input' : ''
           }`}
           style={style}
+          autoComplete="on"
           {...registerObject}
         />
       </label>
