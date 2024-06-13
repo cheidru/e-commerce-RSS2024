@@ -28,7 +28,7 @@ function App() {
   }
   const dispatch = useAppDispatch();
   const getInitialData = async () => {
-    getAppToken(dispatch);
+    await getAppToken(dispatch);
 
     const userInfo = await getCustomerInfo(dispatch);
     if (userInfo.isError) {
