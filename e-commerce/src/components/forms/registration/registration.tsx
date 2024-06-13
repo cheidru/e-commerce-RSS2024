@@ -139,7 +139,7 @@ function RegistrationForm(): React.ReactElement {
           id="firstName"
           title="first Name"
           placeholder={placeholder.firstName}
-          isRequared
+          isRequired
           errorMessage={errors.firstName?.message}
           registerObject={register('firstName')}
         />
@@ -148,7 +148,7 @@ function RegistrationForm(): React.ReactElement {
           id="lastName"
           title="last Name"
           placeholder={placeholder.lastName}
-          isRequared
+          isRequired
           errorMessage={errors.lastName?.message}
           registerObject={register('lastName')}
         />
@@ -157,7 +157,7 @@ function RegistrationForm(): React.ReactElement {
           id="dateOfBirth"
           inputType="date"
           title="Date of Birth"
-          isRequared
+          isRequired
           errorMessage={errors.dateOfBirth?.message}
           registerObject={register('dateOfBirth')}
         />
@@ -171,13 +171,13 @@ function RegistrationForm(): React.ReactElement {
           registerObject={register('address.default')}
         />
         <div className="input-wrapper-line">
-          <div className="registration-adress">
+          <div className="registration-address">
             <Input
               id="address.streetName"
               classNameComponent="input-wrapper-address"
               title="Street"
-              isRequared
-              className="form__registration-adress input-text"
+              isRequired
+              className="form__registration-address input-text"
               errorMessage={errors.address?.streetName?.message}
               registerObject={register('address.streetName')}
             />
@@ -186,8 +186,8 @@ function RegistrationForm(): React.ReactElement {
               id="address.city"
               classNameComponent="input-wrapper-address"
               title="City"
-              isRequared
-              className="form__registration-adress input-text"
+              isRequired
+              className="form__registration-address input-text"
               errorMessage={errors.address?.city?.message}
               registerObject={register('address.city')}
             />
@@ -195,8 +195,8 @@ function RegistrationForm(): React.ReactElement {
             <Country
               id="address.country"
               classNameComponent="input-wrapper-address"
-              isRequared
-              className="form__registration-adress input-text"
+              isRequired
+              className="form__registration-address input-text"
               errorMessage={errors.address?.country?.message}
               registerObject={register('address.country')}
               onChangeHandler={() =>
@@ -211,8 +211,8 @@ function RegistrationForm(): React.ReactElement {
               id="address.postalCode"
               classNameComponent="input-wrapper-address"
               title="POST Code"
-              isRequared
-              className="form__registration-adress input-text"
+              isRequired
+              className="form__registration-address input-text"
               errorMessage={errors.address?.postalCode?.message}
               registerObject={register('address.postalCode')}
             />
@@ -234,13 +234,13 @@ function RegistrationForm(): React.ReactElement {
           registerObject={register('addressInvoice.default')}
         />
         <div className="input-wrapper-line">
-          <div className="registration-adress">
+          <div className="registration-address">
             <Input
               id="addressInvoice.streetName"
               classNameComponent="input-wrapper-address"
               title="Street"
-              isRequared
-              className="form__registration-adress input-text"
+              isRequired
+              className="form__registration-address input-text"
               errorMessage={
                 !watchShowAddressInvoice
                   ? errors.addressInvoice?.streetName?.message
@@ -254,8 +254,8 @@ function RegistrationForm(): React.ReactElement {
               id="addressInvoice.city"
               classNameComponent="input-wrapper-address"
               title="City"
-              isRequared
-              className="form__registration-adress input-text"
+              isRequired
+              className="form__registration-address input-text"
               errorMessage={
                 !watchShowAddressInvoice
                   ? errors.addressInvoice?.city?.message
@@ -268,8 +268,8 @@ function RegistrationForm(): React.ReactElement {
             <Country
               id="addressInvoice.country"
               classNameComponent="input-wrapper-address"
-              isRequared
-              className="form__registration-adress input-text"
+              isRequired
+              className="form__registration-address input-text"
               errorMessage={
                 !watchShowAddressInvoice
                   ? errors.addressInvoice?.country?.message
@@ -289,8 +289,8 @@ function RegistrationForm(): React.ReactElement {
               id="addressInvoice.postalCode"
               classNameComponent="input-wrapper-address"
               title="POST Code"
-              isRequared
-              className="form__registration-adress input-text"
+              isRequired
+              className="form__registration-address input-text"
               errorMessage={
                 !watchShowAddressInvoice
                   ? errors.addressInvoice?.postalCode?.message
@@ -308,7 +308,7 @@ function RegistrationForm(): React.ReactElement {
           id="email"
           classNameComponent="input-wrapper"
           title="Email"
-          isRequared
+          isRequired
           className="form__registration-email input-text"
           errorMessage={errors.email?.message}
           registerObject={register('email')}
@@ -317,7 +317,7 @@ function RegistrationForm(): React.ReactElement {
         <Password
           id="password"
           title="Password"
-          isRequared
+          isRequired
           className="form__registration-password input-text"
           errorMessage={errors.password?.message}
           registerObject={register('password')}

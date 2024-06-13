@@ -1,19 +1,16 @@
 import './catalog.scss';
-import {
-  useEffect,
-  useState,
-  useCallback,
-  ChangeEvent,
-  MouseEventHandler,
-} from 'react';
+import { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   getCategories,
   getProductsSorted,
-  SortField,
   searchProducts,
+  filterProducts,
 } from '../../services/api/getProducts';
-import { IProductResponseCategory } from '../../types/Product/InterfaceProduct';
+import {
+  IFilter,
+  IProductResponseCategory,
+} from '../../types/Product/InterfaceProduct';
 import { ICategoriesResponse } from '../../types/Product/InterfaceCategories';
 import {
   formattedDataForCategory,
@@ -27,81 +24,97 @@ import {
   CategoryProps,
   Category,
 } from '../../components/asideCatalogCategory/asideCatalogCategory';
-import FilterCatalog from '../../components/forms/filterCatalog/filterCatalog';
+import FilterCatalog, {
+  defaultFilterSettings,
+} from '../../components/forms/filterCatalog/filterCatalog';
 import Spinner from '../../components/spinner/Spinner';
+import Pagination from '../../components/pagination/pagination';
 
 function Catalog() {
+  const limit = 8;
   const categoriesAll: CategoryProps[] = [];
   const navigate = useNavigate();
 
+  // Products
   const [productCardProps, setProductCardProps] = useState<ProductCardProps[]>(
     []
   );
+  // Categories
   const [categoryProps, setCategoryProps] = useState(categoriesAll);
   const [categoryId, setCategoryId] = useState('');
+  // Errors
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
   const [messageError, setMessageError] = useState(false);
+  // Pagination
+  const [offset, setOffset] = useState(0);
+  const [countPages, setCountPages] = useState(0);
+  // Spinner
+  const [loading, setLoading] = useState(true);
+  // Sorting
+  const [sortKey, setSortKey] = useState('createdAt asc');
+  const [searchQuery, setSearchQuery] = useState('');
+  // Filter
+  const [filterSetting, setFilterSetting] = useState<IFilter>(
+    defaultFilterSettings
+  );
 
-  // Handle category sorted
+  // Handle category sortedSelect
   const handleSortChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const sortFieldKey = event.target.value as SortField;
-    const sortedProducts = await getProductsSorted(categoryId, sortFieldKey);
-    const sortedProductsProps = formattedDataForCardInCategory(sortedProducts);
-    setProductCardProps(sortedProductsProps);
+    const sortFieldKey = event.target.value;
+    setSortKey(sortFieldKey);
+    setOffset(0);
   };
+
+  // Pagination
+  const getCountPagination = (count: number) => {
+    const getCountPages = Math.ceil(count / limit);
+    const countPagination = getCountPages > 1 ? getCountPages : 0;
+    setCountPages(countPagination);
+    return countPagination;
+  };
+
   // Handle Search Panel
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
-  // Message 'Not found'
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setMessageError(false);
+  };
+  // Message 'Not found' search/filter
   const showMessageErrorSearch = useCallback(() => {
     setMessageError(true);
-    setTimeout(async () => {
-      setMessageError(false);
-      setCategoryId(categoryId);
-      const productsAllGet: IProductResponseCategory =
-        await getProductsSorted(categoryId);
-      const productsProps = formattedDataForCardInCategory(productsAllGet);
-      setProductCardProps(productsProps);
-    }, 3000);
-  }, [categoryId, setMessageError, setCategoryId, setProductCardProps]);
-  const handleSearchPanel: MouseEventHandler = async () => {
-    if (searchQuery.length > 1) {
-      const searchResponse = await searchProducts(searchQuery);
-      if (!searchResponse.total) {
-        showMessageErrorSearch();
-      }
-      const searchResponseProductProps =
-        formattedDataForCardInCategory(searchResponse);
-      setProductCardProps(searchResponseProductProps);
-      setSearchQuery('');
-    }
-  };
-  // get products in filter
+    setOffset(0);
+  }, [setMessageError]);
+
+  // Get products in filter
   const getProductsFilter = useCallback(
     (data: IProductResponseCategory) => {
       if (!data.results[0]) {
+        getCountPagination(data.total);
+        setOffset(0);
         showMessageErrorSearch();
       }
+      setMessageError(false);
       const productsProps = formattedDataForCardInCategory(data);
       setProductCardProps(productsProps);
+      getCountPagination(data.total);
     },
     [showMessageErrorSearch]
-  ); // sort. filter
+  );
 
   useEffect(() => {
     const products = async () => {
       try {
         const productsAllGet: IProductResponseCategory =
-          await getProductsSorted(categoryId);
+          await getProductsSorted(categoryId, offset, sortKey);
+        getCountPagination(productsAllGet.total);
         const productsProps = formattedDataForCardInCategory(productsAllGet);
         setProductCardProps(productsProps);
       } catch {
-        setError('Failed to fetch products. Please try again later.');
+        setError('Failed to fetch products. Please try later.');
       } finally {
         setLoading(false);
       }
@@ -111,9 +124,67 @@ function Catalog() {
       const categoriesAllData = formattedDataForCategory(categoriesAllGet);
       setCategoryProps(categoriesAllData);
     };
-    products();
+    if (!searchQuery || !filterSetting) {
+      if (Object.is(filterSetting, defaultFilterSettings)) {
+        products();
+      }
+    }
     categories();
-  }, [categoryId]); // sort. filter
+  }, [categoryId, offset, sortKey, searchQuery, filterSetting]);
+
+  useEffect(() => {
+    const searchProductsQuery = async () => {
+      if (searchQuery.length > 1) {
+        const searchResponse = await searchProducts(
+          searchQuery,
+          offset,
+          sortKey
+        );
+
+        if (!searchResponse.total) {
+          showMessageErrorSearch();
+          getCountPagination(0);
+        } else {
+          setMessageError(false);
+          const searchResponseProductProps =
+            formattedDataForCardInCategory(searchResponse);
+          setProductCardProps(searchResponseProductProps);
+          getCountPagination(searchResponse.total);
+        }
+      }
+    };
+    searchProductsQuery();
+  }, [searchQuery, showMessageErrorSearch, offset, sortKey]);
+
+  useEffect(() => {
+    const applyFilters = async () => {
+      if (
+        filterSetting.priceMin ||
+        filterSetting.priceMax ||
+        filterSetting.color.length ||
+        filterSetting.model.length
+      ) {
+        try {
+          const filterResponse = await filterProducts(
+            filterSetting,
+            offset,
+            sortKey
+          );
+          getProductsFilter(filterResponse);
+        } catch {
+          setError('Failed to apply filters');
+        }
+      }
+    };
+    applyFilters();
+  }, [filterSetting, offset, sortKey, getProductsFilter]);
+
+  const handleClearFilters = () => {
+    setFilterSetting(defaultFilterSettings);
+    setOffset(0);
+    setProductCardProps([]);
+    setMessageError(false);
+  };
 
   if (loading) {
     return <Spinner />;
@@ -133,11 +204,18 @@ function Catalog() {
               key={category.id}
               name={category.name}
               id={category.id}
-              onClick={() => setCategoryId(category.id)}
+              // eslint-disable-next-line no-sequences
+              onClick={() => (setCategoryId(category.id), setOffset(0))}
               isCurrent={category.id === categoryId}
             />
           ))}
-          <FilterCatalog getProductsFilter={getProductsFilter} />
+          <FilterCatalog
+            getProductsFilter={getProductsFilter}
+            offset={offset}
+            sort={sortKey}
+            setFilterSetting={setFilterSetting}
+            handleClearFilters={handleClearFilters}
+          />
         </aside>
         <div className="catalog-products">
           <div className="catalog-sort">
@@ -154,9 +232,18 @@ function Catalog() {
               <button
                 className="search-btn"
                 type="button"
-                onClick={handleSearchPanel}
+                onClick={() => setSearchQuery(searchQuery)}
+                disabled={!searchQuery}
               >
                 Search
+              </button>
+              <button
+                className="clear-btn"
+                type="button"
+                onClick={handleClearSearch}
+                disabled={!searchQuery}
+              >
+                x
               </button>
             </label>
             <select
@@ -164,12 +251,12 @@ function Catalog() {
               onChange={handleSortChange}
               className="select-input"
             >
-              <option value={SortField.Default}>Sort by</option>
-              <option value={SortField.PriceAsc}>Lowest price</option>
-              <option value={SortField.PriceDesc}>Highest price</option>
-              <option value={SortField.CreatedAt}>What&apos;s New</option>
-              <option value={SortField.NameAsc}>Name (A To Z)</option>
-              <option value={SortField.NameDesc}>Name (Z To A)</option>
+              <option value="createdAt asc">Sort by</option>
+              <option value="price asc">Lowest price</option>
+              <option value="price desc">Highest price</option>
+              <option value="createdAt desc">What&apos;s New</option>
+              <option value="name.en asc">Name (A To Z)</option>
+              <option value="name.en desc">Name (Z To A)</option>
             </select>
           </div>
           <div className="catalog-product" id="catalog-product">
@@ -182,6 +269,16 @@ function Catalog() {
                     onClick={() => navigate(`/product/${product.id}`)}
                   />
                 ))}
+          </div>
+          <div className="pagination">
+            {Array.from({ length: countPages }).map((_, i) => (
+              <Pagination
+                isCurrent={offset / limit === i}
+                key={`pagination-btn-${i + 1}`}
+                id={i}
+                onClick={() => setOffset(i * limit)}
+              />
+            ))}
           </div>
         </div>
       </div>

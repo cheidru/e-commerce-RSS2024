@@ -84,7 +84,7 @@ function LoginForm(): React.ReactElement {
         id="email"
         classNameComponent="input-wrapper form__login-wrapper"
         title="Email"
-        isRequared
+        isRequired
         placeholder={placeholder.email}
         className="form__login-login input-text"
         errorMessage={errors.email?.message}
@@ -95,7 +95,7 @@ function LoginForm(): React.ReactElement {
         id="password"
         classNameComponent="input-wrapper form__login-wrapper"
         title="Password"
-        isRequared
+        isRequired
         className="form__registration-password input-text"
         classNameButton="btn-submit btn-show"
         errorMessage={errors.password?.message}

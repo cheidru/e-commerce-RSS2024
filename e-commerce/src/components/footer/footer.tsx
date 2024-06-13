@@ -41,7 +41,7 @@ function Footer() {
           </div>
           <div className="footer__top-item">
             <div className="footer__contact-title">Our address</div>
-            <div className="footer__contact-adress">
+            <div className="footer__contact-address">
               Russia, Rostov-on-Don
               <br /> st. Bogacheva, 16
             </div>

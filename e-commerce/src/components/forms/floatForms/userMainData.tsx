@@ -95,7 +95,7 @@ function UserMainData({ closeModal, showToast }: Props) {
           <Input
             id="firstName"
             title="first Name"
-            isRequared
+            isRequired
             errorMessage={errors.firstName?.message}
             registerObject={register('firstName')}
           />
@@ -103,7 +103,7 @@ function UserMainData({ closeModal, showToast }: Props) {
           <Input
             id="lastName"
             title="last Name"
-            isRequared
+            isRequired
             errorMessage={errors.lastName?.message}
             registerObject={register('lastName')}
           />
@@ -112,7 +112,7 @@ function UserMainData({ closeModal, showToast }: Props) {
             id="dateOfBirth"
             inputType="date"
             title="Date of Birth"
-            isRequared
+            isRequired
             errorMessage={errors.dateOfBirth?.message}
             registerObject={register('dateOfBirth')}
           />
@@ -123,7 +123,7 @@ function UserMainData({ closeModal, showToast }: Props) {
             id="email"
             classNameComponent="input-wrapper"
             title="Email"
-            isRequared
+            isRequired
             className="form__profile-email input-text"
             errorMessage={errors.email?.message}
             registerObject={register('email')}
