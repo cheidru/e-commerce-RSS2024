@@ -5,8 +5,12 @@ import {
   getCategories,
   getProductsSorted,
   searchProducts,
+  filterProducts,
 } from '../../services/api/getProducts';
-import { IProductResponseCategory } from '../../types/Product/InterfaceProduct';
+import {
+  IFilter,
+  IProductResponseCategory,
+} from '../../types/Product/InterfaceProduct';
 import { ICategoriesResponse } from '../../types/Product/InterfaceCategories';
 import {
   formattedDataForCategory,
@@ -20,7 +24,9 @@ import {
   CategoryProps,
   Category,
 } from '../../components/asideCatalogCategory/asideCatalogCategory';
-import FilterCatalog from '../../components/forms/filterCatalog/filterCatalog';
+import FilterCatalog, {
+  defaultFilterSettings,
+} from '../../components/forms/filterCatalog/filterCatalog';
 import Spinner from '../../components/spinner/Spinner';
 import Pagination from '../../components/pagination/pagination';
 // Basket
@@ -32,18 +38,28 @@ function Catalog() {
   const categoriesAll: CategoryProps[] = [];
   const navigate = useNavigate();
 
+  // Products
   const [productCardProps, setProductCardProps] = useState<ProductCardProps[]>(
     []
   );
+  // Categories
   const [categoryProps, setCategoryProps] = useState(categoriesAll);
   const [categoryId, setCategoryId] = useState('');
-  const [sortKey, setSortKey] = useState('createdAt asc');
+  // Errors
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
   const [messageError, setMessageError] = useState(false);
+  // Pagination
   const [offset, setOffset] = useState(0);
   const [countPages, setCountPages] = useState(0);
+  // Spinner
+  const [loading, setLoading] = useState(true);
+  // Sorting
+  const [sortKey, setSortKey] = useState('createdAt asc');
+  const [searchQuery, setSearchQuery] = useState('');
+  // Filter
+  const [filterSetting, setFilterSetting] = useState<IFilter>(
+    defaultFilterSettings
+  );
 
   // Basket
   // const cart = useAppSelector((state) => state.cartSlice.cart);
@@ -104,7 +120,7 @@ function Catalog() {
         const productsProps = formattedDataForCardInCategory(productsAllGet);
         setProductCardProps(checkProductsInCart(productsProps));
       } catch {
-        setError('Failed to fetch products. Please try again later.');
+        setError('Failed to fetch products. Please try later.');
       } finally {
         setLoading(false);
       }
@@ -114,11 +130,13 @@ function Catalog() {
       const categoriesAllData = formattedDataForCategory(categoriesAllGet);
       setCategoryProps(categoriesAllData);
     };
-    if (!searchQuery) {
-      products();
+    if (!searchQuery || !filterSetting) {
+      if (Object.is(filterSetting, defaultFilterSettings)) {
+        products();
+      }
     }
     categories();
-  }, [categoryId, offset, sortKey, searchQuery]);
+  }, [categoryId, offset, sortKey, searchQuery, filterSetting]);
 
   useEffect(() => {
     const searchProductsQuery = async () => {
@@ -143,6 +161,36 @@ function Catalog() {
     };
     searchProductsQuery();
   }, [searchQuery, showMessageErrorSearch, offset, sortKey]);
+
+  useEffect(() => {
+    const applyFilters = async () => {
+      if (
+        filterSetting.priceMin ||
+        filterSetting.priceMax ||
+        filterSetting.color.length ||
+        filterSetting.model.length
+      ) {
+        try {
+          const filterResponse = await filterProducts(
+            filterSetting,
+            offset,
+            sortKey
+          );
+          getProductsFilter(filterResponse);
+        } catch {
+          setError('Failed to apply filters');
+        }
+      }
+    };
+    applyFilters();
+  }, [filterSetting, offset, sortKey, getProductsFilter]);
+
+  const handleClearFilters = () => {
+    setFilterSetting(defaultFilterSettings);
+    setOffset(0);
+    setProductCardProps([]);
+    setMessageError(false);
+  };
 
   if (loading) {
     return <Spinner />;
@@ -171,6 +219,8 @@ function Catalog() {
             getProductsFilter={getProductsFilter}
             offset={offset}
             sort={sortKey}
+            setFilterSetting={setFilterSetting}
+            handleClearFilters={handleClearFilters}
           />
         </aside>
         <div className="catalog-products">

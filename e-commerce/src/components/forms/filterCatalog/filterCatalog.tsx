@@ -12,27 +12,32 @@ type Props = {
   getProductsFilter: (data: IProductResponseCategory) => void;
   offset: number;
   sort: string;
+  setFilterSetting: React.Dispatch<React.SetStateAction<IFilter>>;
+  handleClearFilters: () => void;
+};
+
+export const defaultFilterSettings: IFilter = {
+  priceMin: 0,
+  priceMax: 0,
+  color: [],
+  model: [],
+  fractionDigits: 0,
 };
 
 function FilterCatalog({
   getProductsFilter,
   offset,
   sort,
+  setFilterSetting,
+  handleClearFilters,
 }: Props): React.ReactElement {
-  const filterPanelPropsDefault: IFilter = {
-    priceMax: 0,
-    priceMin: 0,
-    color: [],
-    model: [],
-    fractionDigits: 0,
-  };
   const formRefFilter = useRef<HTMLFormElement>(null);
 
-  const [filterPanelProps, setFilterPanel] = useState(filterPanelPropsDefault);
-  const [priceMin, setPriceMin] = useState(filterPanelPropsDefault.priceMin);
-  const [priceMax, setPriceMax] = useState(filterPanelPropsDefault.priceMax);
+  const [filterPanelProps, setFilterPanel] = useState(defaultFilterSettings);
+  const [priceMin, setPriceMin] = useState(defaultFilterSettings.priceMin);
+  const [priceMax, setPriceMax] = useState(defaultFilterSettings.priceMax);
   const [fractionDigits, setFractionDigits] = useState(
-    filterPanelPropsDefault.fractionDigits
+    defaultFilterSettings.fractionDigits
   );
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
@@ -80,18 +85,22 @@ function FilterCatalog({
       model: selectedModels,
       fractionDigits,
     };
+    setFilterSetting(formData);
     const result = await filterProducts(formData, offset, sort);
 
     getProductsFilter(result);
   };
-  // clear filter
-  const handleClearFilters = async () => {
-    setPriceMin(filterPanelPropsDefault.priceMin);
-    setPriceMax(filterPanelPropsDefault.priceMax);
-    setFractionDigits(filterPanelPropsDefault.fractionDigits);
-    setSelectedColors(filterPanelPropsDefault.color);
-    setSelectedModels(filterPanelPropsDefault.model);
 
+  // Clear filter
+  const handleClearFiltersForm = async () => {
+    // set default val
+    setPriceMin(defaultFilterSettings.priceMin);
+    setPriceMax(defaultFilterSettings.priceMax);
+    setFractionDigits(defaultFilterSettings.fractionDigits);
+    setSelectedColors(defaultFilterSettings.color);
+    setSelectedModels(defaultFilterSettings.model);
+
+    // clear form fields
     if (formRefFilter.current) {
       const form = formRefFilter.current;
       const inputs = form.querySelectorAll('input');
@@ -105,6 +114,8 @@ function FilterCatalog({
         }
       });
     }
+    // catalog => set default val and change state props products => call useEff
+    handleClearFilters();
   };
 
   return (
@@ -175,7 +186,7 @@ function FilterCatalog({
           <button
             type="button"
             className="filter-btn"
-            onClick={handleClearFilters}
+            onClick={handleClearFiltersForm}
           >
             Clear
           </button>
