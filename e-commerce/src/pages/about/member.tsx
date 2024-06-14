@@ -60,11 +60,15 @@ export default function Avatar({
               </p>
               <p>
                 <span>bio: </span>
-                {shortBio}
+                <a href={shortBio} target="_blank" rel="noopener noreferrer">
+                  You can look here
+                </a>
               </p>
               <p>
                 <span>gitHub: </span>
-                {gitHub}
+                <a href={gitHub} target="_blank" rel="noopener noreferrer">
+                  {gitHub.split('/')[3]}
+                </a>
               </p>
               <p>
                 <span>country: </span>

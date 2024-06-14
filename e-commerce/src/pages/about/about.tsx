@@ -1,4 +1,3 @@
-import './about.scss';
 import RsschoolLogo from '../../assets/img/icons/rs_school_js.svg';
 import Discord from '../../assets/img/images/discord-channel.jpg';
 import Trello from '../../assets/img/images/trello.jpg';

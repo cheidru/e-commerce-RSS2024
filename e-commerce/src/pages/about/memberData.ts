@@ -1,13 +1,20 @@
+import Lika from '../../assets/img/images/Lika-photo.jpg';
+import Sergey from '../../assets/img/images/sergey-photo.jpg';
+import Igor from '../../assets/img/images/igor-picture.jpg';
+import bikeGirl from '../../assets/img/images/asinc-biker-girl.jpg';
+import Rocker from '../../assets/img/images/asinc-rocket.jpg';
+import Baby from '../../assets/img/images/asinc-baby.jpg';
+
 const asyncMember = [
   {
     key: 1,
     firstName: 'Anzhelika',
-    avatar: '/e-commerce/src/assets/img/images/asinc-biker-girl.jpg',
+    avatar: bikeGirl,
     avatarName: 'asinc-bikegirl-avatar',
-    photo: '/e-commerce/src/assets/img/images/Lika-photo.jpg',
+    photo: Lika,
     role: 'FrontEnd Developer',
     title: 'The Captain',
-    shortBio: '',
+    shortBio: 'https://anzhelika007.github.io/rsschool-cv/cv',
     gitHub: 'https://github.com/anzhelika007',
     country: 'Georgia',
     city: 'Batumi',
@@ -17,9 +24,9 @@ const asyncMember = [
   {
     key: 2,
     firstName: 'Sergey',
-    avatar: '/e-commerce/src/assets/img/images/asinc-rocket.jpg',
-    avatarName: 'asinc-rocket-avatar',
-    photo: '/e-commerce/src/assets/img/images/sergey-photo.jpg',
+    avatar: Rocker,
+    avatarName: Rocker,
+    photo: Sergey,
     role: 'FrontEnd Developer',
     title: 'The Fixer',
     shortBio: '',
@@ -32,9 +39,9 @@ const asyncMember = [
   {
     key: 3,
     firstName: 'Igor',
-    avatar: '/e-commerce/src/assets/img/images/asinc-baby.jpg',
+    avatar: Baby,
     avatarName: 'asinc-baby-avatar',
-    photo: '/e-commerce/src/assets/img/images/igor-picture.jpg',
+    photo: Igor,
     role: 'FrontEnd Developer',
     title: 'The Scholar',
     shortBio: '',
