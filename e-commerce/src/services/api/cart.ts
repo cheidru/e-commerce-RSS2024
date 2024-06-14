@@ -7,21 +7,34 @@ import { Cart, setCart } from '../../redux/store/cartSlice';
 // eslint-disable-next-line import/no-cycle
 import { ProductCardProps } from '../../components/productCard/productCard';
 
+const urlProject = `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}`;
+
+// Create options for POST and GET (body=false)
+async function requestOptions(
+  token: AppMessage<AuthToken>,
+  body: object | false = false
+): Promise<RequestInit> {
+  const myHeaders = new Headers();
+  myHeaders.append('Authorization', `Bearer ${token.thing?.access_token}`);
+
+  const options: RequestInit = {
+    method: body ? 'POST' : 'GET',
+    headers: myHeaders,
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  return options;
+}
+
 export async function createCart(token: AppMessage<AuthToken>) {
   const body = {
     currency: 'USD',
   };
-  const resultFetch = await fetch(
-    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/me/carts`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token.thing?.access_token}`,
-      },
-      body: JSON.stringify(body),
-    }
-  )
+  const options = await requestOptions(token, body);
+  const resultFetch = await fetch(`${urlProject}/me/carts`, options)
     .then((answer) => answer.json())
     .then((answer) => {
       if (answer.errors) {
@@ -48,17 +61,9 @@ export async function createCart(token: AppMessage<AuthToken>) {
 }
 
 export async function findExistingCustomerCart(token: AppMessage<AuthToken>) {
-  const url = new URL(
-    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/me/carts`
-  );
+  const url = new URL(`${urlProject}/me/carts`);
   url.searchParams.append('where', 'cartState="Active"');
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token.thing?.access_token}`,
-    },
-  };
+  const options = await requestOptions(token);
 
   const resultFetch = await fetch(url.toString(), options)
     .then((answer) => answer.json())
@@ -138,7 +143,6 @@ export async function getCart(dispatch: AppDispatch) {
   const existCart = getUserCart(dispatch, userToken);
 
   return existCart;
-  // }
 }
 
 export type UpdateAction = {
@@ -172,17 +176,14 @@ export async function changeLineInCart(
     actions: updateActions,
   };
 
-  const answer = await fetch(
-    `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}/me/carts/${existCart.thing?.id}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken.thing?.access_token}`,
-      },
-      body: JSON.stringify(body),
-    }
-  )
+  const answer = await fetch(`${urlProject}/me/carts/${existCart.thing?.id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userToken.thing?.access_token}`,
+    },
+    body: JSON.stringify(body),
+  })
     .then((response) => response.json())
     .then((response) => {
       if (response.errors) {
