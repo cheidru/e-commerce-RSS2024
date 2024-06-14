@@ -8,19 +8,6 @@ type Props = {
 export default function ScreenShot({ screen }: Props) {
   const [modalScreenIsOpen, setModalScreenIsOpen] = useState(false);
 
-  const modalScreenStyles = {
-    content: {
-      top: '0',
-      left: '0',
-      width: 'max-content',
-      margin: '0 auto',
-      height: '90vh',
-      backgroundColor: 'gray',
-      transform: 'translateY(5%)',
-      borderRadius: '10px',
-    },
-  };
-
   const openModalScreen = () => {
     setModalScreenIsOpen(true);
   };
@@ -34,16 +21,20 @@ export default function ScreenShot({ screen }: Props) {
       <Modal
         isOpen={modalScreenIsOpen}
         onRequestClose={closeModalScreen}
-        style={modalScreenStyles}
+        className="modal-screen-shot"
         ariaHideApp={false}
         bodyOpenClassName="modal-body"
       >
-        <div className="modal-wrapper">
-          <img src={screen} alt="screen-shot" />
+        <div className="screen-modal-wrapper">
+          <img src={screen} className="screen-shot-img" alt="screen-shot" />
         </div>
       </Modal>
 
-      <button type="button" className="avatar-card" onClick={openModalScreen}>
+      <button
+        type="button"
+        className="screen-shot-btn"
+        onClick={openModalScreen}
+      >
         <img className="screen-shot" src={screen} alt="screen-shot" />
       </button>
     </>

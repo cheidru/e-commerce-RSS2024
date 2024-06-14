@@ -133,6 +133,15 @@
   width: 1%;
   border-bottom: 1px solid #d0d0d0;
 }
+
+@media (max-width: 1000px) {
+  .form__profile .input-wrapper-line {
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 3rem;
+  }
+}
+
 // .address-list-table-body {
 
 // }
