@@ -44,7 +44,7 @@ function About() {
           <ScreenShot screen={Trello} />
           <p>
             We selected Trello as a tool for distribution of sprint tasks
-            between the team members and for tracking progtress in tack
+            between the team members and for tracking progress in task
             completion.
           </p>
         </div>
