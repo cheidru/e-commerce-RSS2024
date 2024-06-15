@@ -68,19 +68,21 @@ export function BasketCard({
         aria-hidden="true"
       />
       <div className="card__info">
-        <div className="card__info-title">{title}</div>
-        <div className="basket-card__info-description">
-          {model} / {color}
+        <div className="basket-card__info-title">
+          <div className="basket-card__info-title-name">{title}</div>
+          <div className="basket-card__info-description">
+            {model} / {color}
+          </div>
         </div>
         {size && <div className="basket-card__info-description">{size}</div>}
-        <span className="basket-price-new">
+        <div className="basket-price-new">
           {currency} {newPrice}
-        </span>
-        {onSale && (
-          <span className="basket-price-old">
-            {currency} {oldPrice}
-          </span>
-        )}
+          {onSale && (
+            <div className="basket-price-old">
+              {currency} {oldPrice}
+            </div>
+          )}
+        </div>
         <div className="basket-card__info-quantity">
           Quantity: {quantity}
           <div className="basket-card_buttons">
@@ -106,7 +108,14 @@ export function BasketCard({
             </button>
           </div>
         </div>
-        <div className="basket-price-new">Full price: {fullPrice}</div>
+        <div className="basket-price-new">
+          Full price: {fullPrice}
+          {onSale && (
+            <div className="basket-price-full-old">
+              {currency} {(parseFloat(oldPrice) * quantity).toFixed(2)}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

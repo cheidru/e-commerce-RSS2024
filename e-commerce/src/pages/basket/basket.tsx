@@ -1,5 +1,6 @@
 import './basket.scss';
 // import '../catalog/catalog.scss';
+import { useState, ChangeEvent } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
@@ -71,12 +72,23 @@ function Basket() {
   }
 
   async function clickClearCart() {
-    const result = await clearCart(dispatch);
+    let result = await delDiscountCode(dispatch);
+    result = await clearCart(dispatch);
     showToast(result);
   }
 
-  async function clickAddDiscountCode() {
-    const result = await addDiscountCode(dispatch, 'asinc4cart');
+  const [discountCode, setDiscountCode] = useState('asinc4cart');
+
+  const handleChangeDiscountCode = (event: ChangeEvent<HTMLInputElement>) => {
+    setDiscountCode(event.target.value);
+  };
+  const handleClearDiscountCode = () => {
+    setDiscountCode('');
+  };
+  async function handleAddDiscountCode() {
+    // 'asinc4cart'
+    const result = await addDiscountCode(dispatch, discountCode);
+    if (!result.isError) setDiscountCode('');
     showToast(result);
   }
 
@@ -102,29 +114,63 @@ function Basket() {
               Clear basket
             </button>
             <div className="basket-catalog-total-price">
-              Total: {cart.totalPrice.currencyCode}{' '}
-              {cart.totalPrice.centAmount / 100}
+              <div className="basket-catalog-total-price-current">
+                Total: {cart.totalPrice.currencyCode}{' '}
+                {cart.totalPrice.centAmount / 100}
+              </div>
+              {!!cart.discountOnTotalPrice && (
+                <div className="basket-price-total-old">
+                  {cart.totalPrice.currencyCode}{' '}
+                  {(
+                    (cart.totalPrice.centAmount +
+                      cart.discountOnTotalPrice.discountedAmount.centAmount) /
+                    100
+                  ).toFixed(2)}
+                </div>
+              )}
             </div>
-            <button
-              type="button"
-              className="basket-catalog-buttons"
-              onClick={(e) => {
-                e.stopPropagation();
-                clickAddDiscountCode();
-              }}
-            >
-              Add discount code
-            </button>
-            <button
-              type="button"
-              className="basket-catalog-buttons"
-              onClick={(e) => {
-                e.stopPropagation();
-                clickDelDiscountCode();
-              }}
-            >
-              Del discount code
-            </button>
+            <div className="basket-discount-code">
+              <div className="basket-discount-code-header">
+                Discount
+                <button
+                  type="button"
+                  className="discount-code-clear-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clickDelDiscountCode();
+                  }}
+                >
+                  Clear
+                </button>
+              </div>
+              <label htmlFor="discount-code" className="search-label">
+                <input
+                  type="input"
+                  id="discount-code"
+                  name="search"
+                  placeholder="Discount code"
+                  value={discountCode}
+                  onChange={handleChangeDiscountCode}
+                  className="discount-code-input"
+                />
+                <button
+                  className="clear-btn"
+                  type="button"
+                  onClick={handleClearDiscountCode}
+                  disabled={!discountCode}
+                >
+                  x
+                </button>
+                <button
+                  className="search-btn"
+                  type="button"
+                  onClick={() => handleAddDiscountCode()}
+                  disabled={!discountCode}
+                >
+                  Add
+                </button>
+              </label>
+            </div>
             <div className="catalog-products">
               <div className="catalog-product" id="catalog-product">
                 {productCards.map((product) => (
