@@ -48,7 +48,7 @@ export function BasketCard({
       <div className="basket-card__header">
         <button
           type="button"
-          className="basket-card-btn basket-card-btn-remove"
+          className="basket-card-btn basket-card-btn-remove basket-catalog-button"
           onClick={(e) => {
             e.stopPropagation();
             removeLineFromCart(dispatch, lineId);
@@ -61,7 +61,7 @@ export function BasketCard({
         {hasGift && <div className="label-gift">Present</div>}
       </div>
       <div
-        className="basket-card__img"
+        className="basket-card__img basket-catalog-button"
         style={{ backgroundImage: `url(${imageUrl[0]})` }}
         data-id={id}
         onClick={onClick}
@@ -86,7 +86,7 @@ export function BasketCard({
           <div className="basket-card_buttons">
             <button
               type="button"
-              className="basket-card-btn"
+              className="basket-card-btn basket-catalog-button"
               onClick={(e) => {
                 e.stopPropagation();
                 substLineFromCart(dispatch, lineId);
@@ -96,7 +96,7 @@ export function BasketCard({
             </button>
             <button
               type="button"
-              className="basket-card-btn"
+              className="basket-card-btn basket-catalog-button"
               onClick={(e) => {
                 e.stopPropagation();
                 addLineToCart(dispatch, id);

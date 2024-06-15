@@ -6,23 +6,27 @@
 .basket-catalog {
   display: flex;
   flex-direction: column;
+  position: relative;
   &-title {
     margin-bottom: 10px;
   }
 }
 .basket-catalog-wrapper {
   display: flex;
-  gap: 30px;
+  gap: 10px;
   margin-bottom: 40px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  justify-content: space-around;
+  min-height: 50vh;
   @media (max-width: 660px) {
     flex-wrap: wrap;
     justify-content: space-evenly;
   }
 }
-.basket-catalog___total_____price {
+.basket-catalog-total-price {
+  display: contents;
   margin: 20px 0;
   font-size: 3rem;
   font-style: normal;
@@ -58,6 +62,7 @@
   align-items: flex-start;
   flex-wrap: nowrap;
   width: 249px;
+  z-index: 2;
 }
 .basket-card__img {
   padding: 0;
@@ -134,4 +139,44 @@
   width: 40px;
   height: 40px;
   font-size: 1.8rem;
+}
+
+.basket-catalog-clear-button {
+  position: absolute;
+  align-self: self-end;
+  top: 10px;
+  @media (max-width: 660px) {
+    position: relative;
+  }
+}
+.basket-catalog-buttons {
+  color: #fff;
+  background: #4295e4;
+  width: max-content;
+  height: max-content;
+  border: none;
+  cursor: pointer;
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2rem;
+  padding: 10px;
+}
+.basket-catalog-button:hover {
+  scale: 1.1;
+}
+
+.basket-catalog-empty {
+  font-size: 3rem;
+  line-height: 4rem;
+}
+.basket-catalog-empty-link {
+  color: #4295e4;
+}
+.basket-catalog-empty-link-text {
+  position: relative;
+  text-shadow: 0 0 12px #57a304;
+}
+.basket-catalog-empty-link-text:hover {
+  text-shadow: 0 0 12px #cc244e;
 }

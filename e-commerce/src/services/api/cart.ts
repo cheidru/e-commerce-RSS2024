@@ -194,6 +194,7 @@ export async function changeLineInCart(
       const result: AppMessage<Cart> = {
         isError: false,
         thing: response,
+        message: 'Successful',
       };
       return result;
     })
@@ -245,6 +246,59 @@ export async function removeLineFromCart(
   const action = {
     action: 'removeLineItem',
     lineItemId,
+  };
+  updateActions.push(action);
+  const result = await changeLineInCart(dispatch, updateActions);
+  return result;
+}
+
+export async function clearCart(dispatch: AppDispatch) {
+  const userCart = store.getState().cartSlice.cart;
+  if (!userCart.id) {
+    const result: AppMessage<Cart> = {
+      isError: true,
+      message: 'Something went wrong',
+    };
+    return result;
+  }
+  const updateActions = userCart.lineItems.map((line) => ({
+    action: 'removeLineItem',
+    lineItemId: line.id,
+  }));
+  const result = await changeLineInCart(dispatch, updateActions);
+  if (!result.isError) {
+    result.message = 'Emptying the Basket completed successfully';
+  }
+  return result;
+}
+
+export async function addDiscountCode(dispatch: AppDispatch, code: string) {
+  const updateActions = new Array<UpdateAction>();
+  const action = {
+    action: 'addDiscountCode',
+    code,
+  };
+  updateActions.push(action);
+  const result = await changeLineInCart(dispatch, updateActions);
+  return result;
+}
+
+export async function delDiscountCode(dispatch: AppDispatch) {
+  const userCart = store.getState().cartSlice.cart;
+  if (!userCart.id || !userCart.discountOnTotalPrice) {
+    const result: AppMessage<Cart> = {
+      isError: true,
+      message: 'Discount cart not found',
+    };
+    return result;
+  }
+  const updateActions = new Array<UpdateAction>();
+  const action = {
+    action: 'removeDiscountCode',
+    discountCode: {
+      typeId: 'discount-code',
+      id: userCart.discountCodes[0].discountCode.id,
+    },
   };
   updateActions.push(action);
   const result = await changeLineInCart(dispatch, updateActions);
