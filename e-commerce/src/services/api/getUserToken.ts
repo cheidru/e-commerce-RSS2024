@@ -1,5 +1,5 @@
 import store from '../../redux/store/store';
-import { AuthToken } from '../../redux/store/userSlice';
+import { AuthToken, authTokenInitial } from '../../redux/store/userSlice';
 import { AppMessage } from './getAppToken';
 
 export async function getUserToken() {
@@ -20,6 +20,7 @@ export async function getUserToken() {
   const result: AppMessage<AuthToken> = {
     isError: true,
     message: 'Failed to get user token',
+    thing: authTokenInitial,
   };
   return result;
 }

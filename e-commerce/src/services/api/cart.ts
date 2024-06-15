@@ -176,14 +176,12 @@ export async function changeLineInCart(
     actions: updateActions,
   };
 
-  const answer = await fetch(`${urlProject}/me/carts/${existCart.thing?.id}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${userToken.thing?.access_token}`,
-    },
-    body: JSON.stringify(body),
-  })
+  const options = await requestOptions(userToken, body);
+
+  const answer = await fetch(
+    `${urlProject}/me/carts/${existCart.thing?.id}`,
+    options
+  )
     .then((response) => response.json())
     .then((response) => {
       if (response.errors) {

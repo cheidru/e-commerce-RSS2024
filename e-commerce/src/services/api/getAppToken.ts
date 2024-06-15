@@ -55,11 +55,11 @@ export async function createAccessToken() {
 }
 
 export async function getAppToken(dispatch?: AppDispatch) {
-  const currenDateValue = new Date().getTime() / 1000;
+  const currentDateValue = new Date().getTime() / 1000;
   const appTokenStore = store.getState().appSlice.authToken;
   if (
     appTokenStore.access_token &&
-    appTokenStore.expires_in > currenDateValue
+    appTokenStore.expires_in > currentDateValue
   ) {
     const result: AppMessage<AppToken> = {
       isError: false,

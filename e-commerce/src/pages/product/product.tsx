@@ -4,6 +4,7 @@ import { getProduct } from '../../services/api/getProducts';
 import { IProductPage } from '../../types/Product/InterfaceProduct';
 import { ProductCardProps } from '../../components/productCard/productCard';
 import { formattedDataForOneProduct } from '../catalog/formattedData';
+// import {  addLineToCart,  removeLineFromCart,  checkProductsInCart,} from '../../services/api/cart';
 import Spinner from '../../components/spinner/Spinner';
 import ProductSlider from '../../components/slider/slider';
 
@@ -20,6 +21,7 @@ function Product() {
     size: '',
     color: '',
     model: '',
+    inBasket: false,
   };
 
   const [productProps, setProductProps] =
