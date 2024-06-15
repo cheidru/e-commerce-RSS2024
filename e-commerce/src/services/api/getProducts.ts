@@ -3,12 +3,14 @@ import {
   IFilter,
   IProductResponseCategory,
   IProductResponse,
+  IProductPage,
 } from '../../types/Product/InterfaceProduct';
 import { ICategoriesResponse } from '../../types/Product/InterfaceCategories';
 import {
   converterDigit,
   formattedDataForFilter,
 } from '../../pages/catalog/formattedData';
+import { checkProductInCartById } from './cart';
 
 const urlProject = `${import.meta.env.VITE_CTP_API_URL}/${import.meta.env.VITE_CTP_PROJECT_KEY}`;
 const urlProductSearch = `${urlProject}/product-projections/search?`;
@@ -32,10 +34,13 @@ export async function getProduct(id: string) {
   const options = await requestOptions();
   const url = `${urlProject}/products/${id}`;
 
-  const answer = await fetch(url, options);
-  const result = await answer.json();
+  const oneProductData: IProductPage = await fetch(url, options).then(
+    (response) => response.json()
+  );
+  const getLineId: string = checkProductInCartById(id);
+  const checkInBasket: boolean = getLineId !== '';
 
-  return result;
+  return { oneProductData, checkInBasket, getLineId };
 }
 
 export async function getCategories(): Promise<ICategoriesResponse> {
@@ -55,14 +60,12 @@ export async function getProductsSorted(
 ): Promise<IProductResponseCategory> {
   const options = await requestOptions();
 
-  const sortFieldGet = sortFieldKey;
-
   const url = new URL(urlProductSearch);
   const filterCategory = categoryId
     ? `categories.id:"${categoryId}"`
     : `categories:exists`;
   url.searchParams.append('filter', filterCategory);
-  url.searchParams.append('sort', sortFieldGet);
+  url.searchParams.append('sort', sortFieldKey);
   url.searchParams.append('priceCurrency', 'USD');
   url.searchParams.append('limit', limitProduct);
   url.searchParams.append('offset', `${offset}`);

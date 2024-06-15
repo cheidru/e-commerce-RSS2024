@@ -1,10 +1,10 @@
 import './product.scss';
 import { useEffect, useState } from 'react';
 import { getProduct } from '../../services/api/getProducts';
-import { IProductPage } from '../../types/Product/InterfaceProduct';
 import { ProductCardProps } from '../../components/productCard/productCard';
 import { formattedDataForOneProduct } from '../catalog/formattedData';
-// import {  addLineToCart,  removeLineFromCart,  checkProductsInCart,} from '../../services/api/cart';
+import { addLineToCart, removeLineFromCart } from '../../services/api/cart';
+import { useAppDispatch } from '../../redux/hooks';
 import Spinner from '../../components/spinner/Spinner';
 import ProductSlider from '../../components/slider/slider';
 
@@ -24,10 +24,14 @@ function Product() {
     inBasket: false,
   };
 
+  const dispatch = useAppDispatch();
+
   const [productProps, setProductProps] =
     useState<ProductCardProps>(productData);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [inBasket, setInBasket] = useState<boolean>(false);
+  const [lineId, setLineId] = useState<string>('');
 
   useEffect(() => {
     const startLocation = window.location.href;
@@ -35,9 +39,14 @@ function Product() {
     const idProduct: string = cutLink[cutLink.length - 1];
     const productInfo = async () => {
       try {
-        const oneProduct: IProductPage = await getProduct(idProduct);
-        const oneProductProps: ProductCardProps =
-          formattedDataForOneProduct(oneProduct);
+        const { oneProductData, checkInBasket, getLineId } =
+          await getProduct(idProduct);
+        setInBasket(checkInBasket);
+        setLineId(getLineId);
+        const oneProductProps: ProductCardProps = formattedDataForOneProduct(
+          oneProductData,
+          inBasket
+        );
         setProductProps(oneProductProps);
       } catch {
         setError('Failed to fetch products. Please try again later.');
@@ -46,7 +55,20 @@ function Product() {
       }
     };
     productInfo();
-  }, []);
+  }, [inBasket]);
+
+  const handleBtnAddToCart = async (productId: string) => {
+    const answer = await addLineToCart(dispatch, productId);
+    if (!answer.isError) {
+      setInBasket(true);
+    }
+  };
+  const handleBtnRemoveToCart = async () => {
+    const answer = await removeLineFromCart(dispatch, lineId);
+    if (!answer.isError) {
+      setInBasket(false);
+    }
+  };
 
   if (loading) {
     return <Spinner />;
@@ -75,7 +97,7 @@ function Product() {
           </div>
           <div className="product__info-price">
             <span>
-              {' '}
+              {/* {' '} */}
               <b>Price: </b>
               <b>
                 <em>
@@ -90,6 +112,30 @@ function Product() {
                 {productProps.oldPrice}
               </span>
             )}
+          </div>
+          <div className="product-addCart-btn">
+            <button
+              type="button"
+              className="product-addCart-btn"
+              disabled={inBasket}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBtnAddToCart(productProps.id);
+              }}
+            >
+              Add to cart
+            </button>
+            <button
+              type="button"
+              className="product-removeCart-btn"
+              disabled={!inBasket}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBtnRemoveToCart();
+              }}
+            >
+              Remove in the basket
+            </button>
           </div>
           {productProps.size && (
             <div className="label-in-stock">
@@ -116,3 +162,20 @@ function Product() {
 }
 
 export default Product;
+// {!productInBasket ? (
+//   <button
+//     type="button"
+//     className="basketAdd-btn"
+//     onClick={(e) => {
+//       e.stopPropagation();
+//       // addLineToCart(dispatch, id);
+//       handleToBasketClick(id);
+//     }}
+//   >
+//     Add to Cart
+//   </button>
+// ) : (
+//   <button type="submit" className="basketIn-btn" disabled>
+//     In the basket
+//   </button>
+// )}

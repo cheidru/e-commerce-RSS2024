@@ -266,4 +266,19 @@ export function checkProductsInCart(products: ProductCardProps[]) {
   return newProducts;
 }
 
+export function checkProductInCartById(productId: string) {
+  const userCart = store.getState().cartSlice.cart;
+
+  const findProduct = userCart.lineItems.find((elem) => {
+    if (elem.productId === productId) {
+      return true;
+    }
+    return false;
+  });
+  if (findProduct) {
+    return findProduct.id;
+  }
+  return '';
+}
+
 export default getCart;

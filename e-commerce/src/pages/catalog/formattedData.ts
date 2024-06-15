@@ -98,7 +98,10 @@ export function formattedDataForCardInCategory(
   return productsAllGet;
 }
 
-export function formattedDataForOneProduct(data: IProductPage) {
+export function formattedDataForOneProduct(
+  data: IProductPage,
+  inBasket: boolean
+) {
   const imageUrl: string[] = [];
   data.masterData.staged.masterVariant.images.forEach((url: Image) => {
     imageUrl.push(url.url);
@@ -150,6 +153,7 @@ export function formattedDataForOneProduct(data: IProductPage) {
     size,
     color,
     model,
+    inBasket,
   };
   return propsProductProps;
 }
