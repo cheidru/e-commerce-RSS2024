@@ -1,12 +1,9 @@
-import './about.scss';
 import RsschoolLogo from '../../assets/img/icons/rs_school_js.svg';
 import Discord from '../../assets/img/images/discord-channel.jpg';
 import Trello from '../../assets/img/images/trello.jpg';
 import asyncMember from './memberData';
 import Avatar from './member';
 import ScreenShot from './screenShot';
-
-// import WeWorking from '../../components/stubs/weworking';
 
 function About() {
   return (
@@ -47,7 +44,7 @@ function About() {
           <ScreenShot screen={Trello} />
           <p>
             We selected Trello as a tool for distribution of sprint tasks
-            between the team members and for tracking progtress in tack
+            between the team members and for tracking progress in task
             completion.
           </p>
         </div>
