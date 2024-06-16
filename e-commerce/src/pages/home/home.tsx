@@ -10,6 +10,7 @@ function Home() {
   return (
     <>
       <h1>Home</h1>
+      <div>asinc5discount asinc7lucky</div>
       <main className="main container">
         {/* <section className="slider__section">
         <div className="wrapper">

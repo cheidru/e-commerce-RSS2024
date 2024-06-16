@@ -18,6 +18,13 @@ export type DiscountOnTotalPrice = {
   }[];
 };
 
+export type DiscountedPrice = {
+  value: {
+    centAmount: number;
+    currencyCode: string;
+  };
+};
+
 export type DiscountCode = {
   discountCode: {
     typeId: string;
@@ -56,6 +63,7 @@ export type LineItem = {
   price: Price;
   quantity: number;
   totalPrice: TotalPrice;
+  discountedPrice: DiscountedPrice;
   discountedPricePerQuantity: number;
 };
 

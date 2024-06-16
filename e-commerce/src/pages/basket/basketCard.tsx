@@ -11,10 +11,12 @@ export type BasketCardProps = {
   imageUrl: string[];
   inStock?: boolean;
   onSale: boolean;
+  discounted: boolean;
   hasGift?: boolean;
   title: string;
   newPrice: string;
   oldPrice: string;
+  salePrice: string;
   currency: string;
   quantity: number;
   fullPrice: string;
@@ -30,10 +32,12 @@ export function BasketCard({
   imageUrl,
   inStock = false,
   onSale,
+  discounted,
   hasGift = false,
   title,
   newPrice,
   oldPrice,
+  salePrice,
   currency,
   quantity,
   fullPrice,
@@ -111,10 +115,10 @@ export function BasketCard({
         </div>
         <div className="basket-price-sum">
           Full price: {fullPrice}
-          {onSale && (
+          {(onSale || discounted) && (
             <div className="basket-price-full-old">
               {currency}{' '}
-              {(parseFloat(oldPrice) * quantity).toLocaleString('en-US', {
+              {(parseFloat(salePrice) * quantity).toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}

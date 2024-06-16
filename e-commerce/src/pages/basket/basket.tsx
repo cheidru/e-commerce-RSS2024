@@ -8,7 +8,7 @@ import { BasketCard } from './basketCard';
 import {
   clearCart,
   addDiscountCode,
-  delDiscountCode,
+  clearDiscountCode,
 } from '../../services/api/cart';
 import { AppMessage } from '../../services/api/getAppToken';
 import { findDiscountCodes } from '../../services/api/discounts';
@@ -32,11 +32,13 @@ function Basket() {
       id: product.productId,
       imageUrl: product.variant.images.map((img) => img.url),
       onSale: !!product.price.discounted,
+      discounted: !!product.discountedPrice,
       title: product.name.en,
       newPrice: product.price.discounted
         ? `${toFixedFormat(product.price.discounted.value.centAmount / 100, 2)}`
         : `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
       oldPrice: `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
+      salePrice: `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
       currency: product.price.value.currencyCode,
       quantity: product.quantity,
       fullPrice: `${product.totalPrice.currencyCode} ${toFixedFormat(product.totalPrice.centAmount / 100, 2)}`,
@@ -46,6 +48,7 @@ function Basket() {
       model: product.variant.attributes.find((attr) => attr.name === 'model')
         ?.value,
     };
+    if (product.discountedPrice) card.salePrice = card.newPrice;
     return card;
   });
   const cartDiscountCodes = findDiscountCodes(cart.discountCodes);
@@ -81,12 +84,12 @@ function Basket() {
   }
 
   async function clickClearCart() {
-    let result = await delDiscountCode(dispatch);
+    let result = await clearDiscountCode(dispatch);
     result = await clearCart(dispatch);
     showToast(result);
   }
 
-  const [discountCode, setDiscountCode] = useState('asinc4cart');
+  const [discountCode, setDiscountCode] = useState('');
 
   const handleChangeDiscountCode = (event: ChangeEvent<HTMLInputElement>) => {
     setDiscountCode(event.target.value);
@@ -95,14 +98,14 @@ function Basket() {
     setDiscountCode('');
   };
   async function handleAddDiscountCode() {
-    // 'asinc4cart'
+    // 'asinc5discount asinc7lucky'
     const result = await addDiscountCode(dispatch, discountCode);
     if (!result.isError) setDiscountCode('');
     showToast(result);
   }
 
   async function clickDelDiscountCode() {
-    const result = await delDiscountCode(dispatch);
+    const result = await clearDiscountCode(dispatch);
     showToast(result);
   }
 
