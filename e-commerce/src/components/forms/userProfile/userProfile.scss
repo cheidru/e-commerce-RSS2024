@@ -142,6 +142,29 @@
   }
 }
 
+.input-wrapper-line {
+  flex-wrap: wrap;
+}
+.registration-address {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  @media (max-width: 800px) {
+    justify-content: center;
+  }
+}
+
+.input-wrapper-line-edit-address {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  position: relative;
+  flex-wrap: wrap;
+}
 // .address-list-table-body {
 
 // }

@@ -103,7 +103,7 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
         <legend>Address</legend>
       </div>
       <form className="form__profile form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="input-wrapper-line">
+        <div className="input-wrapper-line-edit-address">
           <CheckBox
             id="addressForShipping"
             title="Use as shipping"
@@ -115,7 +115,7 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
             registerObject={register('address.shippingDefault')}
           />
         </div>
-        <div className="input-wrapper-line">
+        <div className="input-wrapper-line-edit-address">
           <CheckBox
             id="addressForBilling"
             title="Use as billing"
@@ -128,7 +128,7 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
           />
         </div>
 
-        <div className="input-wrapper-line">
+        <div className="input-wrapper-line-edit-address">
           <div className="registration-address">
             <Input
               id="streetName"
