@@ -20,7 +20,7 @@ describe('render', () => {
       </Provider>
     );
 
-    expect(screen.queryByText('Registration')).toBeInTheDocument();
+    expect(screen.queryByText('Catalog')).toBeInTheDocument();
   });
 });
 
@@ -35,6 +35,6 @@ describe('App component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Our phones')).toBeInTheDocument();
+    expect(screen.getByText('About Us')).toBeInTheDocument();
   });
 });

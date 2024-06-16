@@ -23,10 +23,7 @@ function Navigation() {
         <li className="navigation__list-item">
           <NavLink to="/about">About Us</NavLink>
         </li>
-        <li className="navigation__list-item">
-          <NavLink to="/basket">Basket</NavLink>
-        </li>
-        <li className="navigation__list-item">
+        {/* <li className="navigation__list-item">
           <NavLink to="/profile" className={!isUserLogged ? 'none' : 'red'}>
             Profile
           </NavLink>
@@ -40,7 +37,7 @@ function Navigation() {
           <NavLink to="/login" className={isUserLogged ? 'none' : 'red'}>
             Login
           </NavLink>
-        </li>
+        </li> */}
         <li className="navigation__list-item">
           <Link
             to="/"
