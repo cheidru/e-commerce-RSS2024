@@ -20,7 +20,7 @@ describe('render', () => {
       </Provider>
     );
 
-    expect(screen.queryByText('Catalog')).toBeInTheDocument();
+    expect(screen.queryByAltText('logo')).toBeInTheDocument();
   });
 });
 
@@ -35,6 +35,6 @@ describe('App component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('About Us')).toBeInTheDocument();
+    expect(screen.queryByAltText('logoFooter')).toBeInTheDocument();
   });
 });

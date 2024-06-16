@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-/* SVG */
 
+/* SVG */
 import { FaRegUser } from 'react-icons/fa6';
 import { LuShoppingCart } from 'react-icons/lu';
 import Logo from '../../assets/img/icons/Logo-header.svg';
@@ -18,8 +18,10 @@ function Header() {
           <Link to="/">
             <img className="header__bottom-logo" src={Logo} alt="logo" />
           </Link>
-          <Navigation />
         </div>
+
+        <Navigation />
+
         <div
           className="header__bottom-item"
           style={{

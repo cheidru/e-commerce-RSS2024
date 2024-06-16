@@ -8,9 +8,11 @@ import Footer from '../components/footer/footer';
 import * as Pages from '../pages/pages';
 /* Style */
 import './app.scss';
+// Redux
 import { useAppDispatch } from '../redux/hooks';
-// import { setAppToken } from '../redux/store/appSlice';
 import { logout } from '../redux/store/userSlice';
+// import { setAppToken } from '../redux/store/appSlice';
+// Services
 import { getAppToken } from '../services/api/getAppToken';
 import { getDiscountsCodes } from '../services/api/discounts';
 import { getAnonymousToken } from '../services/api/getAnonymousToken';
