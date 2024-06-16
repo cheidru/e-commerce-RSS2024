@@ -27,6 +27,10 @@ label[for='priceMax'] {
 details {
   margin-top: 30px;
   width: 100%;
+  border-radius: 5px;
+  width: 180px;
+  align-self: self-start;
+  padding-left: 10px;
 }
 summary {
   padding-top: 30px;
@@ -35,19 +39,14 @@ summary {
   text-align: left;
   padding: 5px 5px 5px 20px;
   border-radius: 5px;
-  width: 200px;
+  width: 180px;
 }
 
 details[open] summary {
   border-radius: 5px 5px 0 0;
-  width: 200px;
+  width: 180px;
 }
 
-details {
-  border-radius: 5px;
-  margin-left: 10px;
-  width: 200px;
-}
 .filter-fieldset {
   height: 250px;
   overflow-y: scroll;
@@ -60,7 +59,7 @@ details {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow-x: hidden;
-    width: 190px;
+    width: 180px;
   }
 }
 .filter-box-btn {

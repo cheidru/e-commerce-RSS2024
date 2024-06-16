@@ -69,12 +69,12 @@ function Navigation() {
               <li className="navigation__list-item-burger">
                 <NavLink to="/about">About Us</NavLink>
               </li>
-              <li className="navigation__list-item-burger">
-                <Link
-                  to="/"
-                  className={!isUserLogged ? 'none' : 'red'}
-                  onClick={userLogout}
-                >
+              <li
+                className={
+                  isUserLogged ? 'navigation__list-item-burger' : 'none'
+                }
+              >
+                <Link to="/" onClick={userLogout}>
                   LogOut
                 </Link>
               </li>

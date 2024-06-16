@@ -117,25 +117,3 @@ button:disabled {
   align-items: center;
   margin: 0 auto;
 }
-
-@media (max-width: 700px) {
-  //   body {
-  //   @include font($size: 1.6rem, $height: 150%, $weight: 400);
-  //   }
-  //   h1{
-  //     @include font($size: 4.2rem, $height: 115%, $weight: 600, $style: normal);
-  //     color: $beige-light;
-  //   }
-  //   h2{
-  //     @include font($size: 3.2rem, $height:125%, $weight: 600, $style: normal);
-  //   }
-  // .container{
-  //   padding: 0 16px;
-  // }
-}
-
-/* fix content */
-// .free-page {
-//   text-align: center;
-//   line-height: 60vh;
-// }

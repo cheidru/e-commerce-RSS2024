@@ -1,9 +1,10 @@
 .category__card {
-  width: 600px;
+  min-width: 360px;
   height: 470px;
   position: relative;
   &-bg {
-    min-width: 600px;
+    min-width: 360px;
+    width: 600px;
   }
   &__wrapper {
     position: absolute;

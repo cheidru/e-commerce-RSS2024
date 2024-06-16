@@ -10,6 +10,7 @@
     display: flex;
     justify-content: center;
     gap: 82px;
+    flex-wrap: wrap;
   }
   &__box-item {
     display: flex;
@@ -36,7 +37,9 @@
   }
   &__reason {
     display: flex;
-    gap: 30px;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   &__reason-item {
     padding: 24px;
@@ -71,10 +74,12 @@
     display: flex;
     flex-wrap: wrap;
     gap: 40px;
+    justify-content: center;
   }
 
   &-btn {
     @include btnBlue();
+    margin-bottom: 40px;
   }
 }
 .popular-products {

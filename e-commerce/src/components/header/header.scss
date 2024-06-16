@@ -1,7 +1,5 @@
 @media (max-width: 1300px) {
   .header {
-    &__bottom {
-    }
     &__bottom-item {
       gap: 20px;
     }
@@ -36,11 +34,7 @@
     height: auto;
     display: flex;
     justify-content: space-between;
-    line-height: 82px;
-    flex-wrap: wrap;
-    @media (max-width: 700px) {
-      justify-content: left;
-    }
+    //line-height: 82px;
   }
   &__bottom-item {
     display: flex;
@@ -48,6 +42,13 @@
     gap: 100px;
     flex-wrap: wrap;
     align-items: center;
+    & > a {
+      z-index: 1101;
+    }
+  }
+  &__bottom-hello {
+    color: $Grey;
+    white-space: nowrap;
   }
   &__bottom-item:last-child {
     display: flex;
@@ -55,7 +56,7 @@
     justify-content: space-between;
     gap: 30px;
     stroke: $Black;
-    padding-right: 80px;
+    justify-content: flex-end;
   }
   &__bottom-tel {
     @include font($size: 1.8rem, $height: 82px, $weight: 300, $style: normal);
@@ -81,6 +82,18 @@
     max-width: none;
   }
 }
+.hello {
+  color: $Grey;
+  white-space: nowrap;
+  @media (max-width: 450px) {
+    white-space: wrap;
+    font-size: 1.2rem;
+    min-width: 310px;
+  }
+}
+.header__bottom-item.hello .hello {
+  line-height: 3rem;
+}
 .icon-header {
   color: $Grey;
   width: 3rem;
@@ -101,11 +114,16 @@
 }
 
 @media (max-width: 770px) {
+  .header__bottom-item:last-child {
+    padding-right: 80px;
+    height: 82px;
+  }
   .navigation {
     display: none;
   }
   #outer-container {
     display: block;
+    width: 100%;
   }
   /* Position and sizing of burger button */
   .bm-burger-button {
@@ -113,12 +131,12 @@
     width: 36px;
     height: 30px;
     right: 20px;
-    top: 36px;
+    top: 20px;
   }
 
   /* Color/shape of burger icon bars */
   .bm-burger-bars {
-    background: #373a47;
+    background: hwb(229 22% 72%);
   }
 
   /* Color/shape of burger icon bars on hover*/
@@ -134,7 +152,7 @@
 
   /* Color/shape of close button cross */
   .bm-cross {
-    background: #bdc3c7;
+    background: $Grey;
   }
 
   /*
@@ -144,11 +162,12 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .bm-menu-wrap {
     position: fixed;
     height: 100%;
+    max-height: 400px;
   }
 
   /* General sidebar styles */
   .bm-menu {
-    background: #373a47;
+    background: $White;
     padding: 2.5em 1.5em 0;
     font-size: 1.15em;
   }
@@ -160,8 +179,18 @@ Note: Beware of modifying this element as it can break the animations - you shou
 
   /* Wrapper for item list */
   .bm-item-list {
-    color: #b8b7ad;
+    color: $Grey;
     padding: 0.8em;
+  }
+  .navigation__list-burger {
+    margin-bottom: 30px;
+  }
+  .navigation__list-item-burger > a {
+    display: block;
+    padding: 10px;
+  }
+  .navigation__list-item-burger:hover {
+    color: $Blue;
   }
 
   /* Individual item */
@@ -172,5 +201,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
   /* Styling of overlay */
   .bm-overlay {
     background: rgba(0, 0, 0, 0.3);
+    min-width: 100%;
+    left: 0;
   }
 }

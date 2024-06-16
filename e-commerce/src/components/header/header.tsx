@@ -22,13 +22,7 @@ function Header() {
 
         <Navigation />
 
-        <div
-          className="header__bottom-item"
-          style={{
-            fontSize: '2rem',
-            color: 'green',
-          }}
-        >
+        <div className="header__bottom-item hello">
           {userLoggedEmail}
           <Link to="/basket">
             <LuShoppingCart className="icon-header" />

@@ -15,7 +15,7 @@
   }
 }
 .categories {
-  min-width: 200px;
+  min-width: 220px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -33,9 +33,9 @@
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  @media (max-width: 680px) {
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+  @media (max-width: 770px) {
+    flex-direction: column;
+    align-items: center;
   }
 }
 .catalog-product {
