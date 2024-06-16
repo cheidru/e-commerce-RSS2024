@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useAppDispatch } from '../../../redux/hooks';
 import { logout, userInitial } from '../../../redux/store/userSlice';
-import store from '../../../redux/store/store';
+// import store from '../../../redux/store/store';
 import TextField from '../elements/textField';
 import ChangePassword from '../floatForms/changePassword';
 import UserMainData from '../floatForms/userMainData';
@@ -139,18 +139,18 @@ function UserProfile(): React.ReactElement {
     });
   };
 
-  useEffect(() => {
-    const appTokenStore = store.getState().userSlice.authToken.access_token;
-    if (appTokenStore.length === 0) {
-      // the next line leads to an infinite test
-      // navigate(`/login`);
-    }
-  });
+  // useEffect(() => {
+  //   const appTokenStore = store.getState().userSlice.authToken.access_token;
+  //   if (appTokenStore.length === 0) {
+  //     // the next line leads to an infinite test
+  //     // navigate(`/login`);
+  //   }
+  // });
 
   const getUserInfo = async () => {
     const userInfo = await getCustomerInfo(dispatch);
 
-    if (!userInfo) {
+    if (userInfo.isError) {
       dispatch(logout());
       navigate(`/login`);
     } else {

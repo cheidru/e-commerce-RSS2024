@@ -8,6 +8,25 @@ export type Variant = {
   attributes: { name: string; value: string }[];
 };
 
+export type DiscountOnTotalPrice = {
+  discountedAmount: TotalPrice;
+  includedDiscounts: {
+    discount: {
+      typeId: string;
+      id: string;
+    };
+  }[];
+};
+
+export type DiscountCode = {
+  discountCode: {
+    typeId: string;
+    id: string;
+  };
+  state: string;
+  code?: string;
+};
+
 export type Price = {
   value: {
     centAmount: number;
@@ -48,6 +67,8 @@ export type Cart = {
   lineItems: LineItem[];
   cartState: string;
   totalPrice: TotalPrice;
+  discountOnTotalPrice: DiscountOnTotalPrice;
+  discountCodes: DiscountCode[];
   origin: string;
 };
 
@@ -68,6 +89,23 @@ export const cartInitial: Cart = {
     centAmount: 0,
     fractionDigits: 0,
   },
+  discountOnTotalPrice: {
+    discountedAmount: {
+      type: '',
+      currencyCode: '',
+      centAmount: 0,
+      fractionDigits: 0,
+    },
+    includedDiscounts: [
+      {
+        discount: {
+          typeId: '',
+          id: '',
+        },
+      },
+    ],
+  },
+  discountCodes: [],
   origin: '',
 };
 

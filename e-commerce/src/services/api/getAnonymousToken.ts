@@ -1,6 +1,6 @@
 import store, { AppDispatch } from '../../redux/store/store';
 import { AppMessage } from './getAppToken';
-import { AuthToken } from '../../redux/store/userSlice';
+import { AuthToken, authTokenInitial } from '../../redux/store/userSlice';
 import { setAuthToken } from '../../redux/store/anonymousSlice';
 
 export async function createAnonymousToken() {
@@ -25,6 +25,7 @@ export async function createAnonymousToken() {
         const result: AppMessage<AuthToken> = {
           isError: true,
           message: tokenNew.message,
+          thing: authTokenInitial,
         };
         return result;
       }
@@ -42,6 +43,7 @@ export async function createAnonymousToken() {
       const result: AppMessage<AuthToken> = {
         isError: true,
         message: reason.message,
+        thing: authTokenInitial,
       };
       return result;
     });
@@ -66,6 +68,7 @@ export async function getAnonymousToken(
     const result: AppMessage<AuthToken> = {
       isError: true,
       message: 'Token not found',
+      thing: authTokenInitial,
     };
     return result;
   }

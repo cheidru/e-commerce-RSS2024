@@ -12,6 +12,7 @@ import { useAppDispatch } from '../redux/hooks';
 // import { setAppToken } from '../redux/store/appSlice';
 import { logout } from '../redux/store/userSlice';
 import { getAppToken } from '../services/api/getAppToken';
+import { getDiscountsCodes } from '../services/api/discounts';
 import { getAnonymousToken } from '../services/api/getAnonymousToken';
 import { getCustomerInfo } from '../services/api/getCustomerInfo';
 import { getCart } from '../services/api/cart';
@@ -28,7 +29,8 @@ function App() {
   }
   const dispatch = useAppDispatch();
   const getInitialData = async () => {
-    getAppToken(dispatch);
+    await getAppToken(dispatch);
+    await getDiscountsCodes(dispatch);
 
     const userInfo = await getCustomerInfo(dispatch);
     if (userInfo.isError) {

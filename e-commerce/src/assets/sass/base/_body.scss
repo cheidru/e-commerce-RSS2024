@@ -86,6 +86,24 @@ button:disabled {
   display: none;
 }
 
+// Scroll bar
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: $Stroke;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $Light-grey;
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $Grey-primary; /* Slightly darker gray on hover */
+}
+
 @media (max-width: 1200px) {
   .wrapper {
     padding: 0 1vw;

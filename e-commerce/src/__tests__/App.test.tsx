@@ -20,7 +20,7 @@ describe('render', () => {
       </Provider>
     );
 
-    expect(screen.queryByText('Back call')).toBeInTheDocument();
+    expect(screen.queryByText('Registration')).toBeInTheDocument();
   });
 });
 
