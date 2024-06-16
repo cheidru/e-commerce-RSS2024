@@ -1,5 +1,5 @@
-import './product.scss';
 import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { getProduct } from '../../services/api/getProducts';
 import { ProductCardProps } from '../../components/productCard/productCard';
 import { formattedDataForOneProduct } from '../catalog/formattedData';
@@ -25,6 +25,11 @@ function Product() {
   };
 
   const dispatch = useAppDispatch();
+  const message = {
+    addItem: 'Product added to cart',
+    removeItem: 'Product removed from cart',
+    error: 'Something went wrong',
+  };
 
   const [productProps, setProductProps] =
     useState<ProductCardProps>(productData);
@@ -57,16 +62,29 @@ function Product() {
     productInfo();
   }, [inBasket]);
 
-  const handleBtnAddToCart = async (productId: string) => {
+  const showMessage = (messageShow: string) => {
+    if (messageShow === message.addItem) {
+      toast.success(messageShow);
+    } else if (messageShow === message.removeItem) {
+      toast.success(messageShow);
+    } else {
+      toast.error(message.error);
+    }
+  };
+
+  const handleBtnAddToCart = async (productId: string, messageShow: string) => {
     const answer = await addLineToCart(dispatch, productId);
     if (!answer.isError) {
       setInBasket(true);
+      showMessage(messageShow);
     }
   };
-  const handleBtnRemoveToCart = async () => {
+
+  const handleBtnRemoveToCart = async (messageShow: string) => {
     const answer = await removeLineFromCart(dispatch, lineId);
     if (!answer.isError) {
       setInBasket(false);
+      showMessage(messageShow);
     }
   };
 
@@ -113,25 +131,25 @@ function Product() {
               </span>
             )}
           </div>
-          <div className="product-addCart-btn">
+          <div className="product-btn">
             <button
               type="button"
-              className="product-addCart-btn"
+              className="basketAddItem-btn"
               disabled={inBasket}
               onClick={(e) => {
                 e.stopPropagation();
-                handleBtnAddToCart(productProps.id);
+                handleBtnAddToCart(productProps.id, message.addItem);
               }}
             >
               Add to cart
             </button>
             <button
               type="button"
-              className="product-removeCart-btn"
+              className="basketRemoveItem-btn"
               disabled={!inBasket}
               onClick={(e) => {
                 e.stopPropagation();
-                handleBtnRemoveToCart();
+                handleBtnRemoveToCart(message.removeItem);
               }}
             >
               Remove in the basket
@@ -157,25 +175,26 @@ function Product() {
           )}
         </div>
       </div>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          success: {
+            style: {
+              background: 'rgba(0, 134, 0, 0.6)',
+              color: 'white',
+            },
+          },
+          error: {
+            style: {
+              background: 'rgba(255, 0, 0, 0.5)',
+              color: 'white',
+            },
+          },
+        }}
+      />
     </section>
   );
 }
 
 export default Product;
-// {!productInBasket ? (
-//   <button
-//     type="button"
-//     className="basketAdd-btn"
-//     onClick={(e) => {
-//       e.stopPropagation();
-//       // addLineToCart(dispatch, id);
-//       handleToBasketClick(id);
-//     }}
-//   >
-//     Add to Cart
-//   </button>
-// ) : (
-//   <button type="submit" className="basketIn-btn" disabled>
-//     In the basket
-//   </button>
-// )}

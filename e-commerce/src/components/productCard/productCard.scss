@@ -130,8 +130,10 @@
   }
 }
 .basketIn-btn:disabled {
-  background: $Light-blue;
+  background: $Grey-primary;
   width: 130px;
+  height: 30px;
   cursor: auto;
-  color: $Grey;
+  color: $White;
+  border: none;
 }
