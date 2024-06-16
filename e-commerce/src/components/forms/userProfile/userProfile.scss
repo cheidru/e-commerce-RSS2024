@@ -37,6 +37,7 @@
 
 .fieldset .input-wrapper-address {
   margin: 0;
+  margin: 5px 10px;
 }
 
 .profile-fieldset {
@@ -153,6 +154,7 @@
   gap: 20px;
   @media (max-width: 800px) {
     justify-content: center;
+    gap: unset;
   }
 }
 
@@ -164,6 +166,14 @@
   margin-bottom: 10px;
   position: relative;
   flex-wrap: wrap;
+}
+.input-wrapper-address-edit {
+  margin: 5px 10px;
+  // margin-bottom: 20px;
+  height: 70px;
+  position: relative;
+  max-width: 16em;
+  line-height: 20px;
 }
 // .address-list-table-body {
 

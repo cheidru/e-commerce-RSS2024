@@ -132,7 +132,7 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
           <div className="registration-address">
             <Input
               id="streetName"
-              classNameComponent="input-wrapper-address"
+              classNameComponent="input-wrapper-address-edit"
               title="Street"
               isRequired
               className="form__profile-address input-text"
@@ -142,7 +142,7 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
 
             <Input
               id="city"
-              classNameComponent="input-wrapper-address"
+              classNameComponent="input-wrapper-address-edit"
               title="City"
               isRequired
               className="form__profile-address input-text"
@@ -152,7 +152,7 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
 
             <Country
               id="country"
-              classNameComponent="input-wrapper-address"
+              classNameComponent="input-wrapper-address-edit"
               isRequired
               className="form__profile-address input-text"
               errorMessage={errors.address?.country?.message}
@@ -167,7 +167,7 @@ export function EditAddress({ addressID, closeModal, showToast }: Props) {
 
             <Input
               id="postalCode"
-              classNameComponent="input-wrapper-address"
+              classNameComponent="input-wrapper-address-edit"
               title="POST Code"
               isRequired
               className="form__profile-address input-text"

@@ -80,11 +80,11 @@ function UserProfile(): React.ReactElement {
 
   const modalStylesMain = {
     content: {
-      top: '2%',
+      top: '90px',
       width: '80vw',
       margin: '0 auto',
       height: 'max-content',
-      maxHeight: '100vh',
+      maxHeight: '80vh',
     },
   };
 
