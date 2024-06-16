@@ -56,6 +56,12 @@
   display: flex;
   flex-direction: row;
 }
+.basket-discount-codes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 .discount-code-clear-btn {
   font-size: 1.6rem;
   font-style: normal;

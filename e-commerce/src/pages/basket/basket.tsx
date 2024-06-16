@@ -11,6 +11,7 @@ import {
   delDiscountCode,
 } from '../../services/api/cart';
 import { AppMessage } from '../../services/api/getAppToken';
+import { findDiscountCodes } from '../../services/api/discounts';
 import { Cart } from '../../redux/store/cartSlice';
 
 function Basket() {
@@ -40,6 +41,7 @@ function Basket() {
     };
     return card;
   });
+  const cartDiscountCodes = findDiscountCodes(cart.discountCodes);
 
   function showToast(result: AppMessage<Cart>) {
     if (result.isError) {
@@ -130,19 +132,7 @@ function Basket() {
               )}
             </div>
             <div className="basket-discount-code">
-              <div className="basket-discount-code-header">
-                Discount
-                <button
-                  type="button"
-                  className="discount-code-clear-btn"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    clickDelDiscountCode();
-                  }}
-                >
-                  Clear
-                </button>
-              </div>
+              <div className="basket-discount-code-header">Discount</div>
               <label htmlFor="discount-code" className="search-label">
                 <input
                   type="input"
@@ -171,6 +161,25 @@ function Basket() {
                 </button>
               </label>
             </div>
+            {cartDiscountCodes.length > 0 && (
+              <div className="basket-discount-codes">
+                {cartDiscountCodes.map((code) => (
+                  <div className="basket-discount-codes-code" key={code.code}>
+                    {code.code}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  className="discount-code-clear-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clickDelDiscountCode();
+                  }}
+                >
+                  Clear
+                </button>
+              </div>
+            )}
             <div className="catalog-products">
               <div className="catalog-product" id="catalog-product">
                 {productCards.map((product) => (

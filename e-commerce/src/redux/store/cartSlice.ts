@@ -24,6 +24,7 @@ export type DiscountCode = {
     id: string;
   };
   state: string;
+  code?: string;
 };
 
 export type Price = {
