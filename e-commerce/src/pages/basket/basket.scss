@@ -137,6 +137,7 @@
   align-content: flex-start;
   margin: 0 auto;
   cursor: pointer;
+  max-width: 200px;
   @media (min-width: 660px) {
     margin: 0;
   }
@@ -151,6 +152,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+    width: 100%;
   }
 }
 .basket-card__info-title {
@@ -190,6 +192,21 @@
   -webkit-box-orient: vertical;
 }
 .basket-price-new {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.4rem;
+  padding-right: 12px;
+  background: inherit;
+  gap: 8px;
+}
+.basket-price-sum {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   font-size: 1.8rem;
   font-style: normal;
   font-weight: 600;
@@ -217,7 +234,7 @@
   text-align: right;
 }
 .basket-card__info-quantity {
-  margin: 10px 0;
+  margin: 3px 0;
   font-weight: bold;
   overflow: hidden;
   display: flex;
@@ -276,7 +293,7 @@
   line-height: 2rem;
   padding: 10px;
 }
-.basket-catalog-button:hover {
+.basket-catalog-button:hover:not(:disabled) {
   scale: 1.1;
 }
 
@@ -294,3 +311,7 @@
 .basket-catalog-empty-link-text:hover {
   text-shadow: 0 0 12px #cc244e;
 }
+
+// button[disabled='disabled']:hover {
+//   scale: 1;
+// }

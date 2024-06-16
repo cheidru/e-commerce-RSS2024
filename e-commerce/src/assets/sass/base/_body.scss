@@ -80,7 +80,7 @@ h5 {
 button[disabled='disabled'],
 button:disabled {
   background-color: $Grey-dark-pagination;
-  cursor: none;
+  cursor: unset;
 }
 .none {
   display: none;

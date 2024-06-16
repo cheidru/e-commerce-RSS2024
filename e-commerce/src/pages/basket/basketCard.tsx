@@ -89,6 +89,7 @@ export function BasketCard({
             <button
               type="button"
               className="basket-card-btn basket-catalog-button"
+              disabled={quantity < 2}
               onClick={(e) => {
                 e.stopPropagation();
                 substLineFromCart(dispatch, lineId);
@@ -108,11 +109,15 @@ export function BasketCard({
             </button>
           </div>
         </div>
-        <div className="basket-price-new">
+        <div className="basket-price-sum">
           Full price: {fullPrice}
           {onSale && (
             <div className="basket-price-full-old">
-              {currency} {(parseFloat(oldPrice) * quantity).toFixed(2)}
+              {currency}{' '}
+              {(parseFloat(oldPrice) * quantity).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </div>
           )}
         </div>

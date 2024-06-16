@@ -14,6 +14,13 @@ import { AppMessage } from '../../services/api/getAppToken';
 import { findDiscountCodes } from '../../services/api/discounts';
 import { Cart } from '../../redux/store/cartSlice';
 
+export function toFixedFormat(num: number, fractionDigits: number) {
+  return num.toLocaleString('en-US', {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  });
+}
+
 function Basket() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -27,12 +34,12 @@ function Basket() {
       onSale: !!product.price.discounted,
       title: product.name.en,
       newPrice: product.price.discounted
-        ? `${product.price.discounted.value.centAmount / 100}`
-        : `${product.price.value.centAmount / 100}`,
-      oldPrice: `${product.price.value.centAmount / 100}`,
+        ? `${toFixedFormat(product.price.discounted.value.centAmount / 100, 2)}`
+        : `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
+      oldPrice: `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
       currency: product.price.value.currencyCode,
       quantity: product.quantity,
-      fullPrice: `${product.totalPrice.currencyCode} ${product.totalPrice.centAmount / 100}`,
+      fullPrice: `${product.totalPrice.currencyCode} ${toFixedFormat(product.totalPrice.centAmount / 100, 2)}`,
       // size: product.variant.attributes.find((attr) => attr.name === 'size')?.value,
       color: product.variant.attributes.find((attr) => attr.name === 'color')
         ?.value,
@@ -195,6 +202,11 @@ function Basket() {
         ) : (
           <div className="basket-catalog-empty">
             <div className="basket-catalog-empty-text">Basket is empty</div>
+            <div>
+              {' '}
+              Looks like you haven&apos;t added anything to your cart yet. Start
+              shopping to fill it up!
+            </div>
             <NavLink className="basket-catalog-empty-link" to="/catalog">
               <span className="basket-catalog-clear-button basket-catalog-button basket-catalog-empty-link-text">
                 Go to Catalog
