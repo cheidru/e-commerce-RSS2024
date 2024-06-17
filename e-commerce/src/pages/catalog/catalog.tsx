@@ -32,14 +32,17 @@ import FilterCatalog, {
 import Spinner from '../../components/spinner/Spinner';
 import Pagination from '../../components/pagination/pagination';
 // Basket
-import { checkProductsInCart } from '../../services/api/cart';
+import { checkProductsInCart, getCart } from '../../services/api/cart';
 import { AppMessage } from '../../services/api/getAppToken';
 // import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch } from '../../redux/hooks';
 
 function Catalog() {
   const limit = 8;
   const categoriesAll: CategoryProps[] = [];
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
 
   // Products
   const [productCardProps, setProductCardProps] = useState<ProductCardProps[]>(
@@ -151,6 +154,7 @@ function Catalog() {
           await getProductsSorted(categoryId, offset, sortKey);
         getCountPagination(productsAllGet.total);
         const productsProps = formattedDataForCardInCategory(productsAllGet);
+        await getCart(dispatch);
         setProductCardProps(checkProductsInCart(productsProps));
       } catch {
         setError('Failed to fetch products. Please try later.');
@@ -169,7 +173,7 @@ function Catalog() {
       }
     }
     categories();
-  }, [categoryId, offset, sortKey, searchQuery, filterSetting]);
+  }, [categoryId, offset, sortKey, searchQuery, filterSetting, dispatch]);
 
   useEffect(() => {
     const searchProductsQuery = async () => {

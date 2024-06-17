@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { getProduct } from '../../services/api/getProducts';
@@ -31,6 +32,18 @@ function Product() {
     error: 'Something went wrong',
   };
 
+  const showMessage = (messageShow: string) => {
+    if (messageShow === message.addItem) {
+      toast.success(messageShow);
+    } else if (messageShow === message.removeItem) {
+      toast.success(messageShow);
+    } else {
+      toast.error(message.error);
+    }
+  };
+
+  const navigate = useNavigate();
+
   const [productProps, setProductProps] =
     useState<ProductCardProps>(productData);
   const [error, setError] = useState<string | null>(null);
@@ -62,21 +75,13 @@ function Product() {
     productInfo();
   }, [inBasket]);
 
-  const showMessage = (messageShow: string) => {
-    if (messageShow === message.addItem) {
-      toast.success(messageShow);
-    } else if (messageShow === message.removeItem) {
-      toast.success(messageShow);
-    } else {
-      toast.error(message.error);
-    }
-  };
-
   const handleBtnAddToCart = async (productId: string, messageShow: string) => {
     const answer = await addLineToCart(dispatch, productId);
     if (!answer.isError) {
       setInBasket(true);
       showMessage(messageShow);
+    } else {
+      showMessage(message.error);
     }
   };
 
@@ -85,6 +90,8 @@ function Product() {
     if (!answer.isError) {
       setInBasket(false);
       showMessage(messageShow);
+    } else {
+      showMessage(message.error);
     }
   };
 
@@ -104,6 +111,13 @@ function Product() {
   return (
     <section className="product">
       <h2 className="product free-page">Product</h2>
+      <button
+        type="button"
+        className="form__call-btn"
+        onClick={() => navigate(-1)}
+      >
+        Go Back
+      </button>
       <div className="product-wrapper">
         <div className="product__img-box">
           <ProductSlider images={productImages} />

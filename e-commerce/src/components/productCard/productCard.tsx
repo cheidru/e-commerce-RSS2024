@@ -21,7 +21,7 @@ export type ProductCardProps = {
   color?: string;
   model?: string;
   inBasket?: boolean;
-  toasted: (result: AppMessage<Cart>) => void;
+  toasted?: (result: AppMessage<Cart>) => void;
 };
 
 export function ProductCard({
@@ -48,7 +48,7 @@ export function ProductCard({
   const handleToBasketClick = async (productId: string) => {
     setProductInBasket(true);
     const answer = await addLineToCart(dispatch, productId);
-    toasted(answer);
+    if (toasted) toasted(answer);
     if (answer.isError) setProductInBasket(false);
   };
   return (
