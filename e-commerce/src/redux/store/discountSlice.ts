@@ -8,6 +8,9 @@ export type DiscountCode = {
   name: {
     en: string;
   };
+  description: {
+    en: string;
+  };
   cartDiscounts: [
     {
       typeId: string;

@@ -5,12 +5,33 @@ import CallForm from '../../components/forms/callForm/callForm';
 /* SVG */
 import Reason from '../../assets/img/icons/product-return.svg';
 import Reason1 from '../../assets/img/icons/evaluate.svg';
+// import {getDiscountsCodes} from '../../services/api/discounts'
+import { useAppSelector } from '../../redux/hooks';
+// import store from '../../redux/store/store';
 
 function Home() {
+  const discounts = useAppSelector(
+    (state) => state.discountSlice.discountCodes
+  );
+
   return (
     <>
       <h1>Home</h1>
-      <div>asinc5discount asinc7lucky</div>
+      {/* asinc5discount asinc7lucky */}
+      {discounts.length > 0 && (
+        <div className="home-discounts number">
+          <div className="home-discounts-title">Promo Codes:</div>
+          {discounts.map((code) => (
+            <div className="home-discounts-code" key={code.code}>
+              <span className="home-discounts-code-code">{code.code}</span>:
+              <span className="home-discounts-code-description">
+                {code.description.en}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* <section className="slider__section">
         <div className="wrapper">
           <Slider />

@@ -105,3 +105,28 @@
     text-align: center;
   }
 }
+.home-discounts {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  &-title {
+    font-weight: 800;
+    font-size: 2rem;
+  }
+  &-code {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    &-code {
+      text-align: end;
+      margin-right: 8px;
+      color: crimson;
+      font-weight: 600;
+    }
+    &-description {
+      text-align: start;
+      margin-left: 8px;
+    }
+  }
+}
