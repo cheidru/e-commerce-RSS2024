@@ -168,7 +168,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
   /* General sidebar styles */
   .bm-menu {
     background: $White;
-    padding: 2.5em 1.5em 0;
+    padding: 5em 1.5em 0;
     font-size: 1.15em;
   }
 
@@ -181,13 +181,15 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .bm-item-list {
     color: $Grey;
     padding: 0.8em;
+    //margin-top: 30px;
   }
   .navigation__list-burger {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
   .navigation__list-item-burger > a {
     display: block;
     padding: 10px;
+    cursor: pointer;
   }
   .navigation__list-item-burger:hover {
     color: $Blue;
