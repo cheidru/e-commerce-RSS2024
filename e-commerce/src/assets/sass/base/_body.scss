@@ -85,6 +85,9 @@ button:disabled {
 .none {
   display: none;
 }
+.no-scroll {
+  overflow: hidden;
+}
 
 // Scroll bar
 ::-webkit-scrollbar {

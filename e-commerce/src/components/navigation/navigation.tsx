@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { slide as Menu } from 'react-burger-menu';
+import { slide as Menu, State } from 'react-burger-menu';
 
 /* Redux */
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
@@ -13,6 +14,20 @@ function Navigation() {
   const userLogout = () => {
     logout(dispatch);
   };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+  }, [isMenuOpen]);
+
+  const handleStateChange = (state: State) => {
+    setIsMenuOpen(state.isOpen);
+  };
+
   return (
     <>
       <nav className="navigation">
@@ -42,6 +57,8 @@ function Navigation() {
         <Menu
           pageWrapId="page-wrap burger-menu"
           outerContainerId="outer-container"
+          isOpen={isMenuOpen}
+          onStateChange={handleStateChange}
           right
         >
           <nav className="navigation-burger">
