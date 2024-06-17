@@ -4,6 +4,7 @@ import { addLineToCart } from '../../services/api/cart';
 import { AppMessage } from '../../services/api/getAppToken';
 import { useAppDispatch } from '../../redux/hooks';
 import { Cart } from '../../redux/store/cartSlice';
+import SpinnerOnProductCart from '../spinnerProductCard/SpinnerOnProductCard';
 
 export type ProductCardProps = {
   imageUrl: string[];
@@ -45,12 +46,17 @@ export function ProductCard({
   const dispatch = useAppDispatch();
 
   const [productInBasket, setProductInBasket] = useState(inBasket);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleToBasketClick = async (productId: string) => {
+    setIsLoading(true);
     setProductInBasket(true);
     const answer = await addLineToCart(dispatch, productId);
     if (toasted) toasted(answer);
     if (answer.isError) setProductInBasket(false);
+    setIsLoading(false);
   };
+
   return (
     <div className="card" data-id={id} onClick={onClick} aria-hidden="true">
       <div
@@ -77,7 +83,8 @@ export function ProductCard({
           </span>
         )}
       </div>
-      {!productInBasket ? (
+
+      {!productInBasket && !isLoading ? (
         <button
           type="button"
           className="basketAdd-btn"
@@ -91,6 +98,7 @@ export function ProductCard({
         </button>
       ) : (
         <button type="submit" className="basketIn-btn" disabled>
+          {isLoading && <SpinnerOnProductCart />}
           In the basket
         </button>
       )}
