@@ -1,6 +1,7 @@
 import './catalog.scss';
 import { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import {
   getCategories,
   getProductsSorted,
@@ -288,6 +289,7 @@ function Catalog() {
           </div>
         </div>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </section>
   );
 }

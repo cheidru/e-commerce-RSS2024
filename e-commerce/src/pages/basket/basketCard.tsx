@@ -71,7 +71,7 @@ export function BasketCard({
         onClick={onClick}
         aria-hidden="true"
       />
-      <div className="card__info">
+      <div className="basket-card__info">
         <div className="basket-card__info-title">
           <div className="basket-card__info-title-name">{title}</div>
           <div className="basket-card__info-description">

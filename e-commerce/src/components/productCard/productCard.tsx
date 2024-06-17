@@ -42,8 +42,9 @@ export function ProductCard({
 
   const [productInBasket, setProductInBasket] = useState(inBasket);
   const handleToBasketClick = async (productId: string) => {
+    setProductInBasket(true);
     const answer = await addLineToCart(dispatch, productId);
-    if (!answer.isError) setProductInBasket(true);
+    if (answer.isError) setProductInBasket(false);
   };
   return (
     <div className="card" data-id={id} onClick={onClick} aria-hidden="true">
