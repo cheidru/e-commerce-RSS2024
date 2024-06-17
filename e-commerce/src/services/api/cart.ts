@@ -220,6 +220,8 @@ export async function addLineToCart(dispatch: AppDispatch, productId: string) {
   };
   updateActions.push(action);
   const result = await changeLineInCart(dispatch, updateActions);
+  if (result.isError) result.message = 'Failed to add item to cart';
+  else result.message = 'Item added to cart';
   return result;
 }
 

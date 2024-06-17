@@ -1,7 +1,9 @@
 import { useState } from 'react';
 // eslint-disable-next-line import/no-cycle
 import { addLineToCart } from '../../services/api/cart';
+import { AppMessage } from '../../services/api/getAppToken';
 import { useAppDispatch } from '../../redux/hooks';
+import { Cart } from '../../redux/store/cartSlice';
 
 export type ProductCardProps = {
   imageUrl: string[];
@@ -19,6 +21,7 @@ export type ProductCardProps = {
   color?: string;
   model?: string;
   inBasket?: boolean;
+  toasted: (result: AppMessage<Cart>) => void;
 };
 
 export function ProductCard({
@@ -37,6 +40,7 @@ export function ProductCard({
   color,
   model,
   inBasket = false,
+  toasted,
 }: ProductCardProps) {
   const dispatch = useAppDispatch();
 
@@ -44,6 +48,7 @@ export function ProductCard({
   const handleToBasketClick = async (productId: string) => {
     setProductInBasket(true);
     const answer = await addLineToCart(dispatch, productId);
+    toasted(answer);
     if (answer.isError) setProductInBasket(false);
   };
   return (

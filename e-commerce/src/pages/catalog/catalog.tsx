@@ -1,7 +1,8 @@
 import './catalog.scss';
 import { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
+import { Cart } from '../../redux/store/cartSlice';
 import {
   getCategories,
   getProductsSorted,
@@ -32,6 +33,7 @@ import Spinner from '../../components/spinner/Spinner';
 import Pagination from '../../components/pagination/pagination';
 // Basket
 import { checkProductsInCart } from '../../services/api/cart';
+import { AppMessage } from '../../services/api/getAppToken';
 // import { useAppSelector } from '../../redux/hooks';
 
 function Catalog() {
@@ -64,6 +66,36 @@ function Catalog() {
 
   // Basket
   // const cart = useAppSelector((state) => state.cartSlice.cart);
+
+  function showToast(result: AppMessage<Cart>) {
+    if (result.isError) {
+      toast.error(result.message!, {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: 'red',
+          backgroundColor: 'pink',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'red',
+        },
+      });
+    } else {
+      toast.success(result.message!, {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: 'white',
+          backgroundColor: 'green',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'green',
+        },
+      });
+    }
+  }
 
   // Handle category sortedSelect
   const handleSortChange = async (
@@ -273,6 +305,8 @@ function Catalog() {
                   <ProductCard
                     {...product}
                     key={product.id}
+                    // eslint-disable-next-line react/jsx-no-bind
+                    toasted={showToast}
                     onClick={() => navigate(`/product/${product.id}`)}
                   />
                 ))}
