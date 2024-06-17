@@ -152,7 +152,7 @@ function FilterCatalog({
         <fieldset className="filter-fieldset filter-color">
           <legend>Color</legend>
           {filterPanelProps.color.map((color) => (
-            <label htmlFor={color} key={color}>
+            <label htmlFor={color} key={`${color}-c`}>
               <input
                 className="input-checkbox"
                 type="checkbox"
@@ -169,11 +169,11 @@ function FilterCatalog({
           <legend>Model</legend>
 
           {filterPanelProps.model.map((model) => (
-            <label htmlFor={model} key={model}>
+            <label htmlFor={`${model}-m`} key={`${model}-m`}>
               <input
                 className="input-checkbox"
                 type="checkbox"
-                id={model}
+                id={`${model}-m`}
                 name="filter-model"
                 value={model}
                 onChange={handleModelChange}
