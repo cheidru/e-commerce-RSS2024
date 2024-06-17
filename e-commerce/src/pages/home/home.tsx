@@ -1,5 +1,5 @@
 // import Slider from '../../components/slider/slider';
-import Category from '../../components/category/category';
+// import Category from '../../components/category/category';
 // import SliderProduct from '../../components/sliderProducts/sliderProducts';
 import CallForm from '../../components/forms/callForm/callForm';
 /* SVG */
@@ -61,7 +61,7 @@ function Home() {
           </div>
         </div>
       </section>
-      <section className="categoryes">
+      {/* <section className="categoryes">
         <div className="wrapper categoryes__box">
           <h2 className="categoryes-title">Categories</h2>
           <div className="categoryes__gallery">
@@ -74,7 +74,7 @@ function Home() {
             All categories
           </button>
         </div>
-      </section>
+      </section> */}
       {/* <section className="popular-products ">
         <div className="wrapper popular-products-box">
           <h2 className="popular-products-title">Our popular products</h2>

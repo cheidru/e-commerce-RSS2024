@@ -27,7 +27,7 @@
   }
 }
 .we {
-  padding-top: 93px;
+  padding: 93px 0 50px;
   display: flex;
   flex-direction: column;
   gap: 56px;
@@ -48,7 +48,7 @@
     align-items: center;
     gap: 32px;
     box-shadow: $B-shadow-service;
-    max-width: 400px;
+    max-width: 350px;
   }
   &__reason-img {
     width: 82px;
