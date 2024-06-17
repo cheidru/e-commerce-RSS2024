@@ -232,6 +232,10 @@ label {
 /* Input Search */
 .search-label {
   position: relative;
+  @media (max-width: 770px) {
+    align-self: flex-start;
+    padding: 0 7px;
+  }
 }
 .search-input {
   border: 1px solid $Light-grey;

@@ -19,21 +19,18 @@ function Header() {
             <img className="header__bottom-logo" src={Logo} alt="logo" />
           </Link>
         </div>
-        <div id="outer-container">
-          <Navigation />
+        <Navigation />
 
-          <div className="header__bottom-item hello">
-            {userLoggedEmail}
-            <Link to="/basket">
-              <LuShoppingCart className="icon-header" />
-            </Link>
-            <Link to="/profile">
-              <FaRegUser className="icon-header" />
-            </Link>
-          </div>
+        <div className="header__bottom-item hello">
+          {userLoggedEmail}
+          <Link to="/basket">
+            <LuShoppingCart className="icon-header" />
+          </Link>
+          <Link to="/profile">
+            <FaRegUser className="icon-header" />
+          </Link>
         </div>
       </div>
-      <main id="page-wrap" />
     </header>
   );
 }
