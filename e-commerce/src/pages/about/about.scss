@@ -100,13 +100,13 @@
 }
 
 .modal-screen-shot {
-  top: 0;
-  left: 0;
+  position: relative;
+  top: 50%;
+  left: 50%;
   width: 60vw;
   height: max-content;
-  margin: 0 auto;
   padding: 0;
-  transform: translateY(15%);
+  transform: translate(-50%, -50%);
   border-radius: 10px;
 }
 
@@ -165,12 +165,12 @@
 }
 
 .modal-member {
-  top: 0;
-  left: 0;
+  position: relative;
+  top: 50%;
+  left: 50%;
   width: 60vw;
-  margin: 0 auto;
   height: max-content;
-  transform: translateY(5%);
+  transform: translate(-50%, -50%);
   padding: 2rem;
   background-color: white;
   border: none;
@@ -206,12 +206,10 @@
 
   .modal-member {
     width: 80vw;
-    transform: translateY(15%);
   }
 
   .modal-screen-shot {
     width: 80vw;
-    transform: translateY(20%);
   }
 }
 
@@ -228,7 +226,6 @@
 
   .modal-member {
     width: 95vw;
-    transform: translateY(20%);
   }
 
   .modal-img {
@@ -241,7 +238,6 @@
 
   .modal-screen-shot {
     width: 90vw;
-    transform: translateY(30%);
   }
 }
 
@@ -262,7 +258,6 @@
   }
 
   .modal-member {
-    transform: translateY(5%);
     padding: 1rem;
   }
 
@@ -282,6 +277,5 @@
 
   .modal-screen-shot {
     width: 95vw;
-    transform: translateY(50%);
   }
 }
