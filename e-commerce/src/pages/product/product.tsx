@@ -181,13 +181,13 @@ function Product() {
         toastOptions={{
           success: {
             style: {
-              background: 'rgba(0, 134, 0, 0.6)',
+              background: 'green',
               color: 'white',
             },
           },
           error: {
             style: {
-              background: 'rgba(255, 0, 0, 0.5)',
+              background: 'red',
               color: 'white',
             },
           },
