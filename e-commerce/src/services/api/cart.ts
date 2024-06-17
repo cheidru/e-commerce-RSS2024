@@ -220,6 +220,8 @@ export async function addLineToCart(dispatch: AppDispatch, productId: string) {
   };
   updateActions.push(action);
   const result = await changeLineInCart(dispatch, updateActions);
+  if (result.isError) result.message = 'Failed to add item to cart';
+  else result.message = 'Item added to cart';
   return result;
 }
 
@@ -283,24 +285,26 @@ export async function addDiscountCode(dispatch: AppDispatch, code: string) {
   return result;
 }
 
-export async function delDiscountCode(dispatch: AppDispatch) {
+export async function clearDiscountCode(dispatch: AppDispatch) {
   const userCart = store.getState().cartSlice.cart;
-  if (!userCart.id || !userCart.discountOnTotalPrice) {
+  if (!userCart.id || !userCart.discountCodes.length) {
     const result: AppMessage<Cart> = {
       isError: true,
       message: 'Discount cart not found',
     };
     return result;
   }
-  const updateActions = new Array<UpdateAction>();
-  const action = {
-    action: 'removeDiscountCode',
-    discountCode: {
-      typeId: 'discount-code',
-      id: userCart.discountCodes[0].discountCode.id,
-    },
-  };
-  updateActions.push(action);
+  // const updateActions = new Array<UpdateAction>();
+  const updateActions = userCart.discountCodes.map((code) => {
+    const result = {
+      action: 'removeDiscountCode',
+      discountCode: {
+        typeId: 'discount-code',
+        id: code.discountCode.id,
+      },
+    };
+    return result;
+  });
   const result = await changeLineInCart(dispatch, updateActions);
   return result;
 }

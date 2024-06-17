@@ -8,11 +8,18 @@ import { BasketCard } from './basketCard';
 import {
   clearCart,
   addDiscountCode,
-  delDiscountCode,
+  clearDiscountCode,
 } from '../../services/api/cart';
 import { AppMessage } from '../../services/api/getAppToken';
 import { findDiscountCodes } from '../../services/api/discounts';
 import { Cart } from '../../redux/store/cartSlice';
+
+export function toFixedFormat(num: number, fractionDigits: number) {
+  return num.toLocaleString('en-US', {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  });
+}
 
 function Basket() {
   const navigate = useNavigate();
@@ -25,20 +32,23 @@ function Basket() {
       id: product.productId,
       imageUrl: product.variant.images.map((img) => img.url),
       onSale: !!product.price.discounted,
+      discounted: !!product.discountedPrice,
       title: product.name.en,
       newPrice: product.price.discounted
-        ? `${product.price.discounted.value.centAmount / 100}`
-        : `${product.price.value.centAmount / 100}`,
-      oldPrice: `${product.price.value.centAmount / 100}`,
+        ? `${toFixedFormat(product.price.discounted.value.centAmount / 100, 2)}`
+        : `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
+      oldPrice: `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
+      salePrice: `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
       currency: product.price.value.currencyCode,
       quantity: product.quantity,
-      fullPrice: `${product.totalPrice.currencyCode} ${product.totalPrice.centAmount / 100}`,
+      fullPrice: `${product.totalPrice.currencyCode} ${toFixedFormat(product.totalPrice.centAmount / 100, 2)}`,
       // size: product.variant.attributes.find((attr) => attr.name === 'size')?.value,
       color: product.variant.attributes.find((attr) => attr.name === 'color')
         ?.value,
       model: product.variant.attributes.find((attr) => attr.name === 'model')
         ?.value,
     };
+    if (product.discountedPrice) card.salePrice = card.newPrice;
     return card;
   });
   const cartDiscountCodes = findDiscountCodes(cart.discountCodes);
@@ -74,12 +84,12 @@ function Basket() {
   }
 
   async function clickClearCart() {
-    let result = await delDiscountCode(dispatch);
+    let result = await clearDiscountCode(dispatch);
     result = await clearCart(dispatch);
     showToast(result);
   }
 
-  const [discountCode, setDiscountCode] = useState('asinc4cart');
+  const [discountCode, setDiscountCode] = useState('');
 
   const handleChangeDiscountCode = (event: ChangeEvent<HTMLInputElement>) => {
     setDiscountCode(event.target.value);
@@ -88,14 +98,14 @@ function Basket() {
     setDiscountCode('');
   };
   async function handleAddDiscountCode() {
-    // 'asinc4cart'
+    // 'asinc5discount asinc7lucky'
     const result = await addDiscountCode(dispatch, discountCode);
     if (!result.isError) setDiscountCode('');
     showToast(result);
   }
 
   async function clickDelDiscountCode() {
-    const result = await delDiscountCode(dispatch);
+    const result = await clearDiscountCode(dispatch);
     showToast(result);
   }
 
@@ -195,6 +205,11 @@ function Basket() {
         ) : (
           <div className="basket-catalog-empty">
             <div className="basket-catalog-empty-text">Basket is empty</div>
+            <div>
+              {' '}
+              Looks like you haven&apos;t added anything to your cart yet. Start
+              shopping to fill it up!
+            </div>
             <NavLink className="basket-catalog-empty-link" to="/catalog">
               <span className="basket-catalog-clear-button basket-catalog-button basket-catalog-empty-link-text">
                 Go to Catalog

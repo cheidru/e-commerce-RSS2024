@@ -1,6 +1,8 @@
 import './catalog.scss';
 import { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, Toaster } from 'react-hot-toast';
+import { Cart } from '../../redux/store/cartSlice';
 import {
   getCategories,
   getProductsSorted,
@@ -30,13 +32,17 @@ import FilterCatalog, {
 import Spinner from '../../components/spinner/Spinner';
 import Pagination from '../../components/pagination/pagination';
 // Basket
-import { checkProductsInCart } from '../../services/api/cart';
+import { checkProductsInCart, getCart } from '../../services/api/cart';
+import { AppMessage } from '../../services/api/getAppToken';
 // import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch } from '../../redux/hooks';
 
 function Catalog() {
   const limit = 8;
   const categoriesAll: CategoryProps[] = [];
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
 
   // Products
   const [productCardProps, setProductCardProps] = useState<ProductCardProps[]>(
@@ -63,6 +69,36 @@ function Catalog() {
 
   // Basket
   // const cart = useAppSelector((state) => state.cartSlice.cart);
+
+  function showToast(result: AppMessage<Cart>) {
+    if (result.isError) {
+      toast.error(result.message!, {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: 'red',
+          backgroundColor: 'pink',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'red',
+        },
+      });
+    } else {
+      toast.success(result.message!, {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: 'white',
+          backgroundColor: 'green',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'green',
+        },
+      });
+    }
+  }
 
   // Handle category sortedSelect
   const handleSortChange = async (
@@ -118,6 +154,7 @@ function Catalog() {
           await getProductsSorted(categoryId, offset, sortKey);
         getCountPagination(productsAllGet.total);
         const productsProps = formattedDataForCardInCategory(productsAllGet);
+        await getCart(dispatch);
         setProductCardProps(checkProductsInCart(productsProps));
       } catch {
         setError('Failed to fetch products. Please try later.');
@@ -136,7 +173,7 @@ function Catalog() {
       }
     }
     categories();
-  }, [categoryId, offset, sortKey, searchQuery, filterSetting]);
+  }, [categoryId, offset, sortKey, searchQuery, filterSetting, dispatch]);
 
   useEffect(() => {
     const searchProductsQuery = async () => {
@@ -272,6 +309,8 @@ function Catalog() {
                   <ProductCard
                     {...product}
                     key={product.id}
+                    // eslint-disable-next-line react/jsx-no-bind
+                    toasted={showToast}
                     onClick={() => navigate(`/product/${product.id}`)}
                   />
                 ))}
@@ -288,6 +327,7 @@ function Catalog() {
           </div>
         </div>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </section>
   );
 }

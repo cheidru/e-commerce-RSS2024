@@ -10,7 +10,7 @@ function Footer() {
       <div className="footer__box wrapper">
         <div className="footer__top">
           <div className="footer__top-item">
-            <img className="footer-icon" src={Logo} alt="logo" />
+            <img className="footer-icon" src={Logo} alt="logoFooter" />
             <SlSocialVkontakte className="footer-icon" />
             <FaXTwitter className="footer-icon" />
             <FaFacebookF className="footer-icon" />

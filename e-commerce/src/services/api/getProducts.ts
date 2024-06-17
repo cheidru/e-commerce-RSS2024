@@ -1,4 +1,4 @@
-import { getAccessToken } from './getCustomerToken';
+import { getAppToken } from './getAppToken';
 import {
   IFilter,
   IProductResponseCategory,
@@ -19,14 +19,15 @@ const limitProduct = '8';
 // Header for all request
 async function requestOptions(): Promise<RequestInit> {
   const myHeaders = new Headers();
-  const appToken = await getAccessToken().then((result) => result.access_token);
+  const appToken = await getAppToken().then(
+    (result) => result.thing?.access_token
+  );
   myHeaders.append('Authorization', `Bearer ${appToken}`);
 
   const options: RequestInit = {
     method: 'GET',
     headers: myHeaders,
   };
-
   return options;
 }
 

@@ -11,10 +11,12 @@ export type BasketCardProps = {
   imageUrl: string[];
   inStock?: boolean;
   onSale: boolean;
+  discounted: boolean;
   hasGift?: boolean;
   title: string;
   newPrice: string;
   oldPrice: string;
+  salePrice: string;
   currency: string;
   quantity: number;
   fullPrice: string;
@@ -30,10 +32,12 @@ export function BasketCard({
   imageUrl,
   inStock = false,
   onSale,
+  discounted,
   hasGift = false,
   title,
   newPrice,
   oldPrice,
+  salePrice,
   currency,
   quantity,
   fullPrice,
@@ -67,7 +71,7 @@ export function BasketCard({
         onClick={onClick}
         aria-hidden="true"
       />
-      <div className="card__info">
+      <div className="basket-card__info">
         <div className="basket-card__info-title">
           <div className="basket-card__info-title-name">{title}</div>
           <div className="basket-card__info-description">
@@ -89,6 +93,7 @@ export function BasketCard({
             <button
               type="button"
               className="basket-card-btn basket-catalog-button"
+              disabled={quantity < 2}
               onClick={(e) => {
                 e.stopPropagation();
                 substLineFromCart(dispatch, lineId);
@@ -108,11 +113,15 @@ export function BasketCard({
             </button>
           </div>
         </div>
-        <div className="basket-price-new">
+        <div className="basket-price-sum">
           Full price: {fullPrice}
-          {onSale && (
+          {(onSale || discounted) && (
             <div className="basket-price-full-old">
-              {currency} {(parseFloat(oldPrice) * quantity).toFixed(2)}
+              {currency}{' '}
+              {(parseFloat(salePrice) * quantity).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </div>
           )}
         </div>
