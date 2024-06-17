@@ -113,7 +113,7 @@ function Product() {
       <h2 className="product free-page">Product</h2>
       <button
         type="button"
-        className="form__call-btn"
+        className="form__call-btn goBack-btn"
         onClick={() => navigate(-1)}
       >
         Go Back
@@ -129,7 +129,6 @@ function Product() {
           </div>
           <div className="product__info-price">
             <span>
-              {/* {' '} */}
               <b>Price: </b>
               <b>
                 <em>
