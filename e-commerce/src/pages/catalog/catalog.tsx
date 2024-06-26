@@ -37,8 +37,9 @@ import { AppMessage } from '../../services/api/getAppToken';
 // import { useAppSelector } from '../../redux/hooks';
 import { useAppDispatch } from '../../redux/hooks';
 
+const LIMIT = 8;
+
 function Catalog() {
-  const limit = 8;
   const categoriesAll: CategoryProps[] = [];
   const navigate = useNavigate();
 
@@ -108,7 +109,7 @@ function Catalog() {
 
   // Pagination
   const getCountPagination = (count: number) => {
-    const getCountPages = Math.ceil(count / limit);
+    const getCountPages = Math.ceil(count / LIMIT);
     const countPagination = getCountPages > 1 ? getCountPages : 0;
     setTotalPages(countPagination);
   };
@@ -309,8 +310,8 @@ function Catalog() {
           </div>
           <Pagination
             totalPages={totalPages}
-            currentPage={offset / limit}
-            onClick={(page) => setOffset(page * limit)}
+            currentPage={offset / LIMIT}
+            onClick={(page) => setOffset(page * LIMIT)}
           />
         </div>
       </div>
