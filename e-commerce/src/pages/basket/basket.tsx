@@ -83,7 +83,7 @@ function Basket() {
     }
   }
 
-  async function clickClearCart() {
+  async function handlerClearCart() {
     let result = await clearDiscountCode(dispatch);
     result = await clearCart(dispatch);
     showToast(result);
@@ -120,7 +120,7 @@ function Basket() {
               className="basket-catalog-clear-button basket-catalog-buttons"
               onClick={(e) => {
                 e.stopPropagation();
-                clickClearCart();
+                handlerClearCart();
               }}
             >
               Clear basket
@@ -164,7 +164,7 @@ function Basket() {
                 <button
                   className="search-btn"
                   type="button"
-                  onClick={() => handleAddDiscountCode()}
+                  onClick={handleAddDiscountCode}
                   disabled={!discountCode}
                 >
                   Add
