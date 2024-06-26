@@ -1,6 +1,5 @@
 import './basket.scss';
-// import '../catalog/catalog.scss';
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
@@ -91,14 +90,7 @@ function Basket() {
 
   const [discountCode, setDiscountCode] = useState('');
 
-  const handleChangeDiscountCode = (event: ChangeEvent<HTMLInputElement>) => {
-    setDiscountCode(event.target.value);
-  };
-  const handleClearDiscountCode = () => {
-    setDiscountCode('');
-  };
   async function handleAddDiscountCode() {
-    // 'asinc5discount asinc7lucky'
     const result = await addDiscountCode(dispatch, discountCode);
     if (!result.isError) setDiscountCode('');
     showToast(result);
@@ -150,13 +142,13 @@ function Basket() {
                   name="search"
                   placeholder="Discount code"
                   value={discountCode}
-                  onChange={handleChangeDiscountCode}
+                  onChange={(e) => setDiscountCode(e.target.value)}
                   className="discount-code-input"
                 />
                 <button
                   className="clear-btn"
                   type="button"
-                  onClick={handleClearDiscountCode}
+                  onClick={() => setDiscountCode('')}
                   disabled={!discountCode}
                 >
                   x
