@@ -1,5 +1,5 @@
 import './catalog.scss';
-import { useEffect, useState, useCallback, ChangeEvent } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, Toaster } from 'react-hot-toast';
 import { Cart } from '../../redux/store/cartSlice';
@@ -113,10 +113,6 @@ function Catalog() {
     setTotalPages(countPagination);
   };
 
-  // Handle Search Panel
-  const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
   const handleClearSearch = () => {
     setSearchQuery('');
     setMessageError(false);
@@ -265,7 +261,7 @@ function Catalog() {
                 name="search"
                 placeholder="Search..."
                 value={searchQuery}
-                onChange={handleChangeInputSearch}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="search-input"
               />
               <button
