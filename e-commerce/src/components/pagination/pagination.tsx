@@ -1,22 +1,25 @@
-import { MouseEventHandler } from 'react';
-
 export interface PaginationProps {
-  id: number;
-  onClick?: MouseEventHandler;
-  isCurrent: boolean;
+  totalPages: number;
+  currentPage: number;
+  onClick?: (page: number) => void;
 }
 
 // Pagination Buttons
-function Pagination({ id, onClick, isCurrent }: PaginationProps) {
+function Pagination({ totalPages, currentPage, onClick }: PaginationProps) {
   return (
-    <button
-      type="submit"
-      value={id}
-      onClick={onClick}
-      className={`pagination-btn ${isCurrent ? 'pagination-btn-active' : ''}`}
-    >
-      {id + 1}
-    </button>
+    <div className="pagination">
+      {Array.from({ length: totalPages }).map((_, i: number) => (
+        <button
+          type="button"
+          key={`${i + 1}`}
+          value={i}
+          onClick={() => onClick && onClick(i)}
+          className={`pagination-btn ${i === currentPage ? 'pagination-btn-active' : ''}`}
+        >
+          {i + 1}
+        </button>
+      ))}
+    </div>
   );
 }
 

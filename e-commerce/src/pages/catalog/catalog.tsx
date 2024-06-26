@@ -56,7 +56,7 @@ function Catalog() {
   const [messageError, setMessageError] = useState(false);
   // Pagination
   const [offset, setOffset] = useState(0);
-  const [countPages, setCountPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   // Spinner
   const [loading, setLoading] = useState(true);
   // Sorting
@@ -66,9 +66,6 @@ function Catalog() {
   const [filterSetting, setFilterSetting] = useState<IFilter>(
     defaultFilterSettings
   );
-
-  // Basket
-  // const cart = useAppSelector((state) => state.cartSlice.cart);
 
   function showToast(result: AppMessage<Cart>) {
     if (result.isError) {
@@ -113,8 +110,7 @@ function Catalog() {
   const getCountPagination = (count: number) => {
     const getCountPages = Math.ceil(count / limit);
     const countPagination = getCountPages > 1 ? getCountPages : 0;
-    setCountPages(countPagination);
-    return countPagination;
+    setTotalPages(countPagination);
   };
 
   // Handle Search Panel
@@ -315,16 +311,11 @@ function Catalog() {
                   />
                 ))}
           </div>
-          <div className="pagination">
-            {Array.from({ length: countPages }).map((_, i) => (
-              <Pagination
-                isCurrent={offset / limit === i}
-                key={`pagination-btn-${i + 1}`}
-                id={i}
-                onClick={() => setOffset(i * limit)}
-              />
-            ))}
-          </div>
+          <Pagination
+            totalPages={totalPages}
+            currentPage={offset / limit}
+            onClick={(page) => setOffset(page * limit)}
+          />
         </div>
       </div>
       <Toaster position="top-right" reverseOrder={false} />
