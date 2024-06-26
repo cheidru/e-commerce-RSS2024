@@ -50,42 +50,9 @@ function About() {
         </div>
       </div>
       <div className="about-wrapper__bottom">
-        <Avatar
-          firstName={asyncMember[1].firstName}
-          avatar={asyncMember[1].avatar}
-          avatarName={asyncMember[1].avatarName}
-          title={asyncMember[1].title}
-          photo={asyncMember[1].photo}
-          shortBio={asyncMember[1].shortBio}
-          gitHub={asyncMember[1].gitHub}
-          country={asyncMember[1].country}
-          city={asyncMember[1].city}
-          teamSay={asyncMember[1].teamSay}
-        />
-        <Avatar
-          firstName={asyncMember[0].firstName}
-          avatar={asyncMember[0].avatar}
-          avatarName={asyncMember[0].avatarName}
-          title={asyncMember[0].title}
-          photo={asyncMember[0].photo}
-          shortBio={asyncMember[0].shortBio}
-          gitHub={asyncMember[0].gitHub}
-          country={asyncMember[0].country}
-          city={asyncMember[0].city}
-          teamSay={asyncMember[0].teamSay}
-        />
-        <Avatar
-          firstName={asyncMember[2].firstName}
-          avatar={asyncMember[2].avatar}
-          avatarName={asyncMember[2].avatarName}
-          title={asyncMember[2].title}
-          photo={asyncMember[2].photo}
-          shortBio={asyncMember[2].shortBio}
-          gitHub={asyncMember[2].gitHub}
-          country={asyncMember[2].country}
-          city={asyncMember[2].city}
-          teamSay={asyncMember[2].teamSay}
-        />
+        {asyncMember.map((member) => (
+          <Avatar key={member.id} {...member} />
+        ))}
       </div>
     </div>
   );
