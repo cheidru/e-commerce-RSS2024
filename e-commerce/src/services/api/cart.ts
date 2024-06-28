@@ -339,4 +339,40 @@ export function checkProductInCartById(productId: string) {
   return '';
 }
 
+export function toFixedFormat(num: number, fractionDigits: number) {
+  return num.toLocaleString('en-US', {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  });
+}
+
+export function getProductCards(cart: Cart) {
+  const productCards = cart.lineItems.map((product) => {
+    const card = {
+      lineId: product.id,
+      id: product.productId,
+      imageUrl: product.variant.images.map((img) => img.url),
+      onSale: !!product.price.discounted,
+      discounted: !!product.discountedPrice,
+      title: product.name.en,
+      newPrice: product.price.discounted
+        ? `${toFixedFormat(product.price.discounted.value.centAmount / 100, 2)}`
+        : `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
+      oldPrice: `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
+      salePrice: `${toFixedFormat(product.price.value.centAmount / 100, 2)}`,
+      currency: product.price.value.currencyCode,
+      quantity: product.quantity,
+      fullPrice: `${product.totalPrice.currencyCode} ${toFixedFormat(product.totalPrice.centAmount / 100, 2)}`,
+      // size: product.variant.attributes.find((attr) => attr.name === 'size')?.value,
+      color: product.variant.attributes.find((attr) => attr.name === 'color')
+        ?.value,
+      model: product.variant.attributes.find((attr) => attr.name === 'model')
+        ?.value,
+    };
+    if (product.discountedPrice) card.salePrice = card.newPrice;
+    return card;
+  });
+  return productCards;
+}
+
 export default getCart;
