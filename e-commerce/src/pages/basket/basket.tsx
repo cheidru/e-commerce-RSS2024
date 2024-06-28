@@ -1,7 +1,7 @@
 import './basket.scss';
 import { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { BasketCard } from './basketCard';
 import {
@@ -24,31 +24,9 @@ function Basket() {
 
   function showToast(result: AppMessage<Cart>) {
     if (result.isError) {
-      toast.error(result.message!, {
-        style: {
-          border: '1px solid #713200',
-          padding: '16px',
-          color: 'red',
-          backgroundColor: 'pink',
-        },
-        iconTheme: {
-          primary: 'white',
-          secondary: 'red',
-        },
-      });
+      toast.error(result.message!);
     } else {
-      toast.success(result.message!, {
-        style: {
-          border: '1px solid #713200',
-          padding: '16px',
-          color: 'white',
-          backgroundColor: 'green',
-        },
-        iconTheme: {
-          primary: 'white',
-          secondary: 'green',
-        },
-      });
+      toast.success(result.message!);
     }
   }
 
@@ -180,7 +158,6 @@ function Basket() {
           </div>
         )}
       </div>
-      <Toaster position="top-right" reverseOrder={false} />
     </section>
   );
 }

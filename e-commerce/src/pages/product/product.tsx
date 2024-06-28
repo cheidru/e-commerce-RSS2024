@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import { getProduct } from '../../services/api/getProducts';
 import { ProductCardProps } from '../../components/productCard/productCard';
 import { formattedDataForOneProduct } from '../catalog/formattedData';
@@ -188,24 +188,6 @@ function Product() {
           )}
         </div>
       </div>
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-        toastOptions={{
-          success: {
-            style: {
-              background: 'green',
-              color: 'white',
-            },
-          },
-          error: {
-            style: {
-              background: 'red',
-              color: 'white',
-            },
-          },
-        }}
-      />
     </section>
   );
 }

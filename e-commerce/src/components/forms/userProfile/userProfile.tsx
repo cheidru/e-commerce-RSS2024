@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import { useAppDispatch } from '../../../redux/hooks';
 import { logout, userInitial } from '../../../redux/store/userSlice';
 // import store from '../../../redux/store/store';
@@ -33,31 +33,9 @@ function UserProfile(): React.ReactElement {
   }) => {
     updateUserData();
     if (!thisError) {
-      toast.success(message, {
-        style: {
-          border: '1px solid #713200',
-          padding: '16px',
-          color: 'white',
-          backgroundColor: 'green',
-        },
-        iconTheme: {
-          primary: 'white',
-          secondary: 'green',
-        },
-      });
+      toast.success(message);
     } else {
-      toast.error(message, {
-        style: {
-          border: '1px solid #713200',
-          padding: '16px',
-          color: 'red',
-          backgroundColor: 'pink',
-        },
-        iconTheme: {
-          primary: 'white',
-          secondary: 'red',
-        },
-      });
+      toast.error(message);
     }
   };
 
@@ -254,7 +232,6 @@ function UserProfile(): React.ReactElement {
         onDeleteClick={clickDeleteAddress}
         userInfoProp={userData}
       />
-      <Toaster position="top-right" reverseOrder={false} />
     </>
   );
 }

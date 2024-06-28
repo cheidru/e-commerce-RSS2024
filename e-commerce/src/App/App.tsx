@@ -1,5 +1,6 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 /* Components */
 import Header from '../components/header/header';
@@ -72,6 +73,38 @@ function App() {
           </Route>
         </Routes>
       </main>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          // Define default options
+          className: '',
+          duration: 2000,
+          style: {
+            border: '1px solid #713200',
+            padding: '16px',
+            color: 'white',
+            backgroundColor: 'green',
+          },
+          iconTheme: {
+            primary: 'white',
+            secondary: 'green',
+          },
+
+          // Default options for specific types
+          error: {
+            duration: 3000,
+            style: {
+              color: 'red',
+              backgroundColor: 'pink',
+            },
+            iconTheme: {
+              primary: 'white',
+              secondary: 'red',
+            },
+          },
+        }}
+      />
       <Footer />
     </>
   );
