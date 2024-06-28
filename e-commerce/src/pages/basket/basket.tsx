@@ -1,53 +1,19 @@
 import './basket.scss';
-import { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
-import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { useAppSelector } from '../../redux/hooks';
 import { BasketCard } from './basketCard';
-import {
-  clearCart,
-  addDiscountCode,
-  clearDiscountCode,
-  getProductCards,
-} from '../../services/api/cart';
-import { AppMessage } from '../../services/api/getAppToken';
+import { getProductCards } from '../../services/api/cart';
 import { findDiscountCodes } from '../../services/api/discounts';
-import { Cart } from '../../redux/store/cartSlice';
+import BasketHeader from './basketHeader';
+import AddingDiscountCode from './addDiscount';
+import Discounts from './discounts';
 
 function Basket() {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const cart = useAppSelector((state) => state.cartSlice.cart);
   const productCards = getProductCards(cart);
   const cartDiscountCodes = findDiscountCodes(cart.discountCodes);
-
-  function showToast(result: AppMessage<Cart>) {
-    if (result.isError) {
-      toast.error(result.message!);
-    } else {
-      toast.success(result.message!);
-    }
-  }
-
-  async function handlerClearCart() {
-    let result = await clearDiscountCode(dispatch);
-    result = await clearCart(dispatch);
-    showToast(result);
-  }
-
-  const [discountCode, setDiscountCode] = useState('');
-
-  async function handleAddDiscountCode() {
-    const result = await addDiscountCode(dispatch, discountCode);
-    if (!result.isError) setDiscountCode('');
-    showToast(result);
-  }
-
-  async function clickDelDiscountCode() {
-    const result = await clearDiscountCode(dispatch);
-    showToast(result);
-  }
 
   return (
     <section className="basket-catalog">
@@ -55,81 +21,11 @@ function Basket() {
       <div className="basket-catalog-wrapper">
         {productCards.length ? (
           <>
-            <button
-              type="button"
-              className="basket-catalog-clear-button basket-catalog-buttons"
-              onClick={(e) => {
-                e.stopPropagation();
-                handlerClearCart();
-              }}
-            >
-              Clear basket
-            </button>
-            <div className="basket-catalog-total-price">
-              <div className="basket-catalog-total-price-current">
-                Total: {cart.totalPrice.currencyCode}{' '}
-                {cart.totalPrice.centAmount / 100}
-              </div>
-              {!!cart.discountOnTotalPrice && (
-                <div className="basket-price-total-old">
-                  {cart.totalPrice.currencyCode}{' '}
-                  {(
-                    (cart.totalPrice.centAmount +
-                      cart.discountOnTotalPrice.discountedAmount.centAmount) /
-                    100
-                  ).toFixed(2)}
-                </div>
-              )}
-            </div>
-            <div className="basket-discount-code">
-              <div className="basket-discount-code-header">Discount</div>
-              <label htmlFor="discount-code" className="search-label">
-                <input
-                  type="input"
-                  id="discount-code"
-                  name="search"
-                  placeholder="Discount code"
-                  value={discountCode}
-                  onChange={(e) => setDiscountCode(e.target.value)}
-                  className="discount-code-input"
-                />
-                <button
-                  className="clear-btn"
-                  type="button"
-                  onClick={() => setDiscountCode('')}
-                  disabled={!discountCode}
-                >
-                  x
-                </button>
-                <button
-                  className="search-btn"
-                  type="button"
-                  onClick={handleAddDiscountCode}
-                  disabled={!discountCode}
-                >
-                  Add
-                </button>
-              </label>
-            </div>
-            {cartDiscountCodes.length > 0 && (
-              <div className="basket-discount-codes">
-                {cartDiscountCodes.map((code) => (
-                  <div className="basket-discount-codes-code" key={code.code}>
-                    {code.code}
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  className="discount-code-clear-btn"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    clickDelDiscountCode();
-                  }}
-                >
-                  Clear
-                </button>
-              </div>
-            )}
+            <BasketHeader />
+
+            <AddingDiscountCode />
+
+            {cartDiscountCodes.length > 0 && <Discounts />}
             <div className="catalog-products">
               <div className="catalog-product" id="catalog-product">
                 {productCards.map((product) => (
