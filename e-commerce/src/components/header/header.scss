@@ -207,3 +207,16 @@ Note: Beware of modifying this element as it can break the animations - you shou
     left: 0;
   }
 }
+
+.basket-count {
+  position: relative;
+  left: 45px;
+  top: -20px;
+  font-weight: 600;
+}
+
+icon-header:hover {
+  .basket-count {
+    color: $Blue;
+  }
+}

@@ -11,6 +11,9 @@ function Header() {
   const userToken = useAppSelector((state) => state.userSlice.authToken);
   const userLoggedEmail =
     userToken.access_token.length > 0 ? `Hello, ${userToken.email}` : '';
+  const itemsByCard =
+    useAppSelector((state) => state.cartSlice.cart.totalLineItemQuantity) || 0;
+
   return (
     <header className="container header">
       <div className="header__bottom ">
@@ -24,6 +27,7 @@ function Header() {
         <div className="header__bottom-item hello">
           {userLoggedEmail}
           <Link to="/basket">
+            <span className="basket-count">{itemsByCard}</span>
             <LuShoppingCart className="icon-header" />
           </Link>
           <Link to="/profile">

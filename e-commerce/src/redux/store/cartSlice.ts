@@ -78,6 +78,7 @@ export type Cart = {
   discountOnTotalPrice: DiscountOnTotalPrice;
   discountCodes: DiscountCode[];
   origin: string;
+  totalLineItemQuantity: number;
 };
 
 type CartState = {
@@ -115,6 +116,7 @@ export const cartInitial: Cart = {
   },
   discountCodes: [],
   origin: '',
+  totalLineItemQuantity: 0,
 };
 
 const initialState: CartState = {
