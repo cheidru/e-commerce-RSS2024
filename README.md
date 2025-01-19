@@ -1,4 +1,4 @@
-# Online shop
+# [Online shop](https://cheidru.github.io/e-commerce-deployment/)
 
 ## About the Project
 
